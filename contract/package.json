@@ -5,6 +5,10 @@
   "author": "IV",
   "license": "ISC",
   "devDependencies": {
-    "truffle": "^5.4.15"
+    "ethereumjs-testrpc": "^6.0.3",
+    "truffle": "^5.1.67"
+  },
+  "scripts": {
+    "test": "truffle test"
   }
 }
