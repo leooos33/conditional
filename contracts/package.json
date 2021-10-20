@@ -1,0 +1,10 @@
+{
+  "name": "contracts",
+  "version": "1.0.0",
+  "description": "Contracts with truffle",
+  "author": "IV",
+  "license": "ISC",
+  "devDependencies": {
+    "truffle": "^5.4.15"
+  }
+}
