@@ -11,9 +11,8 @@ contract OrderBook {
 
     enum OrderType{ ONE_SIDED, TWO_SIDED }
     
-    struct Order { 
-        address token1;
-        address token2;
+    struct Order {
+        address pair_address;
         uint[] x;
         uint[] p;
         uint deadline;
@@ -25,6 +24,13 @@ contract OrderBook {
     }
     
     mapping(uint => Order) public orders;
+
+    struct Pair { 
+        address token2;
+        uint lastPrice;
+    }
+
+    mapping(address => Pair) public pairs;
 
     function isOrderValid(uint id) public view returns(bool) {
         require(id < lastOrderId);
@@ -47,11 +53,13 @@ contract OrderBook {
         require(max_price_expected >= interpolated_price);
         orders[order_id].amount -= q;
         
-        uint256 allowance = ERC20(order.token2).allowance(msg.sender, address(this));
+        uint256 allowance = ERC20(pairs[order.pair_address].token2).allowance(msg.sender, address(this));
         require(allowance >= interpolated_price);
 
-        ERC20(order.token2).transferFrom(msg.sender, address(order.bid_owner), interpolated_price);
-        ERC20(order.token1).transfer(msg.sender, q);
+        ERC20(pairs[order.pair_address].token2).transferFrom(msg.sender, address(order.bid_owner), interpolated_price);
+        ERC20(order.pair_address).transfer(msg.sender, q);
+
+        pairs[order.pair_address].lastPrice = interpolated_price; // Set clever Math here
     }
     
     function getPrice(Order memory order, uint q) public pure returns(uint interpolated_price){
@@ -76,12 +84,16 @@ contract OrderBook {
         require(p.length == 5, "P is not valid");
         require(int(deadline) > int(block.timestamp), 'Deadline is not valid');
 
+        if(pairs[token1].token2 == address(0x0)) {
+            pairs[token1] = Pair(token2, 0);
+        }
+
         uint amount = x[4];
         uint256 allowance = ERC20(token1).allowance(msg.sender, address(this));
         require(allowance >= amount);
         ERC20(token1).transferFrom(msg.sender, address(this), amount);
         
-        Order memory newOrder = Order(token1, token2, x, p, deadline, OrderType.ONE_SIDED, true, msg.sender, amount, amount);
+        Order memory newOrder = Order(token1, x, p, deadline, OrderType.ONE_SIDED, true, msg.sender, amount, amount);
         orders[lastOrderId] = newOrder;
         lastOrderId++;
         return (lastOrderId-1);
@@ -92,6 +104,6 @@ contract OrderBook {
         require(orders[id].amount >= 0);
         orders[id].is_valid = false;
         
-        ERC20(orders[id].token1).transfer(address(msg.sender), orders[id].amount);
+        ERC20(orders[id].pair_address).transfer(address(msg.sender), orders[id].amount);
     }
 }

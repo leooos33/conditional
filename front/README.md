@@ -1,16 +1,3 @@
-# Tesing smart contracts
-
-## Run tests
-
-### Install dependencies
-
-`npm i -g truffle`
-`npm i -g ethereumjs-testrpc`
-
-### Run Truffle
-
-`cd contract && truffle test`
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
