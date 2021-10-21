@@ -5,6 +5,7 @@
   "author": "IV",
   "license": "ISC",
   "devDependencies": {
+    "@openzeppelin/contracts": "^4.3.2",
     "ethereumjs-testrpc": "^6.0.3",
     "truffle": "^5.1.67"
   },
