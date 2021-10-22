@@ -20,6 +20,7 @@ contract OrderBook {
         address bid_owner;
         uint amount;
         uint initial_amount;
+        int linked_order_id;
     }
     
     mapping(uint => Order) public orders;
@@ -59,6 +60,7 @@ contract OrderBook {
         ERC20(order.pair_address).transfer(msg.sender, q);
 
         pairs[order.pair_address].lastPrice = interpolated_price; // Set clever Math here
+        //TODO: add TWO_SIDED Logic here
     }
     
     function getPrice(Order memory order, uint q) public pure returns(uint interpolated_price){
@@ -92,7 +94,7 @@ contract OrderBook {
         require(allowance >= amount);
         ERC20(token1).transferFrom(msg.sender, address(this), amount);
         
-        Order memory newOrder = Order(token1, x, p, deadline, OrderType.ONE_SIDED, true, msg.sender, amount, amount);
+        Order memory newOrder = Order(token1, x, p, deadline, OrderType.ONE_SIDED, true, msg.sender, amount, amount, int(-1));
         orders[lastOrderId] = newOrder;
         lastOrderId++;
         return (lastOrderId-1);
@@ -104,5 +106,19 @@ contract OrderBook {
         orders[id].is_valid = false;
         
         ERC20(orders[id].pair_address).transfer(address(msg.sender), orders[id].amount);
+    }
+
+    function linkOrders(uint order1_id, uint order2_id) public {
+        require(orders[order1_id].bid_owner == msg.sender);
+        require(orders[order2_id].bid_owner == msg.sender);
+
+        require(orders[order1_id].pair_address == pairs[orders[order2_id].pair_address].token2);
+        require(orders[order2_id].pair_address == pairs[orders[order1_id].pair_address].token2);
+
+        orders[order1_id].linked_order_id = int(order2_id);
+        orders[order1_id].order_type = OrderType.TWO_SIDED;
+
+        orders[order2_id].linked_order_id = int(order1_id);
+        orders[order2_id].order_type = OrderType.TWO_SIDED;
     }
 }
