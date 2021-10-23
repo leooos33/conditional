@@ -67,8 +67,8 @@ contract OrderBook {
         for (uint i=4; i>=0; i--) {
             if (q>order.x[i]) {
                 if(i == 4) revert();
-                uint ip = ((order.x[i+1]-order.x[i])*(q - order.p[i])/(order.p[i+1]-order.p[i]))+order.x[i];
-                uint multiplier = order.initial_amount/order.amount;
+                uint ip = (order.p[i+1]-order.p[i])*(q-order.x[i])/(order.x[i+1]-order.x[i]) + order.p[i];
+                uint multiplier = order.amount/order.initial_amount;
                 return ip*multiplier;
             }
         }

@@ -20,15 +20,15 @@ contract TestOrderBook {
         x[3] = uint(8);
         x[4] = uint(10);
         uint[] memory p = new uint[](5);
-        p[0] = uint(1);
-        p[1] = uint(2);
-        p[2] = uint(3);
-        p[3] = uint(4);
-        p[4] = uint(5);
+        p[0] = uint(10);
+        p[1] = uint(33);
+        p[2] = uint(30);
+        p[3] = uint(40);
+        p[4] = uint(50);
         OrderBook.Order memory newOrder = OrderBook.Order(msg.sender, x, p, 0, OrderBook.OrderType.ONE_SIDED, true, msg.sender, 10, 10, int(-1));
 
         uint interpolated_price = meta.getPrice(newOrder, 3);
 
-        Assert.equal(interpolated_price, 6, "This test should not fail");
+        Assert.equal(interpolated_price, 21, "This test should not fail");
     }
 }
