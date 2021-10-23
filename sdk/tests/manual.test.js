@@ -25,7 +25,7 @@ const exampleToken2 = '0x21C7ceB046971b38e3E98b08b0ACAD0Baf1450E6';
     });
     const web3 = new Web3(localKeyProvider);
 
-    const SDK = new SpectrSDK(web3, CONTRACT_VERSIONS.robston_1_0_0)
+    const SDK = new SpectrSDK(web3, CONTRACT_VERSIONS.ropsten_1_0_0)
     
     const myAccount = web3.eth.accounts.privateKeyToAccount(myPrivateKeyHex);
     
