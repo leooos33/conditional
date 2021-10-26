@@ -1,23 +1,28 @@
 import { ethers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
 import { useContractCall, useContractFunction } from "@usedapp/core";
-import simpleContractAbi from "../abi/SimpleContract.json";
-import { simpleContractAddress } from "../contracts";
+import orderBookContractAbi from "../abi/OrderBookContact.json";
+import { orderBookContractAddress } from "../contracts";
 
-const simpleContractInterface = new ethers.utils.Interface(simpleContractAbi);
+const orderBookContractInterface = new ethers.utils.Interface(
+  orderBookContractAbi
+);
 
 export function useCount() {
   const [count]: any =
     useContractCall({
-      abi: simpleContractInterface,
-      address: simpleContractAddress,
+      abi: orderBookContractInterface,
+      address: orderBookContractAddress,
       method: "count",
       args: [],
     }) ?? [];
   return count;
 }
 
-const contract = new Contract(simpleContractAddress, simpleContractInterface);
+const contract = new Contract(
+  orderBookContractAddress,
+  orderBookContractInterface
+);
 
 export function useContractMethod(methodName: string) {
   const { state, send } = useContractFunction(contract, methodName, {});

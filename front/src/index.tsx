@@ -5,23 +5,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ChainId, DAppProvider } from "@usedapp/core";
 
-// const config = {
-//   readOnlyChainId: 0x4e454152,
-//   readOnlyUrls: {
-//     // [ChainId.Mainnet]:
-//     //   "https://mainnet.infura.io/v3/62687d1a985d4508b2b7a24827551934",
-//     0x4e454152: "https://mainnet.aurora.dev",
-//   },
-// };
-
 const config = {
-  readOnlyChainId: 0x4e454152,
-  supportedChains: [0x4e454152],
-  multicallAddresses: {
-    0x4e454152: "0xCe129333458f037867C81DFbD70E4D57A3b1c5eb",
-  },
+  readOnlyChainId: ChainId.Ropsten,
   readOnlyUrls: {
-    0x4e454152: "https://mainnet.aurora.dev",
+    [ChainId.Ropsten]:
+      "https://ropsten.infura.io/v3/02dc1b201ea0402eb4d789fb23b5ce6a",
   },
 };
 

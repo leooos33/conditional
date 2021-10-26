@@ -48,6 +48,10 @@ export const SwapWindow = () => {
     setInput(valueAsString);
   }
 
+  function tokenInputChanged(token: string, amount: number) {
+    alert(token + amount);
+  }
+
   return (
     <Grid container className={classes.contentContainer}>
       <Grid
@@ -64,11 +68,11 @@ export const SwapWindow = () => {
           spacing={2}
           // divider={<Divider orientation="horizontal" flexItem />}
         >
-          <TokenInput />
+          <TokenInput tokenInputChanged={tokenInputChanged} />
           <Divider textAlign="center">
             <Chip label="↓" />
           </Divider>
-          <TokenInput />
+          <TokenInput tokenInputChanged={tokenInputChanged} />
           <Button
             variant="contained"
             endIcon={<SendIcon />}
