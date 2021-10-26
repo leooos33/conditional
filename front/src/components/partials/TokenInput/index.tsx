@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-useless-constructor */
 import * as React from "react";
 import { createStyles, withStyles } from "@material-ui/styles";
 import { Grid, Paper } from "@mui/material";
@@ -12,24 +13,34 @@ const styles = () =>
     },
   });
 
-interface ITokenProps {
+interface IProps {
   tokenInputChanged: any;
+  tokenList: any;
+  tokenSelected: any;
   classes: any;
 }
 
-class TokenInput extends React.Component<ITokenProps, any> {
+class TokenInput extends React.Component<IProps, any> {
+  constructor(props: IProps) {
+    super(props);
+  }
+
+  onTokenTypeChanged(token: string, cb: any) {
+    this.props.tokenInputChanged(token, 0, cb);
+  }
+
   render() {
     const { classes } = this.props;
-
-    const onTokenTypeChanged = (token: string) => {
-      this.props.tokenInputChanged(token, 0);
-    };
 
     return (
       <Paper className={classes.tokenInput}>
         <Grid container spacing={0}>
           <Grid item xs={4}>
-            <TokenSelect onTokenTypeChanged={onTokenTypeChanged} />
+            <TokenSelect
+              onTokenTypeChanged={this.onTokenTypeChanged}
+              tokenList={this.props.tokenList}
+              tokenSelected={this.props.tokenSelected}
+            />
           </Grid>
           <Grid item xs={8}>
             <TokenAmount />

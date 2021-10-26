@@ -1,4 +1,4 @@
-import { SwapWindow } from "../components/SwapPage/SwapWindow";
+import SwapWindow from "../components/SwapPage/SwapWindow";
 
 export const SwapPage = () => {
   return (

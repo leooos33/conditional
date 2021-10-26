@@ -11,6 +11,8 @@ const styles = (theme: any) => ({});
 
 interface IProps {
   onTokenTypeChanged: any;
+  tokenList: any;
+  tokenSelected: any;
   classes: any;
 }
 
@@ -18,17 +20,25 @@ class TokenSelect extends React.Component<IProps, any> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      tokenSelected: "Token A",
+      tokenSelected: this.props.tokenSelected,
     };
   }
 
-  render() {
-    const handleChange = (event: SelectChangeEvent) => {
-      const newToken: string = event.target.value as string;
-      this.setState({ tokenSelected: newToken });
-      this.props.onTokenTypeChanged(newToken);
-    };
+  handleChange(event: SelectChangeEvent) {
+    const newToken: string = event.target.value as string;
 
+    this.changeTokenSelected(parseInt(newToken));
+    this.props.onTokenTypeChanged(
+      newToken,
+      this.changeTokenSelected.bind(this)
+    );
+  }
+
+  changeTokenSelected(token: number) {
+    this.setState({ tokenSelected: token });
+  }
+
+  render() {
     return (
       <Box>
         <FormControl fullWidth>
@@ -38,10 +48,11 @@ class TokenSelect extends React.Component<IProps, any> {
             id="demo-simple-select"
             value={this.state.tokenSelected}
             label="Token"
-            onChange={handleChange}
+            onChange={this.handleChange}
           >
-            <MenuItem value={"tokenA"}>Token A</MenuItem>
-            <MenuItem value={"tokenB"}>Token B</MenuItem>
+            {this.props.tokenList.map((cur: any, i: number) => {
+              return <MenuItem value={i}>{cur.name}</MenuItem>;
+            })}
           </Select>
         </FormControl>
       </Box>
