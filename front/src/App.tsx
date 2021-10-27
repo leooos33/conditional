@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { SwapPage } from "./pages/SwapPage";
 import { store } from "./redux/store";
+import MintPage from "./pages/MintPage";
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
             </Route>
             <Route path="/swap">
               <SwapPage />
+            </Route>
+            <Route path="/mint">
+              <MintPage />
             </Route>
           </Switch>
           <Footer />
