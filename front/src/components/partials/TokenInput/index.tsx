@@ -33,7 +33,7 @@ class TokenInput extends React.Component<IProps, any> {
             <TokenSelect tokenType={this.props.tokenType} />
           </Grid>
           <Grid item xs={8}>
-            <TokenAmount />
+            <TokenAmount tokenType={this.props.tokenType} />
           </Grid>
         </Grid>
       </Paper>

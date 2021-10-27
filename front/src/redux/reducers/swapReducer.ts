@@ -26,7 +26,7 @@ export const swapReducer = (state: any = initialState, action: any) => {
         token1_value:
           action.tokenType === "token1" ? action.value : state.token1_value,
         token2_value:
-          action.tokenType === "token2" ? action.value : state.token1_value,
+          action.tokenType === "token2" ? action.value : state.token2_value,
       };
 
     case "SET_TOKEN":
