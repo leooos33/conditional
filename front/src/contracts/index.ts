@@ -13,4 +13,8 @@ export const tokenList = [
     name: "TokenB",
     adress: "0x21C7ceB046971b38e3E98b08b0ACAD0Baf1450E6",
   },
+  {
+    name: "TokenC",
+    adress: "0x21C7ceB046971b38e3E98b08b0ACAD0Baf1450E6",
+  },
 ];

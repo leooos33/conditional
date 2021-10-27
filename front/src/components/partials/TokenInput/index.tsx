@@ -14,19 +14,13 @@ const styles = () =>
   });
 
 interface IProps {
-  tokenInputChanged: any;
-  tokenList: any;
-  tokenSelected: any;
+  tokenType: string;
   classes: any;
 }
 
 class TokenInput extends React.Component<IProps, any> {
   constructor(props: IProps) {
     super(props);
-  }
-
-  onTokenTypeChanged(token: string, cb: any) {
-    this.props.tokenInputChanged(token, 0, cb);
   }
 
   render() {
@@ -36,11 +30,7 @@ class TokenInput extends React.Component<IProps, any> {
       <Paper className={classes.tokenInput}>
         <Grid container spacing={0}>
           <Grid item xs={4}>
-            <TokenSelect
-              onTokenTypeChanged={this.onTokenTypeChanged}
-              tokenList={this.props.tokenList}
-              tokenSelected={this.props.tokenSelected}
-            />
+            <TokenSelect tokenType={this.props.tokenType} />
           </Grid>
           <Grid item xs={8}>
             <TokenAmount />

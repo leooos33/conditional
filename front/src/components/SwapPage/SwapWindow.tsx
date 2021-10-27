@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import Grid from "@mui/material/Grid";
 import TokenInput from "../partials/TokenInput";
 import Button from "@mui/material/Button";
@@ -8,6 +9,8 @@ import { withStyles } from "@material-ui/styles";
 import { useCount, useContractMethod } from "../../hooks";
 import { tokenList } from "../../contracts";
 import * as React from "react";
+import { connect } from "react-redux";
+import { changePairAction } from "../../redux/actions";
 
 const styles = () =>
   createStyles({
@@ -28,27 +31,18 @@ class SwapWindow extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      tokenList,
-      exchanePairSelected: {
-        token1: 0,
-        token2: 1,
-      },
+      label: true,
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  token1InputChanged(tokenId: string, amount: number) {
-    this.setState({
-      exchanePairSelected: {
-        token1: 1,
-        token2: 0,
-      },
-    });
-
-    // const token1 = this.state.exchanePairSelected.token1;
-    // const token2 = this.state.exchanePairSelected.token2;
-
-    // if (tokenId === token2) {
-    // }
+  handleChange() {
+    this.props.swapTokens();
+    this.setState((state: any) => ({
+      label: !state.label,
+    }));
+    console.log(this.state);
   }
 
   handleTransaction() {}
@@ -71,19 +65,14 @@ class SwapWindow extends React.Component<any, any> {
             spacing={2}
             // divider={<Divider orientation="horizontal" flexItem />}
           >
-            <TokenInput
-              tokenInputChanged={this.token1InputChanged.bind(this)}
-              tokenList={this.state.tokenList}
-              tokenSelected={this.state.exchanePairSelected.token1}
-            />
+            <TokenInput tokenType={"token1"} />
             <Divider textAlign="center">
-              <Chip label="↓" />
+              <Chip
+                label={this.state.label ? "↓" : "↑"}
+                onClick={this.handleChange}
+              />
             </Divider>
-            <TokenInput
-              tokenInputChanged={this.token1InputChanged}
-              tokenList={this.state.tokenList}
-              tokenSelected={this.state.exchanePairSelected.token2}
-            />
+            <TokenInput tokenType={"token2"} />
             <Button
               variant="contained"
               endIcon={<SendIcon />}
@@ -99,4 +88,19 @@ class SwapWindow extends React.Component<any, any> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(SwapWindow);
+const mapStateToProps = (state: any) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    swapTokens: () => {
+      dispatch(changePairAction());
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles, { withTheme: true })(SwapWindow));
