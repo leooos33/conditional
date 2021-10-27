@@ -48,23 +48,24 @@ contract OrderBook {
         require(order.is_valid == true);
         require(int(order.deadline) > int(block.timestamp), 'Deadline is not valid');
         require(order.amount - q >= 0);
+        
+        uint price = getPrice(order, q);
+        uint interpolated_price = price * q;
+        
+        require(max_price_expected >= interpolated_price);
+        orders[order_id].amount -= q;
+        
+        uint256 allowance = ERC20(pairs[order.pair_address].token2).allowance(msg.sender, address(this));
+        require(allowance >= interpolated_price);
+        
         if(order.order_type == OrderType.ONE_SIDED){
-            uint price = getPrice(order, q);
-            uint interpolated_price = price * q;
-            
-            require(max_price_expected >= interpolated_price);
-            orders[order_id].amount -= q;
-            
-            uint256 allowance = ERC20(pairs[order.pair_address].token2).allowance(msg.sender, address(this));
-            require(allowance >= interpolated_price);
-
             ERC20(pairs[order.pair_address].token2).transferFrom(msg.sender, address(order.bid_owner), interpolated_price);
-            ERC20(order.pair_address).transfer(msg.sender, q);
-
-            pairs[order.pair_address].lastPrice = price; //TODO: Set clever Math here
         } else {
-            //TODO: add TWO_SIDED Logic here
+            orders[uint(order.linked_order_id)].amount += interpolated_price;
         }
+        ERC20(order.pair_address).transfer(msg.sender, q);
+
+        pairs[order.pair_address].lastPrice = price; //TODO: Set clever Math here
     }
     
     function getPrice(Order memory order, uint q) public pure returns(uint interpolated_price){
