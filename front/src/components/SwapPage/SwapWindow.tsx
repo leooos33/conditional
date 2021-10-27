@@ -48,23 +48,7 @@ class SwapWindow extends React.Component<any, any> {
     // const token2 = this.state.exchanePairSelected.token2;
 
     // if (tokenId === token2) {
-    //   this.setState({
-    //     exchanePairSelected: {
-    //       token1: tokenId,
-    //       token2: token1,
-    //     },
-    //   });
     // }
-  }
-
-  token2InputChanged(tokenId: string, amount: number, cb: any) {
-    cb(0);
-    this.setState({
-      exchanePairSelected: {
-        token1: 1,
-        token2: 1,
-      },
-    });
   }
 
   handleTransaction() {}
@@ -96,7 +80,7 @@ class SwapWindow extends React.Component<any, any> {
               <Chip label="↓" />
             </Divider>
             <TokenInput
-              tokenInputChanged={this.token2InputChanged}
+              tokenInputChanged={this.token1InputChanged}
               tokenList={this.state.tokenList}
               tokenSelected={this.state.exchanePairSelected.token2}
             />
