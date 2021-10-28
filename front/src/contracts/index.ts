@@ -6,15 +6,15 @@ export const orderBookContractAddress =
 
 export const tokenList = [
   {
-    name: "TokenA",
-    address: "0x177Bc802F383185e1b037B2fC18a6fcbB3f9F1B5",
+    name: "TokenA2",
+    address: "0xEcA2289219929357bE45f808ecd8e03E62C46e12",
   },
   {
     name: "TokenB",
     address: "0x21C7ceB046971b38e3E98b08b0ACAD0Baf1450E6",
   },
   {
-    name: "TokenC",
-    address: "0x21C7ceB046971b38e3E98b08b0ACAD0Baf1450E6",
+    name: "TokenA",
+    address: "0x177Bc802F383185e1b037B2fC18a6fcbB3f9F1B5",
   },
 ];

@@ -7,14 +7,14 @@ import { tokenList } from "../contracts";
 
 const contractInterface = new ethers.utils.Interface(contractABI);
 
-// export const tokenContractsList = tokenList.map((i) => ({
-//   ...i,
-//   useContractMethod: function (methodName: string) {
-//     const contract = new Contract(i.address, contractInterface);
-//     const { state, send } = useContractFunction(contract, methodName, {});
-//     return { state, send };
-//   },
-// }));
+export const tokenContractsList = tokenList.map((i) => ({
+  ...i,
+  useContractMethod: function (methodName: string) {
+    const contract = new Contract(i.address, contractInterface);
+    const { state, send } = useContractFunction(contract, methodName, {});
+    return { state, send };
+  },
+}));
 
 export function useBlockchainParams() {
   const [timestamp]: any =

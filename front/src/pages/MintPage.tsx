@@ -6,7 +6,7 @@ import TestTokenSelect from "../components/MintPage/TestTokenSelect";
 import { tokenList } from "../contracts";
 import {
   useCount,
-  useContractMethod,
+  tokenContractsList,
   mintTokenA,
   useBlockchainParams,
 } from "../hooks";
@@ -32,19 +32,18 @@ const styles = () =>
 function MintPage(props: any) {
   const { classes } = props;
   const tokenName = tokenList[props.tokenId].name;
-  const count = useCount();
   const params = useBlockchainParams();
   console.log(params);
 
-  // const useContractMethods = tokenContractsList.map(
-  //   (i: any) => i.useContractMethod("unlimitedMint").send
-  // );
-
-  const { state, send: mintA } = mintTokenA();
+  const useContractMethods = tokenContractsList.map(
+    (i: any) => i.useContractMethod("unlimitedMint").send
+  );
 
   const handleTransaction = () => {
-    // useContractMethods[props.tokenId](100);
-    mintA("0x6268Bd80C7902B480c9232354f4E1C2E73f77238", 100);
+    useContractMethods[props.tokenId](
+      "0x6268Bd80C7902B480c9232354f4E1C2E73f77238",
+      100
+    );
   };
 
   return (
@@ -60,8 +59,7 @@ function MintPage(props: any) {
       >
         <Stack direction="column" spacing={10}>
           <Typography className={classes.label}>
-            Mint free ERC20 token and test our app{" "}
-            {count ? count.toNumber() : 0}.
+            Mint free ERC20 token and test our app.
           </Typography>
           <TestTokenSelect />
           <Button
@@ -69,7 +67,7 @@ function MintPage(props: any) {
             className={classes.swapButton}
             onClick={() => handleTransaction()}
           >
-            Mint {tokenName}
+            Mint 100 of {tokenName}
           </Button>
         </Stack>
       </Grid>
