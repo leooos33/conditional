@@ -1,2 +1,3 @@
 # spectr
-Conditional liquidity protocol .
+
+Conditional liquidity protocol.

@@ -1,9 +1,15 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { createStyles, withStyles } from "@material-ui/styles";
 import { Button, Grid, Stack, Typography } from "@mui/material";
-import React from "react";
 import { connect } from "react-redux";
 import TestTokenSelect from "../components/MintPage/TestTokenSelect";
 import { tokenList } from "../contracts";
+import {
+  useCount,
+  useContractMethod,
+  mintTokenA,
+  useBlockchainParams,
+} from "../hooks";
 
 const styles = () =>
   createStyles({
@@ -23,52 +29,57 @@ const styles = () =>
     },
   });
 
-class MintPage extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {};
+function MintPage(props: any) {
+  const { classes } = props;
+  const tokenName = tokenList[props.tokenId].name;
+  const count = useCount();
+  const params = useBlockchainParams();
+  console.log(params);
 
-    this.handleTransaction = this.handleTransaction.bind(this);
-  }
+  // const useContractMethods = tokenContractsList.map(
+  //   (i: any) => i.useContractMethod("unlimitedMint").send
+  // );
 
-  handleTransaction() {}
+  const { state, send: mintA } = mintTokenA();
 
-  render() {
-    const { classes } = this.props;
-    const tokenName = tokenList[this.props.token].name;
-    return (
-      <Grid container className={classes.contentContainer}>
-        <Grid
-          item
-          xs={6}
-          md={6}
-          className={classes.swapBox}
-          style={{
-            marginTop: "8%",
-          }}
-        >
-          <Stack direction="column" spacing={10}>
-            <Typography className={classes.label}>
-              Mint {tokenName} for free and test our app.
-            </Typography>
-            <TestTokenSelect />
-            <Button
-              variant="contained"
-              className={classes.swapButton}
-              onClick={this.handleTransaction}
-            >
-              Mint
-            </Button>
-          </Stack>
-        </Grid>
+  const handleTransaction = () => {
+    // useContractMethods[props.tokenId](100);
+    mintA("0x6268Bd80C7902B480c9232354f4E1C2E73f77238", 100);
+  };
+
+  return (
+    <Grid container className={classes.contentContainer}>
+      <Grid
+        item
+        xs={6}
+        md={6}
+        className={classes.swapBox}
+        style={{
+          marginTop: "8%",
+        }}
+      >
+        <Stack direction="column" spacing={10}>
+          <Typography className={classes.label}>
+            Mint free ERC20 token and test our app{" "}
+            {count ? count.toNumber() : 0}.
+          </Typography>
+          <TestTokenSelect />
+          <Button
+            variant="contained"
+            className={classes.swapButton}
+            onClick={() => handleTransaction()}
+          >
+            Mint {tokenName}
+          </Button>
+        </Stack>
       </Grid>
-    );
-  }
+    </Grid>
+  );
 }
 
 const mapStateToProps = (state: any) => {
   return {
-    token: state.mint.token,
+    tokenId: state.mint.token,
   };
 };
 

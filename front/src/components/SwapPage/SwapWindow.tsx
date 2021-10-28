@@ -6,7 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { Chip, createStyles, Divider } from "@mui/material";
 import { withStyles } from "@material-ui/styles";
-import { useCount, useContractMethod } from "../../hooks";
+// import { useCount, useContractMethod } from "../../hooks";
 import { tokenList } from "../../contracts";
 import * as React from "react";
 import { connect } from "react-redux";
