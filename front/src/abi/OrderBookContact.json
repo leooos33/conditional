@@ -36,45 +36,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token1",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "token2",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "x",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "p",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256",
-        "name": "deadline",
-        "type": "uint256"
-      }
-    ],
-    "name": "placeOrder",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "getLastOrderId",
     "outputs": [
@@ -93,12 +54,7 @@
         "components": [
           {
             "internalType": "address",
-            "name": "token1",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "token2",
+            "name": "pair_address",
             "type": "address"
           },
           {
@@ -140,6 +96,11 @@
             "internalType": "uint256",
             "name": "initial_amount",
             "type": "uint256"
+          },
+          {
+            "internalType": "int256",
+            "name": "linked_order_id",
+            "type": "int256"
           }
         ],
         "internalType": "struct OrderBook.Order",
@@ -186,6 +147,24 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "order1_id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "order2_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "linkOrders",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
@@ -194,12 +173,7 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "token1",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "token2",
+        "name": "pair_address",
         "type": "address"
       },
       {
@@ -231,9 +205,77 @@
         "internalType": "uint256",
         "name": "initial_amount",
         "type": "uint256"
+      },
+      {
+        "internalType": "int256",
+        "name": "linked_order_id",
+        "type": "int256"
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "pairs",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "token2",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastPrice",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token1",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "token2",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "x",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "p",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      }
+    ],
+    "name": "placeOrder",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

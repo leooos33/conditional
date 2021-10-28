@@ -11,6 +11,8 @@ import { tokenList } from "../../contracts";
 import * as React from "react";
 import { connect } from "react-redux";
 import { changePairAction } from "../../redux/actions";
+import { useState } from "react";
+import { useBuy } from "../../hooks/orderBookContractHook";
 
 const styles = () =>
   createStyles({
@@ -27,65 +29,51 @@ const styles = () =>
     },
   });
 
-class SwapWindow extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      label: true,
-    };
+function SwapWindow(props: any) {
+  const [label, setLabel] = useState(true);
 
-    this.handleChange = this.handleChange.bind(this);
-  }
+  const { send: buy } = useBuy();
 
-  handleChange() {
-    this.props.swapTokens();
-    this.setState((state: any) => ({
-      label: !state.label,
-    }));
-    console.log(this.state);
-  }
+  const handleChange = () => {
+    props.swapTokens();
+    setLabel(!label);
+    console.log(label);
+  };
 
-  handleTransaction() {}
+  const handleTransaction = () => {
+    buy(0, 10, 1000);
+  };
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <Grid container className={classes.contentContainer}>
-        <Grid
-          item
-          xs={6}
-          md={6}
-          className={classes.swapBox}
-          style={{
-            marginTop: "8%",
-          }}
-        >
-          <Stack
-            direction="column"
-            spacing={2}
-            // divider={<Divider orientation="horizontal" flexItem />}
+  const { classes } = props;
+  return (
+    <Grid container className={classes.contentContainer}>
+      <Grid
+        item
+        xs={6}
+        md={6}
+        className={classes.swapBox}
+        style={{
+          marginTop: "8%",
+        }}
+      >
+        <Stack direction="column" spacing={2}>
+          <TokenInput tokenType={"token1"} />
+          <Divider textAlign="center">
+            <Chip label={label ? "↓" : "↑"} onClick={() => handleChange()} />
+          </Divider>
+          <TokenInput tokenType={"token2"} />
+          <Button
+            variant="contained"
+            endIcon={<SendIcon />}
+            className={classes.swapButton}
+            onClick={() => handleTransaction()}
           >
-            <TokenInput tokenType={"token1"} />
-            <Divider textAlign="center">
-              <Chip
-                label={this.state.label ? "↓" : "↑"}
-                onClick={this.handleChange}
-              />
-            </Divider>
-            <TokenInput tokenType={"token2"} />
-            <Button
-              variant="contained"
-              endIcon={<SendIcon />}
-              className={classes.swapButton}
-              onClick={this.handleTransaction}
-            >
-              Buy
-            </Button>
-          </Stack>
-        </Grid>
+            Buy
+          </Button>
+        </Stack>
       </Grid>
-    );
-  }
+    </Grid>
+  );
 }
 
 const mapStateToProps = (state: any) => {

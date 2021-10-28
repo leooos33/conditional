@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { createStyles, withStyles } from "@material-ui/styles";
 import { Button, Grid, Stack, Typography } from "@mui/material";
+import { useEthers } from "@usedapp/core";
 import { connect } from "react-redux";
 import TestTokenSelect from "../components/MintPage/TestTokenSelect";
 import { tokenList } from "../contracts";
@@ -33,17 +34,15 @@ function MintPage(props: any) {
   const { classes } = props;
   const tokenName = tokenList[props.tokenId].name;
   const params = useBlockchainParams();
-  console.log(params);
+  const { account } = useEthers();
+  console.log(params, account);
 
   const useContractMethods = tokenContractsList.map(
     (i: any) => i.useContractMethod("unlimitedMint").send
   );
 
   const handleTransaction = () => {
-    useContractMethods[props.tokenId](
-      "0x6268Bd80C7902B480c9232354f4E1C2E73f77238",
-      100
-    );
+    useContractMethods[props.tokenId](account, 100);
   };
 
   return (
