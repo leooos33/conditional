@@ -12,11 +12,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { changePairAction } from "../../redux/actions";
 import { useState } from "react";
-import {
-  useBuy,
-  useGetOrder,
-  useGetOrder,
-} from "../../hooks/orderBookContractHook";
+import { useBuy, useGetOrder } from "../../hooks/orderBookContractHook";
 import {
   tokenContractsList,
   tokenDigits,
