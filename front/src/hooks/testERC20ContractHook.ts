@@ -20,19 +20,23 @@ export function useBlockchainParams() {
   const [timestamp]: any =
     useContractCall({
       abi: contractInterface,
-      address: "0xEcA2289219929357bE45f808ecd8e03E62C46e12",
+      address: tokenList[0].address,
       method: "getBlockchainParams",
       args: [],
     }) ?? [];
   return timestamp ? timestamp.toNumber() : null;
 }
 
-const contractA = new Contract(
-  "0xEcA2289219929357bE45f808ecd8e03E62C46e12",
-  contractInterface
-);
+export const tokenDigits = 100000000000000000000;
 
-export function mintTokenA() {
-  const { state, send } = useContractFunction(contractA, "unlimitedMint", {});
-  return { state, send };
-}
+// export const tokenDigits = 10;
+
+// const contractA = new Contract(
+//   tokenList[0].address,
+//   contractInterface
+// );
+
+// export function mintTokenA() {
+//   const { state, send } = useContractFunction(contractA, "unlimitedMint", {});
+//   return { state, send };
+// }

@@ -5,12 +5,7 @@ import { useEthers } from "@usedapp/core";
 import { connect } from "react-redux";
 import TestTokenSelect from "../components/MintPage/TestTokenSelect";
 import { tokenList } from "../contracts";
-import {
-  useCount,
-  tokenContractsList,
-  mintTokenA,
-  useBlockchainParams,
-} from "../hooks";
+import { tokenContractsList, useBlockchainParams } from "../hooks";
 
 const styles = () =>
   createStyles({

@@ -10,6 +10,7 @@ import {
 import { SwapPage } from "./pages/SwapPage";
 import { store } from "./redux/store";
 import MintPage from "./pages/MintPage";
+import OrderPage from "./pages/OrderPage";
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
             </Route>
             <Route path="/mint">
               <MintPage />
+            </Route>
+            <Route path="/order">
+              <OrderPage />
             </Route>
           </Switch>
           <Footer />

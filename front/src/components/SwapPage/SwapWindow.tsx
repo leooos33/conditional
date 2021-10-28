@@ -7,12 +7,21 @@ import Stack from "@mui/material/Stack";
 import { Chip, createStyles, Divider } from "@mui/material";
 import { withStyles } from "@material-ui/styles";
 // import { useCount, useContractMethod } from "../../hooks";
-import { tokenList } from "../../contracts";
+import { orderBookContractAddress } from "../../contracts";
 import * as React from "react";
 import { connect } from "react-redux";
 import { changePairAction } from "../../redux/actions";
 import { useState } from "react";
-import { useBuy } from "../../hooks/orderBookContractHook";
+import {
+  useBuy,
+  useGetOrder,
+  useGetOrder,
+} from "../../hooks/orderBookContractHook";
+import {
+  tokenContractsList,
+  tokenDigits,
+  useBlockchainParams,
+} from "../../hooks";
 
 const styles = () =>
   createStyles({
@@ -34,6 +43,13 @@ function SwapWindow(props: any) {
 
   const { send: buy } = useBuy();
 
+  const useContractMethodApprove = tokenContractsList.map(
+    (i: any) => i.useContractMethod("approve").send
+  );
+
+  console.log(useGetOrder(0));
+  console.log(useGetOrder(1));
+
   const handleChange = () => {
     props.swapTokens();
     setLabel(!label);
@@ -41,7 +57,8 @@ function SwapWindow(props: any) {
   };
 
   const handleTransaction = () => {
-    buy(0, 10, 1000);
+    useContractMethodApprove[1](orderBookContractAddress, 1000 * tokenDigits);
+    buy(0, 25 * tokenDigits, 1000 * tokenDigits);
   };
 
   const { classes } = props;

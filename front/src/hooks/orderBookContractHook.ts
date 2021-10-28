@@ -9,18 +9,23 @@ const contractAddress = orderBookContractAddress;
 
 const contract = new Contract(contractAddress, contractInterface);
 
-export function useCount() {
-  const [count]: any =
-    useContractCall({
-      abi: contractInterface,
-      address: contractAddress,
-      method: "count",
-      args: [],
-    }) ?? [];
-  return count;
-}
-
 export function useBuy() {
   const { state, send } = useContractFunction(contract, "buy", {});
   return { state, send };
+}
+
+export function usePlaceOrder() {
+  const { state, send } = useContractFunction(contract, "placeOrder", {});
+  return { state, send };
+}
+
+export function useGetOrder(order_id: number) {
+  const res: any =
+    useContractCall({
+      abi: contractInterface,
+      address: contractAddress,
+      method: "orders",
+      args: [order_id],
+    }) ?? [];
+  return res;
 }
