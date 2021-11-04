@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { approveTokenAction, changePairAction } from "../../redux/actions";
 import { useState } from "react";
 import { useBuy, useGetOrder } from "../../hooks/orderBookContractHook";
+import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
 import {
   maxApproval,
   tokenContractsList,
@@ -19,6 +20,7 @@ import {
   useBlockchainParams,
 } from "../../hooks";
 import { useEthers } from "@usedapp/core";
+import { toast } from "react-toastify";
 
 const styles = () =>
   createStyles({
@@ -60,13 +62,27 @@ function SwapWindow(props: any) {
   };
 
   const handleTransaction = () => {
-    buy(0, 25 * tokenDigits, 1000 * tokenDigits);
+    const functionThatReturnPromise = buy(
+      0,
+      25 * tokenDigits,
+      1000 * tokenDigits
+    );
+    toast.promise(functionThatReturnPromise, {
+      pending: "Your buy transaction is proceeding",
+      success: "The buy  transaction is good 👌",
+      error: "The buy transaction failed 🤯",
+    });
   };
 
   const handleTransactionApprove = async () => {
-    console.log("S", props.tokenToApproveId);
-    // await here could pause the transaction
-    useContractMethodsApprove[props.tokenToApproveId](orderBookContractAddress);
+    const functionThatReturnPromise = useContractMethodsApprove[
+      props.tokenToApproveId
+    ](orderBookContractAddress);
+    toast.promise(functionThatReturnPromise, {
+      pending: "Your approve transaction is proceeding",
+      success: "The approve transaction is good 👌",
+      error: "The approve transaction failed 🤯",
+    });
     props.approveToken(props.tokenToApproveId);
   };
 
@@ -97,26 +113,29 @@ function SwapWindow(props: any) {
     );
   }
   return (
-    <Grid container className={classes.contentContainer}>
-      <Grid
-        item
-        xs={6}
-        md={6}
-        className={classes.swapBox}
-        style={{
-          marginTop: "8%",
-        }}
-      >
-        <Stack direction="column" spacing={2}>
-          <TokenInput tokenType={"token1"} />
-          <Divider textAlign="center">
-            <Chip label={label ? "↓" : "↑"} onClick={() => handleSwap()} />
-          </Divider>
-          <TokenInput tokenType={"token2"} />
-          {button}
-        </Stack>
+    <>
+      <Grid container className={classes.contentContainer}>
+        <Grid
+          item
+          xs={6}
+          md={6}
+          className={classes.swapBox}
+          style={{
+            marginTop: "8%",
+          }}
+        >
+          <Stack direction="column" spacing={2}>
+            <TokenInput tokenType={"token1"} />
+            <Divider textAlign="center">
+              <Chip label={label ? "↓" : "↑"} onClick={() => handleSwap()} />
+            </Divider>
+            <TokenInput tokenType={"token2"} />
+            {button}
+          </Stack>
+        </Grid>
       </Grid>
-    </Grid>
+      <TransactionAlertContainer />
+    </>
   );
 }
 

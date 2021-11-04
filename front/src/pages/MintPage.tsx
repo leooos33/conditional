@@ -5,8 +5,11 @@ import { useEthers } from "@usedapp/core";
 import { connect } from "react-redux";
 import TestTokenSelect from "../components/MintPage/TestTokenSelect";
 import { tokenList } from "../contracts";
-import { tokenContractsList, useBlockchainParams } from "../hooks";
+import { tokenContractsList } from "../hooks";
+
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { TransactionAlertContainer } from "../components/messages/TransactionAlertContainer";
 
 const styles = () =>
   createStyles({
@@ -59,45 +62,56 @@ function MintPage(props: any) {
   );
 
   const handleTransaction = () => {
-    useContractMethods[props.tokenId](account, valueToMint);
+    const functionThatReturnPromise = useContractMethods[props.tokenId](
+      account,
+      valueToMint
+    );
+    toast.promise(functionThatReturnPromise, {
+      pending: "Your mint transaction is proceeding",
+      success: "The mint transaction is good 👌",
+      error: "The mint transaction failed 🤯",
+    });
   };
 
   return (
-    <Grid container className={classes.contentContainer}>
-      <Grid
-        item
-        xs={6}
-        md={6}
-        className={classes.swapBox}
-        style={{
-          marginTop: "8%",
-        }}
-      >
-        <Stack direction="column" spacing={10}>
-          <Typography variant="h5" className={classes.label}>
-            Mint free ERC20 token and test our app.
-          </Typography>
-          <TestTokenSelect />
-          <TextField
-            className={classes.numberInput}
-            // label="TextField"
-            placeholder="0.0"
-            type="number"
-            fullWidth
-            value={valueToMint}
-            variant="outlined"
-            onChange={(e: any) => handleChange(e)}
-          />
-          <Button
-            variant="contained"
-            className={classes.swapButton}
-            onClick={() => handleTransaction()}
-          >
-            Mint 100 of {tokenName}
-          </Button>
-        </Stack>
+    <>
+      <Grid container className={classes.contentContainer}>
+        <Grid
+          item
+          xs={6}
+          md={6}
+          className={classes.swapBox}
+          style={{
+            marginTop: "8%",
+          }}
+        >
+          <Stack direction="column" spacing={10}>
+            <Typography variant="h5" className={classes.label}>
+              Mint free ERC20 token and test our app.
+            </Typography>
+            <TestTokenSelect />
+            <TextField
+              className={classes.numberInput}
+              // label="TextField"
+              placeholder="0.0"
+              type="number"
+              fullWidth
+              value={valueToMint}
+              variant="outlined"
+              onChange={(e: any) => handleChange(e)}
+            />
+            <Button
+              variant="contained"
+              className={classes.swapButton}
+              onClick={() => handleTransaction()}
+            >
+              Mint 100 of {tokenName}
+            </Button>
+          </Stack>
+        </Grid>
       </Grid>
-    </Grid>
+      <TransactionAlertContainer />
+    </>
   );
 }
 
