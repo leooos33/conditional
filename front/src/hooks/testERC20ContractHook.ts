@@ -28,6 +28,7 @@ export function useBlockchainParams() {
 }
 
 export const tokenDigits = 100000000000000000000;
+export const maxApproval = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
 
 // export const tokenDigits = 10;
 

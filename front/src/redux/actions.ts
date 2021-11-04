@@ -18,3 +18,8 @@ export const setTokenValueAction = (tokenType: any, value: any) => ({
   tokenType,
   value,
 });
+
+export const approveTokenAction = (tokenType: any) => ({
+  type: "SET_APPROVED",
+  tokenType,
+});

@@ -7,17 +7,18 @@ import Stack from "@mui/material/Stack";
 import { Chip, createStyles, Divider } from "@mui/material";
 import { withStyles } from "@material-ui/styles";
 // import { useCount, useContractMethod } from "../../hooks";
-import { orderBookContractAddress } from "../../contracts";
-import * as React from "react";
+import { orderBookContractAddress, tokenList } from "../../contracts";
 import { connect } from "react-redux";
-import { changePairAction } from "../../redux/actions";
+import { approveTokenAction, changePairAction } from "../../redux/actions";
 import { useState } from "react";
 import { useBuy, useGetOrder } from "../../hooks/orderBookContractHook";
 import {
+  maxApproval,
   tokenContractsList,
   tokenDigits,
   useBlockchainParams,
 } from "../../hooks";
+import { useEthers } from "@usedapp/core";
 
 const styles = () =>
   createStyles({
@@ -36,28 +37,66 @@ const styles = () =>
 
 function SwapWindow(props: any) {
   const [label, setLabel] = useState(true);
-
   const { send: buy } = useBuy();
+
+  const { account } = useEthers();
 
   const useContractMethodApprove = tokenContractsList.map(
     (i: any) => i.useContractMethod("approve").send
   );
 
-  console.log(useGetOrder(0));
-  console.log(useGetOrder(1));
+  // const init = async () => {
+  //   const order = await useGetOrder(0);
+  //   console.log("Amount:", order.amount?.toNumber());
+  //   console.log("Initial:", order.initial_amount?.toNumber());
+  // };
 
-  const handleChange = () => {
+  // init();
+
+  const handleSwap = () => {
     props.swapTokens();
     setLabel(!label);
-    console.log(label);
+    console.log(props.tokenToApproveId);
   };
 
-  const handleTransaction = () => {
-    useContractMethodApprove[1](orderBookContractAddress, 1000 * tokenDigits);
+  const handleTransaction = async () => {
     buy(0, 25 * tokenDigits, 1000 * tokenDigits);
   };
 
+  const handleTransactionApprove = async () => {
+    useContractMethodApprove[props.tokenToApproveId](
+      orderBookContractAddress,
+      maxApproval
+    );
+    props.approveToken(props.tokenToApproveId);
+  };
+
   const { classes } = props;
+
+  let button;
+  if (props.tokenToApproveId === -1) {
+    button = (
+      <Button
+        variant="contained"
+        endIcon={<SendIcon />}
+        className={classes.swapButton}
+        onClick={() => handleTransaction()}
+      >
+        Buy
+      </Button>
+    );
+  } else {
+    button = (
+      <Button
+        variant="contained"
+        endIcon={<SendIcon />}
+        className={classes.swapButton}
+        onClick={() => handleTransactionApprove()}
+      >
+        Approve token {tokenList[props.tokenToApproveId].name}
+      </Button>
+    );
+  }
   return (
     <Grid container className={classes.contentContainer}>
       <Grid
@@ -72,17 +111,10 @@ function SwapWindow(props: any) {
         <Stack direction="column" spacing={2}>
           <TokenInput tokenType={"token1"} />
           <Divider textAlign="center">
-            <Chip label={label ? "↓" : "↑"} onClick={() => handleChange()} />
+            <Chip label={label ? "↓" : "↑"} onClick={() => handleSwap()} />
           </Divider>
           <TokenInput tokenType={"token2"} />
-          <Button
-            variant="contained"
-            endIcon={<SendIcon />}
-            className={classes.swapButton}
-            onClick={() => handleTransaction()}
-          >
-            Buy
-          </Button>
+          {button}
         </Stack>
       </Grid>
     </Grid>
@@ -90,13 +122,21 @@ function SwapWindow(props: any) {
 }
 
 const mapStateToProps = (state: any) => {
-  return {};
+  return {
+    token1: state.swap.token1,
+    token2: state.swap.token2,
+    approvedTokenList: state.swap.approvedTokenList,
+    tokenToApproveId: state.swap.tokenToApproveId,
+  };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
     swapTokens: () => {
       dispatch(changePairAction());
+    },
+    approveToken: (tokenId: number) => {
+      dispatch(approveTokenAction(tokenId));
     },
   };
 };

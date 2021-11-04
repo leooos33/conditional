@@ -1,41 +1,82 @@
+import { tokenList } from "../../contracts";
+
 const initialState = {
   token1: 0,
   token2: 1,
   token1_value: 0,
   token2_value: 0,
+  approvedTokenList: Array(tokenList.length).fill(false),
+  tokenToApproveId: 0,
 };
 
 export const swapReducer = (state: any = initialState, action: any) => {
-  console.log(action);
+  // console.log(action);
 
+  let newState;
   switch (action.type) {
     case "CHANGE_PAIR":
       const tmp = state.token1;
       const tmp_value = state.token1_value;
-      return {
+      newState = {
         ...state,
         token1: state.token2,
         token2: tmp,
         token1_value: state.token2_value,
         token2_value: tmp_value,
       };
+      return {
+        ...newState,
+        tokenToApproveId: getMissingToken(newState),
+      };
 
     case "SET_VALUE":
-      return {
+      newState = {
         ...state,
         token1_value:
           action.tokenType === "token1" ? action.value : state.token1_value,
         token2_value:
           action.tokenType === "token2" ? action.value : state.token2_value,
       };
+      return {
+        ...newState,
+        tokenToApproveId: getMissingToken(newState),
+      };
 
     case "SET_TOKEN":
-      return {
+      if (
+        action.token ===
+        (action.tokenType === "token1" ? state.token2 : state.token1)
+      ) {
+        return state;
+      }
+      newState = {
         ...state,
         token1: action.tokenType === "token1" ? action.token : state.token1,
         token2: action.tokenType === "token2" ? action.token : state.token2,
+      };
+      return {
+        ...newState,
+        tokenToApproveId: getMissingToken(newState),
+      };
+
+    case "SET_APPROVED":
+      const _approvedTokenList = state.approvedTokenList;
+      _approvedTokenList[action.token] = true;
+      newState = {
+        ...state,
+        approvedTokenList: _approvedTokenList,
+      };
+      return {
+        ...newState,
+        tokenToApproveId: getMissingToken(newState),
       };
     default:
       return state;
   }
 };
+
+function getMissingToken(props: any) {
+  if (!props.approvedTokenList[props.token1]) return props.token1;
+  if (!props.approvedTokenList[props.token2]) return props.token2;
+  return -1;
+}
