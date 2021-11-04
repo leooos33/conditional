@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { createStyles, withStyles } from "@material-ui/styles";
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Button, Grid, Stack, Typography, TextField } from "@mui/material";
 import { useEthers } from "@usedapp/core";
 import { connect } from "react-redux";
 import TestTokenSelect from "../components/MintPage/TestTokenSelect";
 import { tokenList } from "../contracts";
 import { tokenContractsList, useBlockchainParams } from "../hooks";
+import { useState } from "react";
 
 const styles = () =>
   createStyles({
@@ -13,6 +14,21 @@ const styles = () =>
       width: "100%",
       margin: "0px",
       justifyContent: "center",
+      textAlign: "center",
+    },
+    numberInput: {
+      "& input[type=number]": {
+        "-moz-appearance": "textfield",
+      },
+      "& input[type=number]::-webkit-outer-spin-button": {
+        "-webkit-appearance": "none",
+        margin: 0,
+      },
+      "& input[type=number]::-webkit-inner-spin-button": {
+        "-webkit-appearance": "none",
+        margin: 0,
+      },
+      height: "100%",
     },
     swapBox: {
       backgroundColor: "white",
@@ -22,22 +38,28 @@ const styles = () =>
     },
     label: {
       allign: "center",
+      textAlign: "center",
     },
   });
 
 function MintPage(props: any) {
   const { classes } = props;
   const tokenName = tokenList[props.tokenId].name;
-  const params = useBlockchainParams();
   const { account } = useEthers();
-  console.log(params, account);
+
+  const [valueToMint, setValueToMint] = useState(100);
+
+  const handleChange = (event: any) => {
+    const newValue: number = event.target.value as number;
+    setValueToMint(newValue);
+  };
 
   const useContractMethods = tokenContractsList.map(
     (i: any) => i.useContractMethod("unlimitedMint").send
   );
 
   const handleTransaction = () => {
-    useContractMethods[props.tokenId](account, 100);
+    useContractMethods[props.tokenId](account, valueToMint);
   };
 
   return (
@@ -52,10 +74,20 @@ function MintPage(props: any) {
         }}
       >
         <Stack direction="column" spacing={10}>
-          <Typography className={classes.label}>
+          <Typography variant="h5" className={classes.label}>
             Mint free ERC20 token and test our app.
           </Typography>
           <TestTokenSelect />
+          <TextField
+            className={classes.numberInput}
+            // label="TextField"
+            placeholder="0.0"
+            type="number"
+            fullWidth
+            value={valueToMint}
+            variant="outlined"
+            onChange={(e: any) => handleChange(e)}
+          />
           <Button
             variant="contained"
             className={classes.swapButton}
