@@ -60,8 +60,8 @@ export const swapReducer = (state: any = initialState, action: any) => {
       };
 
     case "SET_APPROVED":
-      const _approvedTokenList = state.approvedTokenList;
-      _approvedTokenList[action.token] = true;
+      const _approvedTokenList = [...state.approvedTokenList];
+      _approvedTokenList[action.tokenType] = true;
       newState = {
         ...state,
         approvedTokenList: _approvedTokenList,

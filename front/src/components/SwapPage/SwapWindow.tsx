@@ -41,8 +41,8 @@ function SwapWindow(props: any) {
 
   const { account } = useEthers();
 
-  const useContractMethodApprove = tokenContractsList.map(
-    (i: any) => i.useContractMethod("approve").send
+  const useContractMethodsApprove = tokenContractsList.map(
+    (i: any) => i.useApprove().send
   );
 
   // const init = async () => {
@@ -59,15 +59,14 @@ function SwapWindow(props: any) {
     console.log(props.tokenToApproveId);
   };
 
-  const handleTransaction = async () => {
+  const handleTransaction = () => {
     buy(0, 25 * tokenDigits, 1000 * tokenDigits);
   };
 
   const handleTransactionApprove = async () => {
-    useContractMethodApprove[props.tokenToApproveId](
-      orderBookContractAddress,
-      maxApproval
-    );
+    console.log("S", props.tokenToApproveId);
+    // await here could pause the transaction
+    useContractMethodsApprove[props.tokenToApproveId](orderBookContractAddress);
     props.approveToken(props.tokenToApproveId);
   };
 
@@ -93,7 +92,7 @@ function SwapWindow(props: any) {
         className={classes.swapButton}
         onClick={() => handleTransactionApprove()}
       >
-        Approve token {tokenList[props.tokenToApproveId].name}
+        Approve {tokenList[props.tokenToApproveId].name}
       </Button>
     );
   }

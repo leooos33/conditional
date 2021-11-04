@@ -14,7 +14,16 @@ export const tokenContractsList = tokenList.map((i) => ({
     const { state, send } = useContractFunction(contract, methodName, {});
     return { state, send };
   },
+  useApprove: function () {
+    const contract = new Contract(i.address, contractInterface);
+    const { state, send } = useContractFunction(contract, "approve", {});
+    return {
+      state,
+      send: (a: any) => send(a, maxApproval),
+    };
+  },
 }));
+// 2 ** 256 - 1
 
 export function useBlockchainParams() {
   const [timestamp]: any =
@@ -28,7 +37,8 @@ export function useBlockchainParams() {
 }
 
 export const tokenDigits = 100000000000000000000;
-export const maxApproval = 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff;
+export const maxApproval =
+  "115792089237316195423570985008687907853269984665640564039457584007913129639935";
 
 // export const tokenDigits = 10;
 
