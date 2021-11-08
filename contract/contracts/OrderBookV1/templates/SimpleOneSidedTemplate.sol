@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import '../interfaces/IOrderTemplate.sol';
 import '../Pair.sol';
 
-contract SimpleTwoSidedTemplate is IOrderTemplate {
+contract SimpleOneSidedTemplate is IOrderTemplate {
 
     using SafeMath for uint;
     

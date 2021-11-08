@@ -1,24 +1,31 @@
 pragma solidity >=0.7.0 <0.9.0;
 
-import './SimpleTwoSidedTemplate.sol';
+import './templates/SimpleTwoSidedTemplate.sol';
+import './templates/SimpleOneSidedTemplate.sol';
 
 contract SpektrRegistry {
-    address[] public orderTemplates;
-    address[] public templateOrner;
+
+    struct Template {
+        address owner;
+        address template;
+    }
+
+    Template[] public orderTemplates;
 
     function allTemplatesLength() external view returns (uint) {
         return orderTemplates.length;
     }
     
-    constructor() public {
+    constructor() {
         address twoSidedTemplate = new SimpleTwoSidedTemplate();
         createTemplate(twoSidedTemplate);
-        //TODO: add one sided
+
+        address oneSidedTemplate = new SimpleOneSidedTemplate();
+        createTemplate(oneSidedTemplate);
     }
 
-
     function createTemplate(address template) external returns () {
-        orderTemplates.push(pair);
-        templateOrner.push(msg.sender);
+        Template memory newTemplate = Template(msg.sender, template);
+        orderTemplates.push(newTemplate);
     }
 }

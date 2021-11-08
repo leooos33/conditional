@@ -9,6 +9,16 @@ contract Pair {
     address public token0;
     address public token1;
 
+    struct Order {
+        address owner;
+        uint templateId;
+        uint[] params;
+        uint amount0;
+        uint amount1;
+    }
+
+    mapping(uint => Order) public orders;
+
     constructor() public {
         factory = msg.sender;
     }
@@ -23,17 +33,12 @@ contract Pair {
     
     function buy(uint order_id, uint q, address token) public {
         require(token == token0 || token == token1);
-        // do some magic here
-        // getPrice check if enogth
-        // wifdraw call template contract
+        // getPrice from Template()
+        // Do all token magic base on the price
     }
     
     function placeOrder(uint templateId) public {
         // require to be in registry
 
-    }
-
-    function initialized(uint orderId) public {
-        
     }
 }
