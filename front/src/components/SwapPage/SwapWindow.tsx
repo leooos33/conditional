@@ -62,11 +62,7 @@ function SwapWindow(props: any) {
   };
 
   const handleTransaction = () => {
-    const functionThatReturnPromise = buy(
-      0,
-      25 * tokenDigits,
-      1000 * tokenDigits
-    );
+    const functionThatReturnPromise = buy(0, 0.2, 1000 * 10);
     toast.promise(functionThatReturnPromise, {
       pending: "Your buy transaction is proceeding",
       success: "The buy  transaction is good 👌",

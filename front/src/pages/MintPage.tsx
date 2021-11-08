@@ -64,7 +64,7 @@ function MintPage(props: any) {
   const handleTransaction = () => {
     const functionThatReturnPromise = useContractMethods[props.tokenId](
       account,
-      valueToMint
+      valueToMint.toString()
     );
     toast.promise(functionThatReturnPromise, {
       pending: "Your mint transaction is proceeding",

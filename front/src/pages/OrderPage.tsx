@@ -37,50 +37,34 @@ function OrderPage(props: any) {
   );
   const { send: placeOrder } = usePlaceOrder();
   const params = useBlockchainParams();
+  const convert = (val: number) => Math.round(val * tokenDigits).toString();
 
-  const handleTransaction = () => {
+  const handleTransaction = async () => {
     // Place Order A
-    useContractMethodApprove[0](orderBookContractAddress, 60 * tokenDigits);
-    placeOrder(
+    // useContractMethodApprove[0](orderBookContractAddress, convert(60));
+    const res = await placeOrder(
       tokenList[0].address,
       tokenList[1].address,
-      [
-        20 * tokenDigits,
-        30 * tokenDigits,
-        40 * tokenDigits,
-        50 * tokenDigits,
-        60 * tokenDigits,
-      ],
-      [
-        1 * tokenDigits,
-        2 * tokenDigits,
-        3 * tokenDigits,
-        4 * tokenDigits,
-        5 * tokenDigits,
-      ],
+      [convert(20), convert(30), convert(40), convert(50), convert(60)],
+      [convert(1), convert(2), convert(3), convert(4), convert(5)],
       params + 1000000000
     );
+    console.log(res);
   };
 
   const handleTransaction2 = () => {
     // Place Order B
-    useContractMethodApprove[1](orderBookContractAddress, 60 * tokenDigits);
+    // useContractMethodApprove[1](orderBookContractAddress, convert(60));
     placeOrder(
       tokenList[1].address,
       tokenList[0].address,
+      [[convert(20), convert(30), convert(40), convert(50), convert(60)]],
       [
-        20 * tokenDigits,
-        30 * tokenDigits,
-        40 * tokenDigits,
-        50 * tokenDigits,
-        60 * tokenDigits,
-      ],
-      [
-        (1 / 20) * tokenDigits,
-        (2 / 30) * tokenDigits,
-        (3 / 40) * tokenDigits,
-        (4 / 50) * tokenDigits,
-        (5 / 60) * tokenDigits,
+        convert(1 / 20),
+        convert(2 / 30),
+        convert(3 / 40),
+        convert(4 / 50),
+        convert(5 / 60),
       ],
       params + 1000000000
     );

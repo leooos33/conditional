@@ -4,7 +4,7 @@ export const TransactionAlertContainer = () => {
   return (
     <ToastContainer
       position="top-right"
-      autoClose={60000}
+      autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick

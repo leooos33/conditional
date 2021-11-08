@@ -23,7 +23,6 @@ export const tokenContractsList = tokenList.map((i) => ({
     };
   },
 }));
-// 2 ** 256 - 1
 
 export function useBlockchainParams() {
   const [timestamp]: any =
@@ -36,18 +35,9 @@ export function useBlockchainParams() {
   return timestamp ? timestamp.toNumber() : null;
 }
 
-export const tokenDigits = 100000000000000000000;
-export const maxApproval =
+// export const tokenDigits: number = 100000000000000000000;
+export const tokenDigits: number = 1000000000000000000;
+
+// 2 ** 256 - 1
+export const maxApproval: string =
   "115792089237316195423570985008687907853269984665640564039457584007913129639935";
-
-// export const tokenDigits = 10;
-
-// const contractA = new Contract(
-//   tokenList[0].address,
-//   contractInterface
-// );
-
-// export function mintTokenA() {
-//   const { state, send } = useContractFunction(contractA, "unlimitedMint", {});
-//   return { state, send };
-// }
