@@ -13,6 +13,7 @@ contract Registry {
     }
 
     Template[] public orderTemplates;
+    address public factory;
 
     function allTemplatesLength() external view returns (uint) {
         return orderTemplates.length;
@@ -23,7 +24,7 @@ contract Registry {
     }
     
     constructor() {
-        new Factory();
+        factory = address(new Factory());
 
         address twoSidedTemplate = address(new SimpleTwoSidedTemplate());
         createTemplate(twoSidedTemplate);
