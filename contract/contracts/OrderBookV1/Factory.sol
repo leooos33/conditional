@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
 import './Pair.sol';
@@ -10,7 +11,7 @@ contract Factory {
         return allPairs.length;
     }
 
-    function createPair(address tokenA, address tokenB) external returns (address pair) {
+    function createPair(address tokenA, address tokenB) external returns (address) {
         require(tokenA != tokenB, 'Factory: IDENTICAL_ADDRESSES');
         (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
         require(token0 != address(0), 'Factory: ZERO_ADDRESS');
@@ -23,5 +24,7 @@ contract Factory {
         getPair[token0][token1] = pair;
         getPair[token1][token0] = pair;
         allPairs.push(pair);
+        
+        return pair;
     }
 }

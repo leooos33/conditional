@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
 import './templates/SimpleTwoSidedTemplate.sol';
@@ -24,7 +25,7 @@ contract SpektrRegistry {
         createTemplate(oneSidedTemplate);
     }
 
-    function createTemplate(address template) external returns () {
+    function createTemplate(address template) public {
         Template memory newTemplate = Template(msg.sender, template);
         orderTemplates.push(newTemplate);
     }
