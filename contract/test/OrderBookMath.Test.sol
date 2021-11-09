@@ -3,13 +3,16 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
-import "../contracts/OrderBook.sol";
+import "../contracts/OrderBookV1/templates/SimpleOneSidedTemplate.sol";
+import "../contracts/OrderBookV1/templates/SimpleTwoSidedTemplate.sol";
 
-contract TestOrderBook {
+contract TestTemplates {
 
-    OrderBook meta;
+    SimpleOneSidedTemplate meta0;
+    SimpleTwoSidedTemplate meta1;
     function beforeAll () public {
-        meta = OrderBook(DeployedAddresses.OrderBook());
+        meta0 = SimpleOneSidedTemplate(DeployedAddresses.SimpleOneSidedTemplate());
+        meta1 = SimpleTwoSidedTemplate(DeployedAddresses.SimpleTwoSidedTemplate());
     }
 
     function test1() public {
