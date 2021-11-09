@@ -6,9 +6,14 @@ import './Pair.sol';
 contract Factory {
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairs;
+    address public registry;
 
     function allPairsLength() external view returns (uint) {
         return allPairs.length;
+    }
+    
+    constructor() public {
+        registry = msg.sender;
     }
 
     function createPair(address tokenA, address tokenB) external returns (address) {
@@ -19,7 +24,7 @@ contract Factory {
         require(getPair[token0][token1] == address(0), 'Factory: PAIR_EXISTS');
         
         address pair = new Pair();
-        Pair(pair).initialize(token0, token1);
+        Pair(pair).initialize(token0, token1, registry);
 
         getPair[token0][token1] = pair;
         getPair[token1][token0] = pair;

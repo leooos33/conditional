@@ -13,6 +13,7 @@ contract Pair {
     address public factory;
     address public token0;
     address public token1;
+    address public registry;
 
     SharedTypes.Order[] public orders;
 
@@ -26,10 +27,11 @@ contract Pair {
         factory = msg.sender;
     }
 
-    function initialize(address _token0, address _token1) external {
+    function initialize(address _token0, address _token1, address _registry) external {
         require(msg.sender == factory, 'Pair: FORBIDDEN');
         token0 = _token0;
         token1 = _token1;
+        registry = _registry;
     }
 
     function buy(uint orderId, uint q, address token, uint maxTotalCost) public {
@@ -37,7 +39,7 @@ contract Pair {
         require(token == token0 || token == token1);
         require(int(order.deadline) > int(block.timestamp), 'Pair: Deadline is not valid');
 
-        address templateAddress = Registry.orderTemplates[order.templateId];
+        address templateAddress = Registry(registry).orderTemplates[order.templateId].template;
         uint price = IOrderTemplate(templateAddress).getPrice(q, token, order, token0, token1);
         uint totalCost = price * q;
         require(maxTotalCost >= totalCost);
@@ -71,7 +73,7 @@ contract Pair {
         require(int(deadline) > int(block.timestamp), 'Pair: Deadline is not valid');
         require(templateId < Registry.allTemplatesLength(), 'Pair: Template is not defined');
         
-        SharedTypes.Order memory newOrder = SharedTypes.Order(msg.sender, temlateId, params, 0, 0, false);
+        SharedTypes.Order memory newOrder = SharedTypes.Order(msg.sender, templateId, params, 0, 0, false);
         orders.push(newOrder);
     }
 

@@ -3,8 +3,9 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import './templates/SimpleTwoSidedTemplate.sol';
 import './templates/SimpleOneSidedTemplate.sol';
+import './Factory.sol';
 
-contract SpektrRegistry {
+contract Registry {
 
     struct Template {
         address owner;
@@ -18,6 +19,8 @@ contract SpektrRegistry {
     }
     
     constructor() {
+        new Factory();
+
         address twoSidedTemplate = new SimpleTwoSidedTemplate();
         createTemplate(twoSidedTemplate);
 
