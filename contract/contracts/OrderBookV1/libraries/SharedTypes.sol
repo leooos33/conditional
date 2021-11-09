@@ -9,5 +9,6 @@ library SharedTypes {
         uint amount0;
         uint amount1;
         bool isValid;
+        uint deadline;
     }
 }

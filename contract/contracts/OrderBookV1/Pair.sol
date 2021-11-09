@@ -23,7 +23,7 @@ contract Pair {
         return orders.length;
     }
 
-    constructor() public {
+    constructor() {
         factory = msg.sender;
     }
 
@@ -39,7 +39,7 @@ contract Pair {
         require(token == token0 || token == token1);
         require(int(order.deadline) > int(block.timestamp), 'Pair: Deadline is not valid');
 
-        address templateAddress = Registry(registry).orderTemplates[order.templateId].template;
+        address templateAddress = Registry(registry).getTemplateAddress(order.templateId);
         uint price = IOrderTemplate(templateAddress).getPrice(q, token, order, token0, token1);
         uint totalCost = price * q;
         require(maxTotalCost >= totalCost);
@@ -71,9 +71,9 @@ contract Pair {
         require(token0 == _token1 || token1 == _token1, 'Pair: Invalid token pair');
         
         require(int(deadline) > int(block.timestamp), 'Pair: Deadline is not valid');
-        require(templateId < Registry.allTemplatesLength(), 'Pair: Template is not defined');
+        require(templateId < Registry(registry).allTemplatesLength(), 'Pair: Template is not defined');
         
-        SharedTypes.Order memory newOrder = SharedTypes.Order(msg.sender, templateId, params, 0, 0, false);
+        SharedTypes.Order memory newOrder = SharedTypes.Order(msg.sender, templateId, params, 0, 0, false, deadline);
         orders.push(newOrder);
     }
 

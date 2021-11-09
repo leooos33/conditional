@@ -5,5 +5,5 @@ import '../Pair.sol';
 import '../libraries/SharedTypes.sol';
 
 interface IOrderTemplate {
-  function getPrice(uint q, address token, SharedTypes.Order memory order, address token0, address token1) external view returns (uint price);
+  function getPrice(uint q, address token, SharedTypes.Order memory order, address token0, address token1) external pure returns (uint);
 }

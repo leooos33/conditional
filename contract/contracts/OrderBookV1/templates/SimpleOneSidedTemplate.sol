@@ -12,7 +12,7 @@ contract SimpleOneSidedTemplate is IOrderTemplate {
     
     // params description
     // [order type (0/1); curveLength; ...curveLength x; ...curveLength p]
-    function getPrice(uint q, address token, SharedTypes.Order order, address token0, address token1) external view returns (uint price) {
+    function getPrice(uint q, address token, SharedTypes.Order memory order, address token0, address token1) external override pure returns (uint price) {
         uint orderType = order.params[0]; 
         require(orderType == 0 && token == token0 || orderType == 1 && token == token1, 'SimpleOneSidedTemplate: TOKEN is not valid');
         
@@ -25,11 +25,11 @@ contract SimpleOneSidedTemplate is IOrderTemplate {
                 uint p_i = order.params[2+curveLength+i];
                 uint p_ii = order.params[3+curveLength+i];
 
-                uint ip = (p_ii-p_i)*(q-x_i)/(x_ii-x_i) + p_i;
+                price = (p_ii-p_i)*(q-x_i)/(x_ii-x_i) + p_i;
                 // TODO: multiplier
                 // uint multiplier = order.amount/order.initial_amount;
                 // return ip*multiplier;
-                return ip;
+                return price;
             }
         }
     }

@@ -12,7 +12,7 @@ contract Factory {
         return allPairs.length;
     }
     
-    constructor() public {
+    constructor() {
         registry = msg.sender;
     }
 
@@ -23,7 +23,7 @@ contract Factory {
         
         require(getPair[token0][token1] == address(0), 'Factory: PAIR_EXISTS');
         
-        address pair = new Pair();
+        address pair = address(new Pair());
         Pair(pair).initialize(token0, token1, registry);
 
         getPair[token0][token1] = pair;

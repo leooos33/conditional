@@ -17,14 +17,18 @@ contract Registry {
     function allTemplatesLength() external view returns (uint) {
         return orderTemplates.length;
     }
+
+    function getTemplateAddress(uint _id) public view returns (address) {
+        return orderTemplates[_id].template;
+    }
     
     constructor() {
         new Factory();
 
-        address twoSidedTemplate = new SimpleTwoSidedTemplate();
+        address twoSidedTemplate = address(new SimpleTwoSidedTemplate());
         createTemplate(twoSidedTemplate);
 
-        address oneSidedTemplate = new SimpleOneSidedTemplate();
+        address oneSidedTemplate = address(new SimpleOneSidedTemplate());
         createTemplate(oneSidedTemplate);
     }
 
