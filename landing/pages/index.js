@@ -168,7 +168,7 @@ export default function Home() {
             <img
               class="object-cover object-center rounded"
               alt="hero"
-              src="https://dummyimage.com/600x280"
+              src="Section1.svg"
             />
           </div>
         </div>
@@ -317,7 +317,9 @@ export default function Home() {
             <img
               class="object-cover object-center rounded"
               alt="hero"
-              src="https://dummyimage.com/600x280"
+              src="Section3.svg"
+              width="600px"
+              height="800px"
             />
           </div>
         </div>
