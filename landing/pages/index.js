@@ -1,6 +1,6 @@
-import "./App.css";
+import Head from "next/head";
 
-function App() {
+export default function Home() {
   return (
     <div className="App">
       <header class="flex flex-wrap place-items-center bg-black1">
@@ -446,5 +446,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
