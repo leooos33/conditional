@@ -12,14 +12,14 @@ contract SimpleOneSidedTemplate is IOrderTemplate {
     // params description
     // [order type (0/1); curveLength; ...curveLength x; ...curveLength p]
     function getPrice(uint q, address token, SharedTypes.Order memory order, address token0, address token1) external override pure returns (uint price) {
-        uint orderType = order.params[0]; 
-        require(orderType == 0 && token == token0 || orderType == 1 && token == token1, 'SimpleOneSidedTemplate: TOKEN is not valid');
-        
+        require(order.params[0] == 0 && token == token0 || order.params[0] == 1 && token == token1, 'SimpleOneSidedTemplate: TOKEN is not valid');
+        require((token == token0 ? order.amount0: order.amount1) >= q, 'SimpleOneSidedTemplate: Not enogth liquidity');
+
         uint curveLength = order.params[1];
         for (int i = int(curveLength-1); i >= 0; i--) {
             uint x_i = order.params[uint(2+i)];
             if (q > x_i) {
-                require(uint(i) != curveLength-1, 'SimpleOneSidedTemplate: Not enogth liquidity');
+                require(uint(i) != curveLength-1, 'SimpleOneSidedTemplate: Requested value is greater than curve');
                 uint x_ii = order.params[3+uint(i)];
                 uint p_i = order.params[2+curveLength+uint(i)];
                 uint p_ii = order.params[3+curveLength+uint(i)];
@@ -31,5 +31,6 @@ contract SimpleOneSidedTemplate is IOrderTemplate {
                 return price;
             }
         }
+        revert("SimpleOneSidedTemplate: Amount is too small");
     }
 }

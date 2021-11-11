@@ -87,7 +87,7 @@ contract("SimpleTwoSidedTemplate", (accounts) => {
       templateId: 0,
       params,
       amount0: 40,
-      amount1: 8,
+      amount1: 30,
       isValid: true,
       deadline: 0,
     };

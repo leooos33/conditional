@@ -10,7 +10,7 @@ contract("SimpleOneSidedTemplate", (accounts) => {
     const token0 = accounts[1];
     const token1 = accounts[2];
 
-    const params = [0, 4, 2, 4, 6, 8, 10, 20, 30, 40];
+    const params = [0, 4, ...[2, 4, 6, 8], ...[10, 20, 30, 40]];
     const order = {
       owner: accounts[0],
       templateId: 0,
@@ -35,7 +35,7 @@ contract("SimpleOneSidedTemplate", (accounts) => {
     const token0 = accounts[1];
     const token1 = accounts[2];
 
-    const params = [0, 4, 2, 4, 6, 8, 10, 20, 30, 40];
+    const params = [0, 4, ...[2, 4, 6, 8], ...[10, 20, 30, 40]];
     const order = {
       owner: accounts[0],
       templateId: 0,
@@ -47,11 +47,11 @@ contract("SimpleOneSidedTemplate", (accounts) => {
     };
 
     try {
-      await simpleOneSidedTemplate.getPrice(60, token0, order, token0, token1);
+      await simpleOneSidedTemplate.getPrice(9, token0, order, token0, token1);
     } catch (err) {
       assert.equal(
         err.message,
-        "Returned error: VM Exception while processing transaction: revert SimpleOneSidedTemplate: Not enogth liquidity",
+        "Returned error: VM Exception while processing transaction: revert SimpleOneSidedTemplate: Requested value is greater than curve",
         "This test should not fail"
       );
     }
