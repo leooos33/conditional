@@ -32,8 +32,6 @@ contract("SimpleOneSidedTemplate", (accounts) => {
   });
 
   it("SimpleOneSidedTemplate: Not enogth liquidity", async () => {
-    simpleOneSidedTemplate = await SimpleOneSidedTemplate.deployed();
-
     const token0 = accounts[1];
     const token1 = accounts[2];
 
@@ -60,8 +58,6 @@ contract("SimpleOneSidedTemplate", (accounts) => {
   });
 
   it("SimpleOneSidedTemplate: TOKEN is not valid test 1", async () => {
-    simpleOneSidedTemplate = await SimpleOneSidedTemplate.deployed();
-
     const token0 = accounts[1];
     const token1 = accounts[2];
 
@@ -88,8 +84,6 @@ contract("SimpleOneSidedTemplate", (accounts) => {
   });
 
   it("SimpleOneSidedTemplate: TOKEN is not valid test 2", async () => {
-    simpleOneSidedTemplate = await SimpleOneSidedTemplate.deployed();
-
     const token0 = accounts[1];
     const token1 = accounts[2];
 

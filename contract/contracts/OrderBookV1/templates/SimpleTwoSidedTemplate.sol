@@ -15,13 +15,13 @@ contract SimpleTwoSidedTemplate is IOrderTemplate {
         require(token == token0 || token == token1, 'Pair: Invalid token pair');
         uint curveLength = order.params[0];
         uint start = token == token0 ? 1: curveLength * 2 + 1;
-        for (uint i=curveLength-1; i>=0; i--) {
-            uint x_i = order.params[start+i];
+        for (int i = int(curveLength)-1; i>=0; i--) {
+            uint x_i = order.params[start+uint(i)];
             if (q > x_i) {
-                require(i != curveLength-1, 'SimpleTwoSidedTemplate: Not enogth liquidity');
-                uint x_ii = order.params[start+i+1];
-                uint p_i = order.params[start+curveLength+i];
-                uint p_ii = order.params[start+curveLength+i+1];
+                require(uint(i) != curveLength-1, 'SimpleTwoSidedTemplate: Not enogth liquidity');
+                uint x_ii = order.params[start+uint(i)+1];
+                uint p_i = order.params[start+curveLength+uint(i)];
+                uint p_ii = order.params[start+curveLength+uint(i)+1];
 
                 price = (p_ii-p_i)*(q-x_i)/(x_ii-x_i) + p_i;
                 // TODO: multiplier
