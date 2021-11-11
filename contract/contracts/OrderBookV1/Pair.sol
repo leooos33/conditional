@@ -10,7 +10,6 @@ import './libraries/SharedTypes.sol';
 contract Pair {
     using SafeMath for uint;
 
-    address public factory;
     address public token0;
     address public token1;
     address public registry;
@@ -24,14 +23,13 @@ contract Pair {
     }
 
     constructor() {
-        factory = msg.sender;
+        registry = msg.sender;
     }
 
-    function initialize(address _token0, address _token1, address _registry) external {
-        require(msg.sender == factory, 'Pair: FORBIDDEN');
+    function initialize(address _token0, address _token1) external {
+        require(msg.sender == registry, 'Pair: FORBIDDEN');
         token0 = _token0;
         token1 = _token1;
-        registry = _registry;
     }
 
     function buy(uint orderId, uint q, address token, uint maxTotalCost) public {
