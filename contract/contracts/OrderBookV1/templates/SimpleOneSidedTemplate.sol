@@ -17,20 +17,24 @@ contract SimpleOneSidedTemplate is IOrderTemplate {
         require(orderType == 0 && token == token0 || orderType == 1 && token == token1, 'SimpleOneSidedTemplate: TOKEN is not valid');
         
         uint curveLength = order.params[1];
-        for (uint i=curveLength-1; i>=0; i--) {
-            uint x_i = order.params[2+i];
-            if (q > x_i) {
-                require(i != curveLength-1, 'SimpleOneSidedTemplate: Not enogth liquidity');
-                uint x_ii = order.params[3+i];
-                uint p_i = order.params[2+curveLength+i];
-                uint p_ii = order.params[3+curveLength+i];
+        for(uint i=0; i<5; i++){
+            curveLength ++;
+        }
+        // for (uint i = curveLength-1; i >= 0; i -= 1) {
+            // uint x_i = order.params[2+i];
+            // if (q > x_i) {
+                // require(i != curveLength-1, 'SimpleOneSidedTemplate: Not enogth liquidity');
+                // uint x_ii = order.params[3+i];
+                // uint p_i = order.params[2+curveLength+i];
+                // uint p_ii = order.params[3+curveLength+i];
 
-                price = (p_ii-p_i)*(q-x_i)/(x_ii-x_i) + p_i;
+                // price = (p_ii-p_i)*(q-x_i)/(x_ii-x_i) + p_i;
                 // TODO: multiplier
                 // uint multiplier = order.amount/order.initial_amount;
                 // return ip*multiplier;
-                return price;
-            }
-        }
+                // return price;
+            // }
+        // }
+        return order.params[1];
     }
 }

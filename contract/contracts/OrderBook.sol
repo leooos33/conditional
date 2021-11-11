@@ -79,7 +79,7 @@ contract OrderBook {
         }
     }
     
-    function placeOrder(address token1, address token2, uint[] memory params, uint[] memory p, uint deadline) public returns(uint) {
+    function placeOrder(address token1, address token2, uint[] memory x, uint[] memory p, uint deadline) public returns(uint) {
         require(x.length == 5, "X is not valid");
         uint lastId = 0;
         for (uint i=1; i<x.length; i++) {
