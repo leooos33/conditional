@@ -6,32 +6,24 @@ export default function Home() {
       <header class="flex flex-wrap place-items-center bg-black1">
         <section class="relative mx-auto">
           <nav class="flex container justify-between text-white w-screen">
-            <div class="px-5 lg:px-0 xl:px-14 py-3 flex w-full items-center">
-              <a class="flex title-font font-sans items-center  text-white md:mb-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  class="w-8 h-10 pb-1 text-white pt-2"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                </svg>
-                <span class=" ml-2 pb-1.5 font-sans font-normal text-3xl">
-                  spectr
-                </span>
+            <div class="px-5 lg:px-4 xl:px-8 py-6 flex w-full items-center">
+              <a href = "#" class="flex title-font font-sans items-center text-white md:mb-0">
+              <img
+              class="object-cover object-center rounded"
+              alt="logo"
+              src="logo.svg"
+              width="70px"
+              height="42px"
+            />
               </a>
 
-              <nav class="hidden pb-1  md:flex px-4 mx-auto  text-2xl space-x-6 text-gray1-g75 font-sans font-medium">
-                <a class="mr-5 hover:text-white">Build</a>
+              <nav class="hidden pb-1  md:flex  lg:pl-8 mx-auto  text-2xl lg:space-x-10 space-x-8 text-gray1-g75 font-sans font-semibold">
+                <a href = "https://conditional.gitbook.io/docs/" class="mr-5 hover:text-white">Build</a>
                 <a class="mr-5 hover:text-white">Blog</a>
                 <a class="mr-5 hover:text-white">Analytics</a>
                 <a class="mr-5 hover:text-white">We're hiring</a>
               </nav>
-              <button class="hidden md:block pb-2 bg-transparent text-white font-sans font-medium text-xl py-1 px-6 border-orange1 border-2 hover:border-transparent rounded-full ">
+              <button class="hidden md:block pb-2 bg-transparent text-white font-sans font-medium text-xl pt-2 pb-3 px-6 border-orange1 border-2 hover:border-transparent rounded-full ">
                 App
               </button>
             </div>
@@ -57,17 +49,17 @@ export default function Home() {
       </header>
 
       <section class="bg-black1  body-font">
-        <div class="container mx-auto flex px-5 xl:px-12 lg:px-0 pt-20 sm:flex-row flex-col items-center">
-          <div class="md:w-10/12 lg:w-8/12 xl:w-7/12 lg:pr-12 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-            <h1 class="title-font sm:text-6xl text-6xl mb-1 font-medium text-white">
+        <div class="container mx-auto flex xl:px-10 lg:px-5 px-0 pr-5 md:pr-0 md:pl-10   lg:py-24 py-6 sm:flex-row flex-col items-center">
+          <div class="md:w-full lg:w-9/12 lg:pr-12 md:pr-16 flex flex-col lg:items-start lg:text-left mb-16 md:mb-0 items-center text-center">
+            <h1 class="title-font sm:text-6xl lg:text-7xl text-6xl mb-1 font-medium font-sans text-white">
               Conditional liquidity protocol
             </h1>
             <div class="flex justify-center md:flex-row flex-col-reverse ">
-              <button class="inline-flex items-center justify-center md:px-12 px-20 my-10 md:my-6 text-white bg-orange1 rounded-full py-2 font-sans font-medium text-3xl focus:outline-none">
+              <button class="inline-flex items-center justify-center lg:px-20 md:px-12 px-20 my-10 md:my-6 xl:my-10 text-white bg-orange1 rounded-full pt-2 pb-3 font-sans font-medium text-3xl xl:text-4xl focus:outline-none">
                 <div>Trade now </div>
               </button>
 
-              <a class="text-gray1-g50 text-3xl inline-flex items-center justify-center pl-5 md:mt-0 mt-8 font-sans font-semibold focus:outline-none">
+              <a href = "https://conditional.gitbook.io/docs/" class="text-gray1-g75 text-3xl lg:text-4xl inline-flex items-center justify-center md:pl-12 pl-8 md:-mt-3 mt-8 font-sans font-semibold focus:outline-none">
                 Start building
                 <svg
                   fill="none"
@@ -75,7 +67,7 @@ export default function Home() {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  class="w-8 h-8 mt-1"
+                  class="w-8 h-8 mt-2"
                   viewBox="0 0 24 24"
                 >
                   <path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -84,54 +76,54 @@ export default function Home() {
             </div>
 
             <div class="flex justify-center md:justify-start pt-3 md:pt-0">
-              <button class=" rounded-full h-12 w-12 flex items-center justify-center bg-white">
-                <svg
-                  class="w-4 h-4 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
+              <button class=" rounded-full h-12 w-12 flex items-center justify-center">
+              <img
+              class="object-cover object-center rounded"
+              alt="twitter"
+              src="twitter.svg"
+              width="40px"
+              height="40px"
+            />
               </button>
 
-              <button class=" ml-3 rounded-full h-12 w-12 flex items-center justify-center bg-white">
-                <svg
-                  class="w-4 h-4 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
+              <button class=" ml-3 rounded-full h-12 w-12 flex items-center justify-center ">
+              <img
+              class="object-cover object-center rounded"
+              alt="discord"
+              src="discord.svg"
+              width="40px"
+              height="40px"
+            />
               </button>
 
-              <button class=" ml-3 rounded-full h-12 w-12 flex items-center justify-center bg-white">
-                <svg
-                  class="w-4 h-4 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
+              <button class=" ml-3 rounded-full h-12 w-12 flex items-center justify-center ">
+              <img
+              class="object-cover object-center rounded"
+              alt="medium"
+              src="medium.svg"
+              width="40px"
+              height="40px"
+            />
               </button>
 
-              <button class=" ml-3 rounded-full h-12 w-12 flex items-center justify-center bg-white">
-                <svg
-                  class="w-4 h-4 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
+              <button class=" ml-3 rounded-full h-12 w-12 flex items-center justify-center ">
+              <img
+              class="object-cover object-center rounded"
+              alt="telegram"
+              src="telegram.svg"
+              width="40px"
+              height="40px"
+            />
               </button>
 
-              <button class=" ml-3 rounded-full h-12 w-12 flex items-center justify-center bg-white">
-                <svg
-                  class="w-4 h-4 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
+              <button class=" ml-3 rounded-full h-12 w-12 flex items-center justify-center ">
+              <img
+              class="object-cover object-center rounded"
+              alt="github"
+              src="github.svg"
+              width="40px"
+              height="40px"
+            />
               </button>
             </div>
           </div>
@@ -151,23 +143,23 @@ export default function Home() {
             </p>
 
             <div class="flex justify-center">
-              <button class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
+              <a href = "https://conditional.gitbook.io/docs/" class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
                 <div>Read the docs </div>
-                <svg
-                  class="fill-current w-3 h-3 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
-              </button>
+                <img
+              class="object-cover object-center rounded pb-2"
+              alt="hero"
+              src="call_made.svg"
+              width="24px"
+              height="24px"
+            />
+              </a>
             </div>
           </div>
 
           <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
             <img
               class="object-cover object-center rounded"
-              alt="hero"
+              alt="Custom Curve"
               src="Section1.svg"
             />
           </div>
@@ -175,7 +167,7 @@ export default function Home() {
       </section>
 
       <section class="bg-black1  body-font">
-        <div class="container mx-auto flex px-5 xl:px-12 lg:px-0 md:flex-row flex-col-reverse items-center">
+        <div class="container mx-auto flex px-5 xl:px-12 pt-10 lg:px-0 md:flex-row flex-col-reverse items-center">
           <div class="lg:flex-grow md:w-1/2 lg:pr-12 md:pr-16 flex flex-col md:items-start md:text-left md:mb-0 items-s text-center">
             <h1 class="title-font sm:text-3xl md:text-xl lg:text-2xl xl:text-3xl text-2xl mt-5 font-medium text-white">
               Regulate parameters to better control your risk.
@@ -185,80 +177,31 @@ export default function Home() {
             </p>
 
             <div class="flex justify-center">
-              <button class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
+              <a href = "https://conditional.gitbook.io/docs/" class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
                 <div>View all parameters </div>
-                <svg
-                  class="fill-current w-3 h-3 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
-              </button>
+                <img
+              class="object-cover object-center rounded pb-2"
+              alt="hero"
+              src="call_made.svg"
+              width="24px"
+              height="24px"
+            />
+              </a>
             </div>
           </div>
 
-          <div class="lg:max-w-lg lg:w-full md:w-7/12 w-full">
-            <div class="container  mx-auto flex flex-wrap justify-center ">
-              <div class="flex flex-wrap ">
-                <div class="p-3 md:w-1/3 sm:px-5 px-0">
-                  <div class="flex   flex-col">
-                    <div class="flex items-center justify-center">
-                      <h2 class="text-white lg:text-3xl text-2xl title-font font-medium">
-                        3 bps
-                      </h2>
-                    </div>
-                    <div class="flex-grow">
-                      <p class="leading-relaxed lg:text-3xl text-orange1 sm:text-2xl text-2xl font-medium text-center">
-                        Spread
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="p-3 md:w-1/3 px-5">
-                  <div class="flex  flex-col">
-                    <div class="flex items-center justify-center">
-                      <h2 class="text-white title-font font-medium lg:text-3xl text-2xl ml-2">
-                        3-5%
-                      </h2>
-                    </div>
-                    <div class="flex-grow">
-                      <p class="leading-relaxed lg:text-3xl sm:text-2xl text-2xl text-orange1 font-medium font-sans text-center ">
-                        Volatility
-                      </p>
-                      <p class="leading-relaxed lg:text-3xl sm:text-2xl text-2xl text-orange1 font-medium font-sans -mt-3 sm:-mt-2 text-center ">
-                        range
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="p-3 md:w-1/3 sm:px-8 md:px-12 lg:px-16 xl:px-20 px-3">
-                  <div class="flex flex-col">
-                    <div class="flex items-center justify-center">
-                      <h2 class="text-white title-font font-medium lg:text-3xl text-2xl pl-0 md:pl-3 lg:pl-0">
-                        55%
-                      </h2>
-                    </div>
-                    <div class="flex-grow">
-                      <p class="leading-relaxed lg:text-3xl sm:text-2xl text-2xl text-orange1 font-medium text-center -mx-8">
-                        Buy/Sell
-                      </p>
-                      <p class="leading-relaxed lg:text-3xl sm:text-2xl text-2xl text-orange1 font-medium font-sans -mt-3 sm:-mt-2 -mx-2 md:-mx-4 text-center">
-                        ratio
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
+            <img
+              class="object-cover object-center rounded"
+              alt="Custom Curve"
+              src="Section2.svg"
+            />
           </div>
         </div>
       </section>
 
       <section class="bg-black1  body-font">
-        <div class="container mx-auto flex px-5 xl:px-12 lg:px-0 py-10 md:flex-row flex-col-reverse items-center">
+        <div class="container mx-auto flex px-5 xl:px-12 lg:px-0 py-20 md:flex-row flex-col-reverse items-center">
           <div class="lg:flex-grow md:w-1/2  lg:pr-12 md:pr-16 flex flex-col md:items-start md:text-left md:mb-0 items-s text-center">
             <h1 class="title-font sm:text-3xl md:text-xl lg:text-2xl xl:text-3xl text-2xl mt-5 font-medium text-white w-full ">
               Apply 2-sided orders to create a variety of liquidity provisioning
@@ -266,31 +209,33 @@ export default function Home() {
             </h1>
 
             <div class="flex justify-center">
-              <button class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
+              <a href="https://conditional.gitbook.io/docs/" class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
                 <div>Read the docs</div>
-                <svg
-                  class="fill-current w-3 h-3 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
-              </button>
+                <img
+              class="object-cover object-center rounded pb-2"
+              alt="hero"
+              src="call_made.svg"
+              width="24px"
+              height="24px"
+            />
+              </a>
             </div>
           </div>
 
           <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
-            <img
+          <img
               class="object-cover object-center rounded"
-              alt="hero"
-              src="https://dummyimage.com/600x280"
+              alt="Strategy"
+              src="Strategy.svg"
+              width="600px"
+              height="280px"
             />
           </div>
         </div>
       </section>
 
       <section class="bg-black1  body-font">
-        <div class="container mx-auto flex px-5 xl:px-12 lg:px-0  md:flex-row flex-col-reverse items-center">
+        <div class="container mx-auto flex px-5 xl:px-12 lg:px-0 pb-10  md:flex-row flex-col-reverse items-center">
           <div class="lg:flex-grow md:w-1/2  lg:pr-12 md:pr-16 flex flex-col md:items-start md:text-left md:mb-0 items-s text-center">
             <h1 class="title-font sm:text-3xl md:text-xl lg:text-2xl xl:text-3xl text-2xl mt-5 font-medium text-white">
               ...And sell them to earn royalties!
@@ -300,26 +245,24 @@ export default function Home() {
             </p>
 
             <div class="flex justify-center">
-              <button class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
+              <a href = "https://conditional.gitbook.io/docs/core-concepts/financial-nfts" class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
                 <div>Financial NFT's </div>
-                <svg
-                  class="fill-current w-3 h-3 "
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
-              </button>
+                <img
+              class="object-cover object-center rounded pb-2"
+              alt="hero"
+              src="call_made.svg"
+              width="24px"
+              height="24px"
+            />
+              </a>
             </div>
           </div>
 
           <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
             <img
               class="object-cover object-center rounded"
-              alt="hero"
+              alt="Section3"
               src="Section3.svg"
-              width="600px"
-              height="800px"
             />
           </div>
         </div>
@@ -327,20 +270,15 @@ export default function Home() {
 
       <footer class="text-gray-400 bg-black1 body-font pt-8 ">
         <div class="container md:px-2 px-12 xl:px-10 lg:px-0 mx-auto flex items-center md:flex-row flex-col">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            class="w-12 h-12 mb-4 text-white"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-          </svg>
+        <img
+              class="object-cover object-center rounded lg:pb-0 pb-3"
+              alt="logo"
+              src="logo.svg"
+              width="100px"
+              height="60px"
+            />
 
-          <div class="form-control pb-5 lg:pb-0 px-3">
+          <div class="form-control py-5 md:py-0 md:pb-5 lg:pb-0 lg:px-6 md:px-3">
             <div class="relative pb-1 md:w-11/12 lg:w-full w-full">
               <input
                 type="text"
