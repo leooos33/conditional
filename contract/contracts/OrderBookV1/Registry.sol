@@ -14,17 +14,17 @@ contract Registry {
     }
     
     constructor() {
-        address twoSidedTemplate = address(new SimpleTwoSidedTemplate());
-        createTemplate(twoSidedTemplate);
-
         address oneSidedTemplate = address(new SimpleOneSidedTemplate());
         createTemplate(oneSidedTemplate);
+
+        address twoSidedTemplate = address(new SimpleTwoSidedTemplate());
+        createTemplate(twoSidedTemplate);
     }
 
-    function createPair(address tokenA, address tokenB) external returns (address) {
-        require(tokenA != tokenB, 'Registry: IDENTICAL_ADDRESSES');
-        (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
+    function createPair(address token0, address token1) external returns (address) {
+        require(token0 != token1, 'Registry: IDENTICAL_ADDRESSES');
         require(token0 != address(0), 'Registry: ZERO_ADDRESS');
+        require(token1 != address(0), 'Registry: ZERO_ADDRESS');
         
         require(getPair[token0][token1] == address(0), 'Registry: PAIR_EXISTS');
         

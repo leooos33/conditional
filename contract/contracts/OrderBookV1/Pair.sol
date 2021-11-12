@@ -34,13 +34,13 @@ contract Pair {
 
     function buy(uint orderId, uint q, address token, uint maxTotalCost) public {
         SharedTypes.Order memory order = orders[orderId];
-        require(token == token0 || token == token1);
+        require(token == token0 || token == token1, 'Pair: Invalid token pair');
         require(int(order.deadline) > int(block.timestamp), 'Pair: Deadline is not valid');
+        require(order.isValid == true, 'Pair: Order is not valid');
 
         address templateAddress = Registry(registry).getTemplateAddress(order.templateId);
-        uint price = IOrderTemplate(templateAddress).getPrice(q, token, order, token0, token1);
-        uint totalCost = price * q;
-        require(maxTotalCost >= totalCost);
+        uint totalCost = IOrderTemplate(templateAddress).getPrice(q, token, order, token0, token1);
+        require(maxTotalCost >= totalCost, 'Pair: Slippage is reached');
         
         if(token == token0) {
             uint256 allowance = ERC20(token1).allowance(msg.sender, address(this));
@@ -61,17 +61,14 @@ contract Pair {
             orders[orderId].amount1 -= q;
         }
 
-        lastPrice = totalCost; //TODO: Set clever Math here
+        lastPrice = totalCost / q; //TODO: Set clever Math here
     }
     
-    function placeOrder(uint templateId, address _token0, address _token1, uint[] memory params, uint deadline) public {
-        require(token0 == _token0 || token1 == _token0, 'Pair: Invalid token pair');
-        require(token0 == _token1 || token1 == _token1, 'Pair: Invalid token pair');
-        
+    function placeOrder(uint templateId, uint[] memory params, uint deadline) public {        
         require(int(deadline) > int(block.timestamp), 'Pair: Deadline is not valid');
         require(templateId < Registry(registry).allTemplatesLength(), 'Pair: Template is not defined');
         
-        SharedTypes.Order memory newOrder = SharedTypes.Order(msg.sender, templateId, params, 0, 0, false, deadline);
+        SharedTypes.Order memory newOrder = SharedTypes.Order(msg.sender, templateId, params, 0, 0, true, deadline);
         orders.push(newOrder);
     }
 
