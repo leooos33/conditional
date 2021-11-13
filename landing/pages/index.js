@@ -2,7 +2,7 @@ import Head from "next/head";
 
 export default function Home() {
   return (
-    <div className="App ">
+    <div className="App bg-black1">
       <header class="flex flex-wrap place-items-center bg-black1">
         <section class="relative mx-auto">
           <nav class="flex container justify-between text-white w-screen">
@@ -23,9 +23,9 @@ export default function Home() {
                 <a class="mr-5 hover:text-white">Analytics</a>
                 <a class="mr-5 hover:text-white">We're hiring</a>
               </nav>
-              <button class="hidden md:block pb-2 bg-transparent text-white font-sans font-medium text-xl pt-2 pb-3 px-6 border-orange1 border-2 hover:border-transparent rounded-full ">
+              <a href = "https://app-auto-deployment.d1z1rhwbnsu8xp.amplifyapp.com/swap" class="hidden md:block pb-2 bg-transparent text-white font-sans font-medium text-xl pt-2 pb-3 px-6 border-orange1 border-2 hover:border-transparent rounded-full ">
                 App
-              </button>
+              </a>
             </div>
 
             <a class="navbar-burger self-center mr-12 md:hidden" href="#">
@@ -55,9 +55,9 @@ export default function Home() {
               Conditional liquidity protocol
             </h1>
             <div class="flex justify-center md:flex-row flex-col-reverse ">
-              <button class="inline-flex items-center justify-center lg:px-20 md:px-12 px-20 my-10 md:my-6 xl:my-10 text-white bg-orange1 rounded-full pt-2 pb-3 font-sans font-medium text-3xl xl:text-4xl focus:outline-none">
+              <a href = "https://app-auto-deployment.d1z1rhwbnsu8xp.amplifyapp.com/swap" class="inline-flex items-center justify-center lg:px-20 md:px-12 px-20 my-10 md:my-6 xl:my-10 text-white bg-orange1 rounded-full pt-2 pb-3 font-sans font-medium text-3xl xl:text-4xl focus:outline-none">
                 <div>Trade now </div>
-              </button>
+              </a>
 
               <a href = "https://conditional.gitbook.io/docs/" class="text-gray1-g75 text-3xl lg:text-4xl inline-flex items-center justify-center md:pl-12 pl-8 md:-mt-3 mt-8 font-sans font-semibold focus:outline-none">
                 Start building
