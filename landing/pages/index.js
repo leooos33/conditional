@@ -2,18 +2,18 @@ import Head from "next/head";
 
 export default function Home() {
   return (
-    <div className="App">
+    <div className="App ">
       <header class="flex flex-wrap place-items-center bg-black1">
         <section class="relative mx-auto">
           <nav class="flex container justify-between text-white w-screen">
             <div class="px-5 lg:px-4 xl:px-8 py-6 flex w-full items-center">
               <a href = "#" class="flex title-font font-sans items-center text-white md:mb-0">
               <img
-              class="object-cover object-center rounded"
+              class="object-cover object-center rounded xl:mx-5 lg:mx-3"
               alt="logo"
               src="logo.svg"
-              width="70px"
-              height="42px"
+              width="33px"
+              height="33px"
             />
               </a>
 
@@ -190,10 +190,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
+          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full ">
             <img
               class="object-cover object-center rounded"
-              alt="Custom Curve"
+              alt="Point2"
               src="Section2.svg"
             />
           </div>
@@ -222,13 +222,13 @@ export default function Home() {
             </div>
           </div>
 
-          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
+          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full md:pl-9 sm:pl-20 pl-7  ">
           <img
               class="object-cover object-center rounded"
-              alt="Strategy"
-              src="Strategy.svg"
-              width="600px"
-              height="280px"
+              alt="Point3"
+              src="Point3.svg"
+              width="452px"
+              height="300px"
             />
           </div>
         </div>
@@ -270,15 +270,15 @@ export default function Home() {
 
       <footer class="text-gray-400 bg-black1 body-font pt-8 ">
         <div class="container md:px-2 px-12 xl:px-10 lg:px-0 mx-auto flex items-center md:flex-row flex-col">
-        <img
+        <img 
               class="object-cover object-center rounded lg:pb-0 pb-3"
               alt="logo"
               src="logo.svg"
-              width="100px"
-              height="60px"
+              width="40px"
+              height="40px"
             />
 
-          <div class="form-control py-5 md:py-0 md:pb-5 lg:pb-0 lg:px-6 md:px-3">
+          <div class="form-control py-8 md:py-0 md:pb-5 lg:pb-0 lg:px-6 md:px-3">
             <div class="relative pb-1 md:w-11/12 lg:w-full w-full">
               <input
                 type="text"
