@@ -11,7 +11,7 @@ import { orderBookContractAddress, tokenList } from "../../contracts";
 import { connect } from "react-redux";
 import { approveTokenAction, changePairAction } from "../../redux/actions";
 import { useState } from "react";
-import { useBuy, useGetOrder } from "../../hooks/orderBookContractHook";
+import { useBuy } from "../../hooks/pairContractHook";
 import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
 import {
   maxApproval,

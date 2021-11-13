@@ -4,6 +4,9 @@ export const simpleContractAddress =
 export const orderBookContractAddress =
   "0xc73fFBCCBc67b70f1A88bE28E60bdDdcE3877922";
 
+export const registryContractAddress =
+  "0xc73fFBCCBc67b70f1A88bE28E60bdDdcE3877922";
+
 export const tokenList = [
   {
     name: "TokenA",
@@ -12,9 +15,5 @@ export const tokenList = [
   {
     name: "TokenB",
     address: "0x21C7ceB046971b38e3E98b08b0ACAD0Baf1450E6",
-  },
-  {
-    name: "TokenA2",
-    address: "0xEcA2289219929357bE45f808ecd8e03E62C46e12",
   },
 ];
