@@ -34,12 +34,11 @@ export function useProvideLiquidity(pairContractAddress: string) {
 }
 
 export function useGetOrder(pairContractAddress: string, id: number) {
-  const res: any =
-    useContractCall({
-      abi: contractInterface,
-      address: pairContractAddress,
-      method: "orders",
-      args: [id],
-    }) ?? [];
+  const res: any = useContractCall({
+    abi: contractInterface,
+    address: pairContractAddress || registryContractAddress,
+    method: "orders",
+    args: [id],
+  });
   return res;
 }

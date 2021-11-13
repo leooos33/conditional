@@ -75,6 +75,20 @@ export const swapReducer = (state: any = initialState, action: any) => {
   }
 };
 
+// function priceController(state) {
+//   return {
+//     token1_value: Math.max(Math.min(state.token1_value, 8),2)
+//     token1_value: Math.max(Math.min(state.token1_value, 20),40)
+//     ...state,
+//   };
+//   // const price = getPriceFromRouter(
+//   //   Token(props.token1_value),
+//   //   tokenList[props.token1].address
+//   // ).toString();
+//   // console.log(price);
+//   // const;
+// }
+
 function getMissingToken(props: any) {
   if (!props.approvedTokenList[props.token1]) return props.token1;
   if (!props.approvedTokenList[props.token2]) return props.token2;

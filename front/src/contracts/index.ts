@@ -17,3 +17,12 @@ export const tokenList = [
     address: "0x21C7ceB046971b38e3E98b08b0ACAD0Baf1450E6",
   },
 ];
+
+export const templates = [
+  {
+    address: "0xBF6Ad19Bed6bB9e4F81768d2e0E2Aee2fc363a08",
+  },
+  {
+    address: "0xaCC220bdfF9cC041Ea022CC0a90aCC3Abf9af5Fd",
+  },
+];

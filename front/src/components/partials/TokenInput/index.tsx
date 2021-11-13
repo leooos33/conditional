@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-useless-constructor */
 import * as React from "react";
 import { createStyles, withStyles } from "@mui/styles";
-import { Grid, Paper } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import TokenAmount from "./TokenAmount";
 import TokenSelect from "./TokenSelect";
 
@@ -32,8 +32,11 @@ class TokenInput extends React.Component<IProps, any> {
           <Grid item xs={4}>
             <TokenSelect tokenType={this.props.tokenType} />
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={6}>
             <TokenAmount tokenType={this.props.tokenType} />
+          </Grid>
+          <Grid item xs={2}>
+            <Typography variant="h6">Max 8</Typography>
           </Grid>
         </Grid>
       </Paper>
