@@ -1,4 +1,5 @@
 import { tokenList } from "../../contracts";
+import { Token } from "../../hooks";
 
 const initialState = {
   token1: 0,
@@ -27,13 +28,10 @@ export const swapReducer = (state: any = initialState, action: any) => {
         token1_value: state.token2_value,
         token2_value: tmp_value,
       };
-      return priceController(
-        {
-          ...newState,
-          tokenToApproveId: getMissingToken(newState),
-        },
-        state.amount
-      );
+      return {
+        ...newState,
+        tokenToApproveId: getMissingToken(newState),
+      };
 
     case "SET_VALUE":
       newState = {
@@ -43,13 +41,10 @@ export const swapReducer = (state: any = initialState, action: any) => {
         token2_value:
           action.tokenType === "token2" ? action.value : state.token2_value,
       };
-      return priceController(
-        {
-          ...newState,
-          tokenToApproveId: getMissingToken(newState),
-        },
-        state.amount
-      );
+      return {
+        ...newState,
+        tokenToApproveId: getMissingToken(newState),
+      };
 
     case "SET_TOKEN":
       if (
@@ -63,13 +58,10 @@ export const swapReducer = (state: any = initialState, action: any) => {
         token1: action.tokenType === "token1" ? action.token : state.token1,
         token2: action.tokenType === "token2" ? action.token : state.token2,
       };
-      return priceController(
-        {
-          ...newState,
-          tokenToApproveId: getMissingToken(newState),
-        },
-        state.amount
-      );
+      return {
+        ...newState,
+        tokenToApproveId: getMissingToken(newState),
+      };
 
     case "SET_APPROVED":
       const _approvedTokenList = [...state.approvedTokenList];
@@ -78,13 +70,10 @@ export const swapReducer = (state: any = initialState, action: any) => {
         ...state,
         approvedTokenList: _approvedTokenList,
       };
-      return priceController(
-        {
-          ...newState,
-          tokenToApproveId: getMissingToken(newState),
-        },
-        state.amount
-      );
+      return {
+        ...newState,
+        tokenToApproveId: getMissingToken(newState),
+      };
     case "SET_AMOUNT":
       return {
         ...state,
@@ -94,23 +83,6 @@ export const swapReducer = (state: any = initialState, action: any) => {
       return state;
   }
 };
-
-function priceController(state: any, amount: any) {
-  console.log(amount);
-  const upperTrechold1 = Math.min(amount.token1.max, amount.aount1);
-  const upperTrechold2 = Math.min(amount.token2.max, amount.aount2);
-  return {
-    token1_value: Math.max(
-      Math.min(state.token1_value, upperTrechold1),
-      amount.token1.min
-    ),
-    token2_value: Math.max(
-      Math.min(state.token1_value, upperTrechold2),
-      amount.token2.min
-    ),
-    ...state,
-  };
-}
 
 function getMissingToken(props: any) {
   if (!props.approvedTokenList[props.token1]) return props.token1;

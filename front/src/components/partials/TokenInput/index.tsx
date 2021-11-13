@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Grid, Paper, Typography } from "@mui/material";
 import TokenAmount from "./TokenAmount";
 import TokenSelect from "./TokenSelect";
-import { getAmount } from "../../../hooks";
+import { getAmount, _Token } from "../../../hooks";
 import { AnyTxtRecord } from "dns";
 
 const styles = () =>
@@ -39,7 +39,7 @@ class TokenInput extends React.Component<IProps, any> {
         this.props.tokenType === "token1" ? amount.token1 : amount.token2;
       label = (
         <Typography className={classes.maxLabel} variant="body2">
-          Min: {tokenInfo.min} Max: {tokenInfo.max}
+          Min: {_Token(tokenInfo.min)} Max: {_Token(tokenInfo.max)}
         </Typography>
       );
     }

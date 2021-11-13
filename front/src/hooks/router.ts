@@ -69,7 +69,7 @@ export async function getAmount(orderId: number) {
   return {
     amount1: amount0,
     amount2: amount1,
-    token1: { min: 2, max: 8 },
-    token2: { min: 10, max: 40 },
+    token1: { min: Token(2), max: Token(8) },
+    token2: { min: Token(10), max: Token(40) },
   };
 }

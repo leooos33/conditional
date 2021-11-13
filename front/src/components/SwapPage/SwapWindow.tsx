@@ -24,6 +24,7 @@ import {
   getPriceFromRouter,
   Token,
   getAmount,
+  isValidInput,
 } from "../../hooks";
 import { toast } from "react-toastify";
 
@@ -66,6 +67,7 @@ function SwapWindow(props: any) {
   // ).toString();
   // console.log(price);
 
+  //TODO: set to 8sec;
   useEffect(() => {
     const interval = setInterval(async () => {
       const amount = await getAmount(0);
@@ -98,10 +100,11 @@ function SwapWindow(props: any) {
     // });
     props.approveToken(props.tokenToApproveId);
   };
+
   const { classes } = props;
   let button;
   if (props.tokenToApproveId === -1) {
-    button = (
+    button = isSwapReady(props) ? (
       <Button
         variant="contained"
         endIcon={<SendIcon />}
@@ -110,6 +113,8 @@ function SwapWindow(props: any) {
       >
         Buy
       </Button>
+    ) : (
+      ""
     );
   } else {
     button = (
@@ -150,11 +155,37 @@ function SwapWindow(props: any) {
   );
 }
 
+function isSwapReady(props: any) {
+  let { token1_value, token2_value, amount } = props;
+
+  // Input safe guard
+  if (!(isValidInput(token1_value) && isValidInput(token2_value))) return false;
+  token1_value = Token(token1_value);
+  token2_value = Token(token2_value);
+
+  if (!amount) return false;
+  // Like min
+  const upperTrechold1 = amount.token1.max.lt(amount.amount1)
+    ? amount.token1.max
+    : amount.amount1;
+  const upperTrechold2 = amount.token2.max.lt(amount.amount2)
+    ? amount.token2.max
+    : amount.amount2;
+
+  if (token1_value.lt(amount.token1.min) || token1_value.gte(upperTrechold1))
+    return false;
+  if (token2_value.lt(amount.token2.min) || token2_value.gte(upperTrechold2))
+    return false;
+  return true;
+}
+
 const mapStateToProps = (state: any) => {
   return {
     token1: state.swap.token1,
     token2: state.swap.token2,
     token1_value: state.swap.token1_value,
+    token2_value: state.swap.token2_value,
+    amount: state.swap.amount,
     approvedTokenList: state.swap.approvedTokenList,
     tokenToApproveId: state.swap.tokenToApproveId,
   };

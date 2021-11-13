@@ -4,7 +4,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { setAmountAction, setTokenValueAction } from "../../../redux/actions";
 import { SelectChangeEvent } from "@mui/material";
-import { getAmount } from "../../../hooks";
+import { getAmount, Token, _Token } from "../../../hooks";
+import { BigNumber } from "@ethersproject/bignumber";
 
 const styles = (theme: any) => ({
   numberInput: {
@@ -24,14 +25,14 @@ const styles = (theme: any) => ({
 });
 class TokenAmount extends React.Component<any, any> {
   handleChange = async (event: any) => {
-    const value: number = event.target.value as number;
+    const input: any = event.target.value;
     const tokenType: any = this.props.tokenType;
-
-    this.props.changeValue(tokenType, value);
+    this.props.changeValue(tokenType, input);
   };
 
+  //TODO: remove all console.log from entire document;
   render() {
-    const tokenValue: any = this.props[this.props.tokenType];
+    const tokenValue: string = this.props[this.props.tokenType];
 
     const { classes } = this.props;
     return (
