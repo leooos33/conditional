@@ -193,7 +193,7 @@ export default function Home() {
           <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
             <img
               class="object-cover object-center rounded"
-              alt="Custom Curve"
+              alt="Point2"
               src="Section2.svg"
             />
           </div>
@@ -222,13 +222,13 @@ export default function Home() {
             </div>
           </div>
 
-          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
+          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full md:pl-9 sm:pl-20 pl-7  ">
           <img
               class="object-cover object-center rounded"
-              alt="Strategy"
-              src="Strategy.svg"
-              width="600px"
-              height="280px"
+              alt="Point3"
+              src="Point3.svg"
+              width="452px"
+              height="300px"
             />
           </div>
         </div>
