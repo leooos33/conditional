@@ -18,11 +18,13 @@ export const tokenList = [
   },
 ];
 
-export const templates = [
-  {
-    address: "0xBF6Ad19Bed6bB9e4F81768d2e0E2Aee2fc363a08",
-  },
-  {
-    address: "0xaCC220bdfF9cC041Ea022CC0a90aCC3Abf9af5Fd",
-  },
-];
+export const pairAddress = "0xc4C826f6807f9e0f087BF7D1597b48a1fa57EFB4";
+
+// export const templates = [
+//   {
+//     address: "0xBF6Ad19Bed6bB9e4F81768d2e0E2Aee2fc363a08",
+//   },
+//   {
+//     address: "0xaCC220bdfF9cC041Ea022CC0a90aCC3Abf9af5Fd",
+//   },
+// ];

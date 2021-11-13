@@ -1,11 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { Token, toToken } from "./testERC20ContractHook";
-import { tokenList } from "../contracts";
+import { pairAddress, tokenList } from "../contracts";
 import { BigNumber } from "@ethersproject/bignumber";
+import Web3 from "web3";
+import contractABI from "../abi/Pair.json";
+import { AbiItem } from "web3-utils";
 
 const token0 = tokenList[0].address;
 
+// Put backend router API here
 export function getPriceFromRouter(q: BigNumber, token: string) {
   if (!((token === token0 ? amount0 : amount1) >= q))
     return "SimpleTwoSidedTemplate: Not enogth liquidity";
@@ -44,3 +48,28 @@ const params = [
   ...toToken([10, 20, 30, 40]),
   ...toToken([2, 4, 6, 8]),
 ];
+
+const web3 = new Web3(
+  new Web3.providers.HttpProvider(
+    "https://ropsten.infura.io/v3/02dc1b201ea0402eb4d789fb23b5ce6a"
+  )
+);
+
+const pairContract: any = new web3.eth.Contract(
+  contractABI as AbiItem[],
+  pairAddress
+);
+
+// Put backend router API here
+export async function getAmount(orderId: number) {
+  const { amount0, amount1 } = await pairContract.methods
+    .orders(orderId)
+    .call();
+
+  return {
+    amount1: amount0,
+    amount2: amount1,
+    token1: { min: 2, max: 8 },
+    token2: { min: 10, max: 40 },
+  };
+}

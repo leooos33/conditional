@@ -7,7 +7,10 @@ const initialState = {
   token2_value: 0,
   approvedTokenList: Array(tokenList.length).fill(false),
   tokenToApproveId: 0,
+  amount: null,
 };
+
+let amount;
 
 export const swapReducer = (state: any = initialState, action: any) => {
   // console.log(action);
@@ -24,10 +27,13 @@ export const swapReducer = (state: any = initialState, action: any) => {
         token1_value: state.token2_value,
         token2_value: tmp_value,
       };
-      return {
-        ...newState,
-        tokenToApproveId: getMissingToken(newState),
-      };
+      return priceController(
+        {
+          ...newState,
+          tokenToApproveId: getMissingToken(newState),
+        },
+        state.amount
+      );
 
     case "SET_VALUE":
       newState = {
@@ -37,10 +43,13 @@ export const swapReducer = (state: any = initialState, action: any) => {
         token2_value:
           action.tokenType === "token2" ? action.value : state.token2_value,
       };
-      return {
-        ...newState,
-        tokenToApproveId: getMissingToken(newState),
-      };
+      return priceController(
+        {
+          ...newState,
+          tokenToApproveId: getMissingToken(newState),
+        },
+        state.amount
+      );
 
     case "SET_TOKEN":
       if (
@@ -54,10 +63,13 @@ export const swapReducer = (state: any = initialState, action: any) => {
         token1: action.tokenType === "token1" ? action.token : state.token1,
         token2: action.tokenType === "token2" ? action.token : state.token2,
       };
-      return {
-        ...newState,
-        tokenToApproveId: getMissingToken(newState),
-      };
+      return priceController(
+        {
+          ...newState,
+          tokenToApproveId: getMissingToken(newState),
+        },
+        state.amount
+      );
 
     case "SET_APPROVED":
       const _approvedTokenList = [...state.approvedTokenList];
@@ -66,28 +78,39 @@ export const swapReducer = (state: any = initialState, action: any) => {
         ...state,
         approvedTokenList: _approvedTokenList,
       };
+      return priceController(
+        {
+          ...newState,
+          tokenToApproveId: getMissingToken(newState),
+        },
+        state.amount
+      );
+    case "SET_AMOUNT":
       return {
-        ...newState,
-        tokenToApproveId: getMissingToken(newState),
+        ...state,
+        amount: action.amount,
       };
     default:
       return state;
   }
 };
 
-// function priceController(state) {
-//   return {
-//     token1_value: Math.max(Math.min(state.token1_value, 8),2)
-//     token1_value: Math.max(Math.min(state.token1_value, 20),40)
-//     ...state,
-//   };
-//   // const price = getPriceFromRouter(
-//   //   Token(props.token1_value),
-//   //   tokenList[props.token1].address
-//   // ).toString();
-//   // console.log(price);
-//   // const;
-// }
+function priceController(state: any, amount: any) {
+  console.log(amount);
+  const upperTrechold1 = Math.min(amount.token1.max, amount.aount1);
+  const upperTrechold2 = Math.min(amount.token2.max, amount.aount2);
+  return {
+    token1_value: Math.max(
+      Math.min(state.token1_value, upperTrechold1),
+      amount.token1.min
+    ),
+    token2_value: Math.max(
+      Math.min(state.token1_value, upperTrechold2),
+      amount.token2.min
+    ),
+    ...state,
+  };
+}
 
 function getMissingToken(props: any) {
   if (!props.approvedTokenList[props.token1]) return props.token1;

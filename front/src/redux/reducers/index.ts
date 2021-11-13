@@ -1,8 +1,23 @@
 import { combineReducers } from "redux";
 import { mintReducer } from "./minReducer";
 import { swapReducer } from "./swapReducer";
+import storage from "redux-persist/lib/storage";
+import { persistReducer } from "redux-persist";
+
+const swapConfig = {
+  key: "swap",
+  storage: storage,
+  whitelist: ["token1", "token2", "approvedTokenList", "tokenToApproveId"],
+  blacklist: ["token1_value", "token2_value", "amount"],
+};
+
+const mintConfig = {
+  key: "mint",
+  storage: storage,
+  whitelist: ["token"],
+};
 
 export const allReducers = combineReducers({
-  swap: swapReducer,
-  mint: mintReducer,
+  swap: persistReducer(swapConfig, swapReducer),
+  mint: persistReducer(mintConfig, mintReducer),
 });

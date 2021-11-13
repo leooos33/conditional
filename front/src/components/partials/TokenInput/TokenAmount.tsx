@@ -2,8 +2,9 @@ import TextField from "@mui/material/TextField";
 import { withStyles } from "@mui/styles";
 import * as React from "react";
 import { connect } from "react-redux";
-import { setTokenValueAction } from "../../../redux/actions";
+import { setAmountAction, setTokenValueAction } from "../../../redux/actions";
 import { SelectChangeEvent } from "@mui/material";
+import { getAmount } from "../../../hooks";
 
 const styles = (theme: any) => ({
   numberInput: {
@@ -22,9 +23,10 @@ const styles = (theme: any) => ({
   },
 });
 class TokenAmount extends React.Component<any, any> {
-  handleChange = (event: any) => {
+  handleChange = async (event: any) => {
     const value: number = event.target.value as number;
     const tokenType: any = this.props.tokenType;
+
     this.props.changeValue(tokenType, value);
   };
 
@@ -40,6 +42,9 @@ class TokenAmount extends React.Component<any, any> {
         type="number"
         fullWidth
         value={tokenValue}
+        inputProps={{
+          readOnly: this.props.tokenType === "token1" ? false : true,
+        }}
         variant="outlined"
         onChange={this.handleChange}
       />

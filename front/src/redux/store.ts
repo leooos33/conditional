@@ -4,20 +4,12 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-
-const persistConfig = {
-  key: "swap",
-  storage: storage,
-  whitelist: ["swap"],
-};
-const pReducer = persistReducer(persistConfig, allReducers);
+import { persistStore } from "redux-persist";
 
 const composeEnhancers = composeWithDevTools({});
 
 const store = createStore(
-  pReducer,
+  allReducers,
   composeEnhancers(applyMiddleware(thunk, logger))
 );
 

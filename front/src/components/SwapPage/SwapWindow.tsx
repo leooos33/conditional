@@ -9,16 +9,21 @@ import { withStyles } from "@mui/styles";
 // import { useCount, useContractMethod } from "../../hooks";
 import { tokenList } from "../../contracts";
 import { connect } from "react-redux";
-import { approveTokenAction, changePairAction } from "../../redux/actions";
-import { useState } from "react";
+import {
+  approveTokenAction,
+  changePairAction,
+  setAmountAction,
+} from "../../redux/actions";
+import { useEffect, useState } from "react";
 import { useBuy } from "../../hooks/pairContractHook";
 import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
 import {
   tokenContractsList,
-  // useGetOrder,
+  useGetOrder,
   useGetPair,
   getPriceFromRouter,
   Token,
+  getAmount,
 } from "../../hooks";
 import { toast } from "react-toastify";
 
@@ -47,19 +52,27 @@ function SwapWindow(props: any) {
   const pairAddress = useGetPair(tokenList[0].address, tokenList[1].address);
   const { send: buy } = useBuy(pairAddress);
 
-  // console.log(pairAddress);
-  // const order = useGetOrder(pairAddress, 1);
-  // console.log(order);
-  // if (order) {
-  //   console.log(order.amount0.toNumber());
-  //   console.log(order.amount1.toNumber());
-  // }
+  const order = useGetOrder(pairAddress, 0);
+  console.log(order);
+  console.log(pairAddress);
+  if (order) {
+    // console.log(order.amount0.toString());
+    // console.log(order.amount1.toString());
+  }
 
-  const price = getPriceFromRouter(
-    Token(props.token1_value),
-    tokenList[props.token1].address
-  ).toString();
-  console.log(price);
+  // const price = getPriceFromRouter(
+  //   Token(props.token1_value),
+  //   tokenList[props.token1].address
+  // ).toString();
+  // console.log(price);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const amount = await getAmount(0);
+      props.setAmount(amount);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSwap = () => {
     props.swapTokens();
@@ -74,13 +87,15 @@ function SwapWindow(props: any) {
       error: "The buy transaction failed 🤯",
     });
   };
+
   const handleTransactionApprove = async () => {
-    const ftrp = useContractMethodsApprove[props.tokenToApproveId](pairAddress);
-    toast.promise(ftrp, {
-      pending: "Your approve transaction is proceeding",
-      success: "The approve transaction is good 👌",
-      error: "The approve transaction failed 🤯",
-    });
+    // TODO: uncomment
+    // const ftrp = useContractMethodsApprove[props.tokenToApproveId](pairAddress);
+    // toast.promise(ftrp, {
+    //   pending: "Your approve transaction is proceeding",
+    //   success: "The approve transaction is good 👌",
+    //   error: "The approve transaction failed 🤯",
+    // });
     props.approveToken(props.tokenToApproveId);
   };
   const { classes } = props;
@@ -152,6 +167,9 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     approveToken: (tokenId: number) => {
       dispatch(approveTokenAction(tokenId));
+    },
+    setAmount: (amount: any) => {
+      dispatch(setAmountAction(amount));
     },
   };
 };
