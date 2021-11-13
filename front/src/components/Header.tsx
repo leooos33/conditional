@@ -66,9 +66,9 @@ export const Header = () => {
               to="/order"
               style={{ textDecoration: "none", color: "unset" }}
             >
-              <ListItem button>
+              {/* <ListItem button>
                 <ListItemText primary="Place order" />
-              </ListItem>
+              </ListItem> */}
             </NavLink>
           </Grid>
           <Grid item xs={6} md={6} className={classes.box2}>

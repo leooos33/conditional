@@ -14,13 +14,13 @@ export function useCreatePair() {
   return { state, send };
 }
 
-export function useGetPair(i: number) {
-  const res: any =
+export function useGetPair(token0: string, token1: string) {
+  const [res]: any =
     useContractCall({
       abi: contractInterface,
       address: contractAddress,
-      method: "allPairs",
-      args: [i],
+      method: "getPair",
+      args: [token0, token1],
     }) ?? [];
   return res;
 }

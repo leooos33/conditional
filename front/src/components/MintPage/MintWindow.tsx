@@ -4,12 +4,12 @@ import { Button, Grid, Stack, Typography, TextField } from "@mui/material";
 import { useEthers } from "@usedapp/core";
 import { connect } from "react-redux";
 import TestTokenSelect from "./TestTokenSelect";
-import { tokenList } from "../contracts";
-import { tokenContractsList } from "../hooks";
+import { tokenList } from "../../contracts";
 
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { TransactionAlertContainer } from "../components/messages/TransactionAlertContainer";
+import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
+import { tokenContractsList } from "../../hooks";
 
 const styles = () =>
   createStyles({

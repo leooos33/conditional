@@ -1,11 +1,11 @@
 export const simpleContractAddress =
   "0x006f7d0C4527b568B4B2c94FdaE386711ABE16C5";
 
-export const orderBookContractAddress =
-  "0xc73fFBCCBc67b70f1A88bE28E60bdDdcE3877922";
+// export const orderBookContractAddress =
+//   "0xc73fFBCCBc67b70f1A88bE28E60bdDdcE3877922";
 
 export const registryContractAddress =
-  "0xc73fFBCCBc67b70f1A88bE28E60bdDdcE3877922";
+  "0x1AEc24fEC0Dd84AbFDF28dc1Bd9471be44899060";
 
 export const tokenList = [
   {
