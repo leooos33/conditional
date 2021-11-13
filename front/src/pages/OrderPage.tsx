@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { createStyles, withStyles } from "@material-ui/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import { Button, Grid, Stack } from "@mui/material";
 import { connect } from "react-redux";
 import { orderBookContractAddress, tokenList } from "../contracts";
@@ -113,4 +113,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(OrderPage));
+)(withStyles(styles, { withTheme: true, index: 1 })(OrderPage));

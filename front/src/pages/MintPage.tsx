@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { createStyles, withStyles } from "@material-ui/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import { Button, Grid, Stack, Typography, TextField } from "@mui/material";
 import { useEthers } from "@usedapp/core";
 import { connect } from "react-redux";
@@ -128,4 +128,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(MintPage));
+)(withStyles(styles, { withTheme: true, index: 1 })(MintPage));
