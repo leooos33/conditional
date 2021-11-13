@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-useless-constructor */
 import * as React from "react";
-import { createStyles, withStyles } from "@material-ui/styles";
+import { createStyles, withStyles } from "@mui/styles";
 import { Grid, Paper } from "@mui/material";
 import TokenAmount from "./TokenAmount";
 import TokenSelect from "./TokenSelect";
@@ -41,4 +41,4 @@ class TokenInput extends React.Component<IProps, any> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(TokenInput);
+export default withStyles(styles, { withTheme: true, index: 1 })(TokenInput);

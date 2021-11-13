@@ -65,4 +65,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(TokenAmount));
+)(withStyles(styles, { index: 1 })(TokenAmount));

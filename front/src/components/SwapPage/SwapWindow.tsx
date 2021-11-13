@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { Chip, createStyles, Divider } from "@mui/material";
-import { withStyles } from "@material-ui/styles";
+import { withStyles } from "@mui/styles";
 // import { useCount, useContractMethod } from "../../hooks";
 import { orderBookContractAddress, tokenList } from "../../contracts";
 import { connect } from "react-redux";
@@ -158,4 +158,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(SwapWindow));
+)(withStyles(styles, { withTheme: true, index: 1 })(SwapWindow));
