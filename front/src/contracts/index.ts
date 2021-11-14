@@ -1,5 +1,5 @@
-export const simpleContractAddress =
-  "0x006f7d0C4527b568B4B2c94FdaE386711ABE16C5";
+// export const simpleContractAddress =
+//   "0x006f7d0C4527b568B4B2c94FdaE386711ABE16C5";
 
 // export const orderBookContractAddress =
 //   "0xc73fFBCCBc67b70f1A88bE28E60bdDdcE3877922";
@@ -20,11 +20,11 @@ export const tokenList = [
 
 export const pairAddress = "0xc4C826f6807f9e0f087BF7D1597b48a1fa57EFB4";
 
-// export const templates = [
-//   {
-//     address: "0xBF6Ad19Bed6bB9e4F81768d2e0E2Aee2fc363a08",
-//   },
-//   {
-//     address: "0xaCC220bdfF9cC041Ea022CC0a90aCC3Abf9af5Fd",
-//   },
-// ];
+export const templates = [
+  {
+    address: "0xBF6Ad19Bed6bB9e4F81768d2e0E2Aee2fc363a08",
+  },
+  {
+    address: "0xaCC220bdfF9cC041Ea022CC0a90aCC3Abf9af5Fd",
+  },
+];

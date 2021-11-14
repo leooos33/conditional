@@ -57,7 +57,7 @@ function OrderWindow(props: any) {
       ...toToken([10, 20, 30, 40]),
       ...toToken([2, 4, 6, 8]),
     ];
-    console.log(params, deadline + 1000000000);
+    // console.log(params, deadline + 1000000000);
     const ftrp = placeOrder(1, params, deadline + 1000000000);
     toast.promise(ftrp, {
       pending: "Your place order transaction is proceeding",

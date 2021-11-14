@@ -6,7 +6,6 @@ import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { Chip, createStyles, Divider } from "@mui/material";
 import { withStyles } from "@mui/styles";
-// import { useCount, useContractMethod } from "../../hooks";
 import { tokenList } from "../../contracts";
 import { connect } from "react-redux";
 import {
@@ -19,10 +18,8 @@ import { useBuy } from "../../hooks/pairContractHook";
 import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
 import {
   tokenContractsList,
-  useGetOrder,
-  useGetPair,
-  getPriceFromRouter,
   Token,
+  useGetPair,
   getAmount,
   isValidInput,
 } from "../../hooks";
@@ -53,28 +50,28 @@ function SwapWindow(props: any) {
   const pairAddress = useGetPair(tokenList[0].address, tokenList[1].address);
   const { send: buy } = useBuy(pairAddress);
 
-  const order = useGetOrder(pairAddress, 0);
-  console.log(order);
-  console.log(pairAddress);
-  if (order) {
-    // console.log(order.amount0.toString());
-    // console.log(order.amount1.toString());
-  }
+  // useEffect(() => {
+  //   console.log(">", props.token1_value);
+  //   setTimeout(async () => {
+  //     console.log(">>", props.token1_value);
+  //     // const amount = await getAmount(
+  //     //   0,
+  //     //   props.token1_value,
+  //     //   tokenList[props.token1].address
+  //     // );
+  //     props.setAmount(null);
+  //   }, 100);
+  // }, []);
 
-  // const price = getPriceFromRouter(
-  //   Token(props.token1_value),
-  //   tokenList[props.token1].address
-  // ).toString();
-  // console.log(price);
-
-  //TODO: set to 8sec;
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      const amount = await getAmount(0);
-      props.setAmount(amount);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
+  // const interval = setInterval(async () => {
+  //   console.log(">>", props.token1_value);
+  //   // const amount = await getAmount(
+  //   //   0,
+  //   //   props.token1_value,
+  //   //   tokenList[props.token1].address
+  //   // );
+  //   props.setAmount(null);
+  // }, 4000);
 
   const handleSwap = () => {
     props.swapTokens();
@@ -91,13 +88,12 @@ function SwapWindow(props: any) {
   };
 
   const handleTransactionApprove = async () => {
-    // TODO: uncomment
-    // const ftrp = useContractMethodsApprove[props.tokenToApproveId](pairAddress);
-    // toast.promise(ftrp, {
-    //   pending: "Your approve transaction is proceeding",
-    //   success: "The approve transaction is good 👌",
-    //   error: "The approve transaction failed 🤯",
-    // });
+    const ftrp = useContractMethodsApprove[props.tokenToApproveId](pairAddress);
+    toast.promise(ftrp, {
+      pending: "Your approve transaction is proceeding",
+      success: "The approve transaction is good 👌",
+      error: "The approve transaction failed 🤯",
+    });
     props.approveToken(props.tokenToApproveId);
   };
 

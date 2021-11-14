@@ -1,5 +1,5 @@
 import { tokenList } from "../../contracts";
-import { Token } from "../../hooks";
+import { getAmount, Token } from "../../hooks";
 
 const initialState = {
   token1: 0,
@@ -11,35 +11,40 @@ const initialState = {
   amount: null,
 };
 
-let amount;
-
 export const swapReducer = (state: any = initialState, action: any) => {
   // console.log(action);
+
+  // CHANGE_PAIR
+  const swapLogic = () => {
+    const tmp = state.token1;
+    const tmp_value = state.token1_value;
+    newState = {
+      ...state,
+      token1: state.token2,
+      token2: tmp,
+      token1_value: state.token2_value,
+      token2_value: tmp_value,
+    };
+    return {
+      ...newState,
+      tokenToApproveId: getMissingToken(newState),
+    };
+  };
 
   let newState;
   switch (action.type) {
     case "CHANGE_PAIR":
-      const tmp = state.token1;
-      const tmp_value = state.token1_value;
-      newState = {
-        ...state,
-        token1: state.token2,
-        token2: tmp,
-        token1_value: state.token2_value,
-        token2_value: tmp_value,
-      };
-      return {
-        ...newState,
-        tokenToApproveId: getMissingToken(newState),
-      };
+      return swapLogic();
 
     case "SET_VALUE":
+      // Now it's always token1
+      const newAmount = action.amount && state.amount;
       newState = {
         ...state,
         token1_value:
           action.tokenType === "token1" ? action.value : state.token1_value,
-        token2_value:
-          action.tokenType === "token2" ? action.value : state.token2_value,
+        token2_value: newAmount?.price && state.token2_value,
+        amount: newAmount,
       };
       return {
         ...newState,
@@ -51,7 +56,7 @@ export const swapReducer = (state: any = initialState, action: any) => {
         action.token ===
         (action.tokenType === "token1" ? state.token2 : state.token1)
       ) {
-        return state;
+        return swapLogic();
       }
       newState = {
         ...state,

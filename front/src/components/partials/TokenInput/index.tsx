@@ -19,14 +19,8 @@ const styles = () =>
     },
   });
 
-interface IProps {
-  tokenType: string;
-  classes: any;
-  amount: any;
-}
-
-class TokenInput extends React.Component<IProps, any> {
-  constructor(props: IProps) {
+class TokenInput extends React.Component<any, any> {
+  constructor(props: any) {
     super(props);
   }
 
@@ -34,9 +28,8 @@ class TokenInput extends React.Component<IProps, any> {
     const { classes, amount } = this.props;
 
     let label: any = "";
-    if (amount) {
-      const tokenInfo =
-        this.props.tokenType === "token1" ? amount.token1 : amount.token2;
+    if (amount && this.props.tokenType === "token1") {
+      const tokenInfo = this.props.token1 === 0 ? amount.token1 : amount.token2;
       label = (
         <Typography className={classes.maxLabel} variant="body2">
           Min: {_Token(tokenInfo.min)} Max: {_Token(tokenInfo.max)}
@@ -62,6 +55,8 @@ class TokenInput extends React.Component<IProps, any> {
 const mapStateToProps = (state: any) => {
   return {
     amount: state.swap.amount,
+    token1: state.swap.token1,
+    token2: state.swap.token2,
   };
 };
 

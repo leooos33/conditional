@@ -54,11 +54,10 @@ export const Token = (
   digits = numDigits
 ): BigNumber => {
   if (value === 0 || value === "0" || !value) return BigNumber.from(0);
-  return BigNumber.from(value.toString()).mul(
-    BigNumber.from("1" + "0".repeat(digits))
-  );
+  return BigNumber.from(value.toString() + "0".repeat(digits));
 };
 
+// Convert wei BignUmber into token decimals
 export const _Token = (number: BigNumber): string => {
   if (number.toString() === "0") return "0";
   return number.div(BigNumber.from("1" + "0".repeat(numDigits))).toString();
@@ -66,5 +65,6 @@ export const _Token = (number: BigNumber): string => {
 
 export const isValidInput = (x: any) => {
   const err = isNaN(x) || !parseFloat(x);
+  // console.log(!err, x);
   return !err;
 };

@@ -6,6 +6,7 @@ import { setAmountAction, setTokenValueAction } from "../../../redux/actions";
 import { SelectChangeEvent } from "@mui/material";
 import { getAmount, Token, _Token } from "../../../hooks";
 import { BigNumber } from "@ethersproject/bignumber";
+import { tokenList } from "../../../contracts";
 
 const styles = (theme: any) => ({
   numberInput: {
@@ -27,7 +28,13 @@ class TokenAmount extends React.Component<any, any> {
   handleChange = async (event: any) => {
     const input: any = event.target.value;
     const tokenType: any = this.props.tokenType;
-    this.props.changeValue(tokenType, input);
+
+    const amount = await getAmount(
+      0,
+      this.props.token1,
+      tokenList[this.props.token].address
+    );
+    this.props.changeValue(tokenType, input, amount);
   };
 
   //TODO: remove all console.log from entire document;
@@ -55,6 +62,7 @@ class TokenAmount extends React.Component<any, any> {
 
 const mapStateToProps = (state: any) => {
   return {
+    token: state.swap.token1,
     token1: state.swap.token1_value,
     token2: state.swap.token2_value,
   };
@@ -62,8 +70,8 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    changeValue: (tokenType: any, value: any) => {
-      dispatch(setTokenValueAction(tokenType, value));
+    changeValue: (tokenType: any, value: any, amount?: any) => {
+      dispatch(setTokenValueAction(tokenType, value, amount));
     },
   };
 };
