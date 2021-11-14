@@ -14,6 +14,8 @@ export function useBuy(pairContractAddress: string) {
   const { state, send } = useContractFunction(contract, "buy", {});
   return { state, send };
 }
+// 24000000000000000000
+// 3000000000000000000
 
 export function usePlaceOrder(pairContractAddress: string) {
   const contract = new Contract(
