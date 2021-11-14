@@ -3,7 +3,6 @@ import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
 import ConnectButton from "./partials/ConnectButton";
 import { ChakraProvider, useDisclosure } from "@chakra-ui/react";
@@ -67,9 +66,9 @@ export const Header = () => {
               to="/order"
               style={{ textDecoration: "none", color: "unset" }}
             >
-              <ListItem button>
+              {/* <ListItem button>
                 <ListItemText primary="Place order" />
-              </ListItem>
+              </ListItem> */}
             </NavLink>
           </Grid>
           <Grid item xs={6} md={6} className={classes.box2}>

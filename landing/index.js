@@ -2,18 +2,18 @@ import Head from "next/head";
 
 export default function Home() {
   return (
-    <div className="App bg-black1">
+    <div className="App">
       <header class="flex flex-wrap place-items-center bg-black1">
         <section class="relative mx-auto">
           <nav class="flex container justify-between text-white w-screen">
             <div class="px-5 lg:px-4 xl:px-8 py-6 flex w-full items-center">
               <a href = "#" class="flex title-font font-sans items-center text-white md:mb-0">
               <img
-              class="object-cover object-center rounded xl:mx-5 lg:mx-3"
+              class="object-cover object-center rounded"
               alt="logo"
               src="logo.svg"
-              width="33px"
-              height="33px"
+              width="70px"
+              height="42px"
             />
               </a>
 
@@ -23,9 +23,9 @@ export default function Home() {
                 <a class="mr-5 hover:text-white">Analytics</a>
                 <a class="mr-5 hover:text-white">We're hiring</a>
               </nav>
-              <a href = "https://app-auto-deployment.d1z1rhwbnsu8xp.amplifyapp.com/swap" class="hidden md:block pb-2 bg-transparent text-white font-sans font-medium text-xl pt-2 pb-3 px-6 border-orange1 border-2 hover:border-transparent rounded-full ">
+              <button class="hidden md:block pb-2 bg-transparent text-white font-sans font-medium text-xl pt-2 pb-3 px-6 border-orange1 border-2 hover:border-transparent rounded-full ">
                 App
-              </a>
+              </button>
             </div>
 
             <a class="navbar-burger self-center mr-12 md:hidden" href="#">
@@ -55,9 +55,9 @@ export default function Home() {
               Conditional liquidity protocol
             </h1>
             <div class="flex justify-center md:flex-row flex-col-reverse ">
-              <a href = "https://app-auto-deployment.d1z1rhwbnsu8xp.amplifyapp.com/swap" class="inline-flex items-center justify-center lg:px-20 md:px-12 px-20 my-10 md:my-6 xl:my-10 text-white bg-orange1 rounded-full pt-2 pb-3 font-sans font-medium text-3xl xl:text-4xl focus:outline-none">
+              <button class="inline-flex items-center justify-center lg:px-20 md:px-12 px-20 my-10 md:my-6 xl:my-10 text-white bg-orange1 rounded-full pt-2 pb-3 font-sans font-medium text-3xl xl:text-4xl focus:outline-none">
                 <div>Trade now </div>
-              </a>
+              </button>
 
               <a href = "https://conditional.gitbook.io/docs/" class="text-gray1-g75 text-3xl lg:text-4xl inline-flex items-center justify-center md:pl-12 pl-8 md:-mt-3 mt-8 font-sans font-semibold focus:outline-none">
                 Start building
@@ -190,7 +190,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full ">
+          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
             <img
               class="object-cover object-center rounded"
               alt="Point2"
@@ -270,15 +270,15 @@ export default function Home() {
 
       <footer class="text-gray-400 bg-black1 body-font pt-8 ">
         <div class="container md:px-2 px-12 xl:px-10 lg:px-0 mx-auto flex items-center md:flex-row flex-col">
-        <img 
+        <img
               class="object-cover object-center rounded lg:pb-0 pb-3"
               alt="logo"
               src="logo.svg"
-              width="40px"
-              height="40px"
+              width="100px"
+              height="60px"
             />
 
-          <div class="form-control py-8 md:py-0 md:pb-5 lg:pb-0 lg:px-6 md:px-3">
+          <div class="form-control py-5 md:py-0 md:pb-5 lg:pb-0 lg:px-6 md:px-3">
             <div class="relative pb-1 md:w-11/12 lg:w-full w-full">
               <input
                 type="text"

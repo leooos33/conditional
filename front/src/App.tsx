@@ -9,8 +9,8 @@ import {
 } from "react-router-dom";
 import { SwapPage } from "./pages/SwapPage";
 import { store } from "./redux/store";
-import MintPage from "./pages/MintPage";
-import OrderPage from "./pages/OrderPage";
+import { MintPage } from "./pages/MintPage";
+import { OrderPage } from "./pages/OrderPage";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
