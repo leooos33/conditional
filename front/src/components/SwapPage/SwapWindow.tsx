@@ -71,7 +71,7 @@ function SwapWindow(props: any) {
         tokenList[props.token1].address
       );
       props.setAmount(amount);
-    }, 4000);
+    }, 2000);
     return () => clearInterval(interval);
   }, [props.token1_value]);
 

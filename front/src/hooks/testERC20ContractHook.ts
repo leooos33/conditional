@@ -6,6 +6,7 @@ import contractABI from "../abi/TestERC20Contract.json";
 import { tokenList } from "../contracts";
 import { BigNumber } from "@ethersproject/bignumber";
 import { isValidElement } from "react";
+import { ConstructionRounded } from "@mui/icons-material";
 
 const contractInterface = new ethers.utils.Interface(contractABI);
 
@@ -48,19 +49,29 @@ export const toToken = (value: any[], digits?: number): BigNumber[] => {
   return value.map((i) => Token(i, digits));
 };
 
-// TODO: fix for multiple digits
 export const Token = (
   value: string | number,
   digits = numDigits
 ): BigNumber => {
   if (value === 0 || value === "0" || !value) return BigNumber.from(0);
-  return BigNumber.from(value.toString() + "0".repeat(digits));
+
+  value = parseFloat(value.toString());
+  let [x, y] = value.toString().split(".");
+
+  const a: any = BigNumber.from(x + "0".repeat(digits));
+  if (y) {
+    y = y.slice(0, digits);
+    let zeros = digits - y.length;
+    const b = BigNumber.from(y + (zeros > 0 ? "0".repeat(zeros) : ""));
+
+    return a.add(b);
+  } else return a;
 };
 
-// Convert wei BignUmber into token decimals
-export const _Token = (number: BigNumber): string => {
-  if (number.toString() === "0") return "0";
-  return number.div(BigNumber.from("1" + "0".repeat(numDigits))).toString();
+export const _Token = (value: BigNumber): string => {
+  console.log("_Token", value);
+  if (value.toString() === "0") return "0";
+  return value.div(BigNumber.from("1" + "0".repeat(numDigits))).toString();
 };
 
 export const isValidInput = (x: any) => {
@@ -68,7 +79,3 @@ export const isValidInput = (x: any) => {
   // console.log(!err, x);
   return !err;
 };
-
-// const isValidInput = (x) => !(isNaN(x) || !parseFloat(x));
-
-// };

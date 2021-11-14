@@ -8,7 +8,7 @@ const swapConfig = {
   key: "swap",
   storage: storage,
   whitelist: ["token1", "token2", "approvedTokenList", "tokenToApproveId"],
-  blacklist: ["token1_value", "token2_value", "amount"],
+  blacklist: ["token1_value", "token2_value", "amount", "snapshot"],
 };
 
 const mintConfig = {

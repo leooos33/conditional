@@ -1,5 +1,6 @@
+import { BigNumber } from "@ethersproject/bignumber";
 import { tokenList } from "../../contracts";
-import { getAmount, Token } from "../../hooks";
+import { getAmount, Token, _Token } from "../../hooks";
 
 const initialState = {
   token1: 0,
@@ -9,6 +10,7 @@ const initialState = {
   approvedTokenList: Array(tokenList.length).fill(false),
   tokenToApproveId: 0,
   amount: null,
+  snapshot: null,
 };
 
 export const swapReducer = (state: any = initialState, action: any) => {
@@ -80,13 +82,13 @@ export const swapReducer = (state: any = initialState, action: any) => {
         tokenToApproveId: getMissingToken(newState),
       };
     case "SET_AMOUNT":
-      //Tut menat cenu
-
-      // console.log(action.amount?.price, action.amount);
+      if (!action.amount) return { ...state };
       return {
         ...state,
         amount: action.amount,
-        token2_value: action.amount?.price || state.token2_value,
+        token2_value: action.amount?.price
+          ? _Token(BigNumber.from(action.amount.price))
+          : state.token2_value,
       };
     default:
       return state;
