@@ -1,7 +1,4 @@
 <svg width="599" height="277" viewBox="0 0 599 277" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="599" height="277" fill="#E5E5E5"/>
-<rect width="1440" height="2250" transform="translate(-765 -733)" fill="white"/>
-<rect x="-765" y="-733" width="1440" height="2250" fill="#090B0C"/>
 <path d="M32 251.679C91.4917 185.07 58.9291 145.826 557.827 51.01" stroke="#FB2FFF" stroke-width="2"/>
 <ellipse cx="210.89" cy="131.007" rx="1.88976" ry="2.00669" fill="white"/>
 <ellipse cx="359.835" cy="92.01" rx="2.83465" ry="3.01003" fill="white"/>
