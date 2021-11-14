@@ -5,7 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { withStyles } from "@material-ui/styles";
+import { withStyles } from "@mui/styles";
 import { connect } from "react-redux";
 import { tokenList } from "../../contracts";
 import { createStyles } from "@mui/material";
@@ -27,8 +27,9 @@ const styles = () =>
   });
 
 class TestTokenSelect extends React.Component<any, any> {
-  handleChange = (event: SelectChangeEvent) => {
+  handleChange = async (event: SelectChangeEvent) => {
     const newToken: string = event.target.value as string;
+
     this.props.changeToken(newToken);
   };
 
@@ -73,4 +74,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(TestTokenSelect));
+)(withStyles(styles, { index: 1 })(TestTokenSelect));

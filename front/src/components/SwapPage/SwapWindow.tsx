@@ -5,21 +5,25 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { Chip, createStyles, Divider } from "@mui/material";
-import { withStyles } from "@material-ui/styles";
-// import { useCount, useContractMethod } from "../../hooks";
-import { orderBookContractAddress, tokenList } from "../../contracts";
+import { withStyles } from "@mui/styles";
+import { tokenList } from "../../contracts";
 import { connect } from "react-redux";
-import { approveTokenAction, changePairAction } from "../../redux/actions";
-import { useState } from "react";
-import { useBuy, useGetOrder } from "../../hooks/orderBookContractHook";
+import {
+  approveTokenAction,
+  changePairAction,
+  setAmountAction,
+} from "../../redux/actions";
+import { useEffect, useState } from "react";
+import { useBuy } from "../../hooks/pairContractHook";
 import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
 import {
-  maxApproval,
   tokenContractsList,
-  tokenDigits,
-  useBlockchainParams,
+  Token,
+  useGetPair,
+  getAmount,
+  isValidInput,
+  orderId,
 } from "../../hooks";
-import { useEthers } from "@usedapp/core";
 import { toast } from "react-toastify";
 
 const styles = () =>
@@ -39,31 +43,57 @@ const styles = () =>
 
 function SwapWindow(props: any) {
   const [label, setLabel] = useState(true);
-  const { send: buy } = useBuy();
-
-  const { account } = useEthers();
 
   const useContractMethodsApprove = tokenContractsList.map(
     (i: any) => i.useApprove().send
   );
 
-  // const init = async () => {
-  //   const order = await useGetOrder(0);
-  //   console.log("Amount:", order.amount?.toNumber());
-  //   console.log("Initial:", order.initial_amount?.toNumber());
-  // };
+  const pairAddress = useGetPair(tokenList[0].address, tokenList[1].address);
+  const { send: buy } = useBuy(pairAddress);
+  // console.log(pairAddress);
 
-  // init();
+  useEffect(() => {
+    setTimeout(async () => {
+      // console.log(">>", props.token1_value);
+      const amount = await getAmount(
+        props.token1_value,
+        tokenList[props.token1].address
+      );
+      props.setAmount(amount);
+    }, 100);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      // console.log(">>", props.token1_value);
+      const amount = await getAmount(
+        props.token1_value,
+        tokenList[props.token1].address
+      );
+      props.setAmount(amount);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [props.token1_value]);
 
   const handleSwap = () => {
     props.swapTokens();
     setLabel(!label);
-    console.log(props.tokenToApproveId);
   };
 
   const handleTransaction = () => {
-    const functionThatReturnPromise = buy(0, 0.2, 1000 * 10);
-    toast.promise(functionThatReturnPromise, {
+    console.log(
+      orderId,
+      Token(props.token1_value).toString(),
+      tokenList[props.token1].address,
+      Token("10000000").toString()
+    );
+    const ftrp = buy(
+      orderId,
+      Token(props.token1_value),
+      tokenList[props.token1].address,
+      Token("10000000")
+    );
+    toast.promise(ftrp, {
       pending: "Your buy transaction is proceeding",
       success: "The buy  transaction is good 👌",
       error: "The buy transaction failed 🤯",
@@ -71,10 +101,8 @@ function SwapWindow(props: any) {
   };
 
   const handleTransactionApprove = async () => {
-    const functionThatReturnPromise = useContractMethodsApprove[
-      props.tokenToApproveId
-    ](orderBookContractAddress);
-    toast.promise(functionThatReturnPromise, {
+    const ftrp = useContractMethodsApprove[props.tokenToApproveId](pairAddress);
+    toast.promise(ftrp, {
       pending: "Your approve transaction is proceeding",
       success: "The approve transaction is good 👌",
       error: "The approve transaction failed 🤯",
@@ -83,10 +111,9 @@ function SwapWindow(props: any) {
   };
 
   const { classes } = props;
-
   let button;
   if (props.tokenToApproveId === -1) {
-    button = (
+    button = isSwapReady(props) ? (
       <Button
         variant="contained"
         endIcon={<SendIcon />}
@@ -94,6 +121,14 @@ function SwapWindow(props: any) {
         onClick={() => handleTransaction()}
       >
         Buy
+      </Button>
+    ) : (
+      <Button
+        variant="contained"
+        endIcon={<SendIcon />}
+        className={classes.swapButton}
+      >
+        Not enough liquidity
       </Button>
     );
   } else {
@@ -135,10 +170,33 @@ function SwapWindow(props: any) {
   );
 }
 
+function isSwapReady(props: any) {
+  let { token1_value, token2_value, amount } = props;
+
+  if (!amount?.price) return false;
+
+  // Input safe guard
+  // if (!(isValidInput(token1_value) && isValidInput(token2_value))) return false;
+  // token1_value = Token(token1_value);
+
+  // if (!amount) return false;
+  // // Like min
+  // const upperTrechold1 = amount.token1.max.lt(amount.amount1)
+  //   ? amount.token1.max
+  //   : amount.amount1;
+
+  // if (token1_value.lt(amount.token1.min) || token1_value.gte(upperTrechold1))
+  //   return false;
+  return true;
+}
+
 const mapStateToProps = (state: any) => {
   return {
     token1: state.swap.token1,
     token2: state.swap.token2,
+    token1_value: state.swap.token1_value,
+    token2_value: state.swap.token2_value,
+    amount: state.swap.amount,
     approvedTokenList: state.swap.approvedTokenList,
     tokenToApproveId: state.swap.tokenToApproveId,
   };
@@ -152,10 +210,13 @@ const mapDispatchToProps = (dispatch: any) => {
     approveToken: (tokenId: number) => {
       dispatch(approveTokenAction(tokenId));
     },
+    setAmount: (amount: any) => {
+      dispatch(setAmountAction(amount));
+    },
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(SwapWindow));
+)(withStyles(styles, { withTheme: true, index: 1 })(SwapWindow));
