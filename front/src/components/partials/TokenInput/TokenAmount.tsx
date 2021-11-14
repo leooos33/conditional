@@ -3,7 +3,7 @@ import { withStyles } from "@mui/styles";
 import * as React from "react";
 import { connect } from "react-redux";
 import { setTokenValueAction } from "../../../redux/actions";
-import { SelectChangeEvent } from "@mui/material";
+import { _Token } from "../../../hooks";
 
 const styles = (theme: any) => ({
   numberInput: {
@@ -22,12 +22,14 @@ const styles = (theme: any) => ({
   },
 });
 class TokenAmount extends React.Component<any, any> {
-  handleChange = (event: any) => {
-    const value: number = event.target.value as number;
+  handleChange = async (event: any) => {
+    let input: any = event.target.value;
     const tokenType: any = this.props.tokenType;
-    this.props.changeValue(tokenType, value);
+
+    this.props.changeValue(tokenType, input);
   };
 
+  //TODO: remove all console.log from entire document;
   render() {
     const tokenValue: any = this.props[this.props.tokenType];
 
@@ -35,11 +37,15 @@ class TokenAmount extends React.Component<any, any> {
     return (
       <TextField
         className={classes.numberInput}
-        // label="TextField"
         placeholder="0.0"
         type="number"
         fullWidth
         value={tokenValue}
+        inputProps={{
+          inputMode: "numeric",
+          pattern: "[0-9.]*",
+          readOnly: this.props.tokenType === "token1" ? false : true,
+        }}
         variant="outlined"
         onChange={this.handleChange}
       />
@@ -49,6 +55,7 @@ class TokenAmount extends React.Component<any, any> {
 
 const mapStateToProps = (state: any) => {
   return {
+    token: state.swap.token1,
     token1: state.swap.token1_value,
     token2: state.swap.token2_value,
   };
@@ -56,8 +63,8 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    changeValue: (tokenType: any, value: any) => {
-      dispatch(setTokenValueAction(tokenType, value));
+    changeValue: (tokenType: any, value: any, amount?: any) => {
+      dispatch(setTokenValueAction(tokenType, value, amount));
     },
   };
 };

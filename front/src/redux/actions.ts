@@ -13,13 +13,23 @@ export const setMintTokenAction = (token: any) => ({
   token,
 });
 
-export const setTokenValueAction = (tokenType: any, value: any) => ({
+export const setTokenValueAction = (
+  tokenType: any,
+  value: any,
+  amount?: any
+) => ({
   type: "SET_VALUE",
   tokenType,
   value,
+  amount,
 });
 
 export const approveTokenAction = (tokenType: any) => ({
   type: "SET_APPROVED",
   tokenType,
+});
+
+export const setAmountAction = (amount: any) => ({
+  type: "SET_AMOUNT",
+  amount,
 });

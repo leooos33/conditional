@@ -27,8 +27,9 @@ const styles = () =>
   });
 
 class TestTokenSelect extends React.Component<any, any> {
-  handleChange = (event: SelectChangeEvent) => {
+  handleChange = async (event: SelectChangeEvent) => {
     const newToken: string = event.target.value as string;
+
     this.props.changeToken(newToken);
   };
 

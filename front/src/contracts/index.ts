@@ -1,8 +1,11 @@
-export const simpleContractAddress =
-  "0x006f7d0C4527b568B4B2c94FdaE386711ABE16C5";
+// export const simpleContractAddress =
+//   "0x006f7d0C4527b568B4B2c94FdaE386711ABE16C5";
 
-export const orderBookContractAddress =
-  "0xc73fFBCCBc67b70f1A88bE28E60bdDdcE3877922";
+// export const orderBookContractAddress =
+//   "0xc73fFBCCBc67b70f1A88bE28E60bdDdcE3877922";
+
+export const registryContractAddress =
+  "0x1AEc24fEC0Dd84AbFDF28dc1Bd9471be44899060";
 
 export const tokenList = [
   {
@@ -13,8 +16,15 @@ export const tokenList = [
     name: "TokenB",
     address: "0x21C7ceB046971b38e3E98b08b0ACAD0Baf1450E6",
   },
+];
+
+export const pairAddress = "0xc4C826f6807f9e0f087BF7D1597b48a1fa57EFB4";
+
+export const templates = [
   {
-    name: "TokenA2",
-    address: "0xEcA2289219929357bE45f808ecd8e03E62C46e12",
+    address: "0xBF6Ad19Bed6bB9e4F81768d2e0E2Aee2fc363a08",
+  },
+  {
+    address: "0xaCC220bdfF9cC041Ea022CC0a90aCC3Abf9af5Fd",
   },
 ];
