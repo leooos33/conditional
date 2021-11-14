@@ -1,12 +1,27 @@
+const { BigNumber } = require("@ethersproject/bignumber");
+
 const defaultErrMsg = "This test should not fail";
 
-const digits = 1000000000000000000;
+const digits = 18;
 
 const toToken = (value) => {
-  if (Array.isArray(value)) {
-    return value.map((i) => (i * digits).toString());
-  }
-  return (value * digits).toString();
+  return value.map((i) => Token(i, digits));
+};
+
+const Token = (value) => {
+  if (value === 0 || value === "0" || !value) return BigNumber.from(0);
+
+  value = parseFloat(value.toString());
+  let [x, y] = value.toString().split(".");
+
+  const a = BigNumber.from(x + "0".repeat(digits));
+  if (y) {
+    y = y.slice(0, digits);
+    let zeros = digits - y.length;
+    const b = BigNumber.from(y + (zeros > 0 ? "0".repeat(zeros) : ""));
+
+    return a.add(b);
+  } else return a;
 };
 
 const mapper = (obj) => {
@@ -16,6 +31,7 @@ const mapper = (obj) => {
   }
   return obj;
 };
+
 module.exports = { defaultErrMsg, digits, toToken, mapper };
 
 //   async function getBlockchainStatus(){
