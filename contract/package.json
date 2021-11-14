@@ -11,5 +11,8 @@
   },
   "scripts": {
     "test": "truffle test"
+  },
+  "dependencies": {
+    "@ethersproject/bignumber": "^5.5.0"
   }
 }

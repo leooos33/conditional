@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const SimpleTwoSidedTemplate = artifacts.require("SimpleTwoSidedTemplate");
+const { toToken } = require("./helpers");
 
 contract("SimpleTwoSidedTemplate", (accounts) => {
   let simpleTwoSidedTemplate;
@@ -12,29 +13,29 @@ contract("SimpleTwoSidedTemplate", (accounts) => {
 
     const params = [
       4,
-      ...[2, 4, 6, 8],
-      ...[10, 20, 30, 40],
-      ...[10, 20, 30, 40],
-      ...[2, 4, 6, 8],
+      ...toToken([2, 4, 6, 8]),
+      ...toToken([10, 20, 30, 40]),
+      ...toToken([10, 20, 30, 40]),
+      ...toToken([2, 4, 6, 8]),
     ];
     const order = {
       owner: accounts[0],
       templateId: 0,
       params,
-      amount0: 40,
-      amount1: 8,
+      amount0: toToken(40),
+      amount1: toToken(8),
       isValid: true,
       deadline: 0,
     };
 
     const price = await simpleTwoSidedTemplate.getPrice(
-      5,
+      toToken(5),
       token0,
       order,
       token0,
       token1
     );
-    assert.equal(parseInt(price), 25, "This test should not fail");
+    assert.equal(parseInt(price), toToken(25), "This test should not fail");
   });
 
   it("SimpleTwoSidedTemplate: Not enogth liquidity TOKEN0", async () => {
@@ -43,23 +44,29 @@ contract("SimpleTwoSidedTemplate", (accounts) => {
 
     const params = [
       4,
-      ...[2, 4, 6, 8],
-      ...[10, 20, 30, 40],
-      ...[10, 20, 30, 40],
-      ...[2, 4, 6, 8],
+      ...toToken([2, 4, 6, 8]),
+      ...toToken([10, 20, 30, 40]),
+      ...toToken([10, 20, 30, 40]),
+      ...toToken([2, 4, 6, 8]),
     ];
     const order = {
       owner: accounts[0],
       templateId: 0,
       params,
-      amount0: 40,
+      amount0: toToken(40),
       amount1: 0,
       isValid: true,
       deadline: 0,
     };
 
     try {
-      await simpleTwoSidedTemplate.getPrice(60, token0, order, token0, token1);
+      await simpleTwoSidedTemplate.getPrice(
+        toToken(60),
+        token0,
+        order,
+        token0,
+        token1
+      );
     } catch (err) {
       assert.equal(
         err.message,
@@ -77,29 +84,29 @@ contract("SimpleTwoSidedTemplate", (accounts) => {
 
     const params = [
       4,
-      ...[2, 4, 6, 8],
-      ...[10, 20, 30, 40],
-      ...[10, 20, 30, 40],
-      ...[2, 4, 6, 8],
+      ...toToken([2, 4, 6, 8]),
+      ...toToken([10, 20, 30, 40]),
+      ...toToken([10, 20, 30, 40]),
+      ...toToken([2, 4, 6, 8]),
     ];
     const order = {
       owner: accounts[0],
       templateId: 0,
       params,
-      amount0: 40,
-      amount1: 30,
+      amount0: toToken(40),
+      amount1: toToken(30),
       isValid: true,
       deadline: 0,
     };
 
     const price = await simpleTwoSidedTemplate.getPrice(
-      25,
+      toToken(25),
       token1,
       order,
       token0,
       token1
     );
-    assert.equal(parseInt(price), 5, "This test should not fail");
+    assert.equal(parseInt(price), toToken(5), "This test should not fail");
   });
 
   it("SimpleTwoSidedTemplate: Not enogth liquidity TOKEN1", async () => {
@@ -108,23 +115,29 @@ contract("SimpleTwoSidedTemplate", (accounts) => {
 
     const params = [
       4,
-      ...[2, 4, 6, 8],
-      ...[10, 20, 30, 40],
-      ...[10, 20, 30, 40],
-      ...[2, 4, 6, 8],
+      ...toToken([2, 4, 6, 8]),
+      ...toToken([10, 20, 30, 40]),
+      ...toToken([10, 20, 30, 40]),
+      ...toToken([2, 4, 6, 8]),
     ];
     const order = {
       owner: accounts[0],
       templateId: 0,
       params,
-      amount0: 40,
+      amount0: toToken(40),
       amount1: 0,
       isValid: true,
       deadline: 0,
     };
 
     try {
-      await simpleTwoSidedTemplate.getPrice(9, token1, order, token0, token1);
+      await simpleTwoSidedTemplate.getPrice(
+        toToken(9),
+        token1,
+        order,
+        token0,
+        token1
+      );
     } catch (err) {
       assert.equal(
         err.message,
