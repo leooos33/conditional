@@ -25,50 +25,65 @@ const styles = (theme: any) => ({
   },
 });
 class TokenAmount extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      tokenValue: this.props[this.props.tokenType],
-    };
-  }
+  // constructor(props: any) {
+  //   super(props);
+  //   this.state = {
+  //     tokenValue: this.props[this.props.tokenType],
+  //   };
+  // }
+  // state = {
+  //   // tokenValue: this.props[this.props.tokenType],
+  //   tokenValue: null,
+  // };
+
+  // componentDidUpdate(prevProps: any) {
+  //   const newValue = this.props[this.props.tokenType];
+  //   if (prevProps.tokenValue !== newValue) {
+  //     this.setState({ tokenValue: newValue });
+  //   }
+  // }
 
   handleChange = async (event: any) => {
     let input: any = event.target.value;
     const tokenType: any = this.props.tokenType;
 
-    if (!input) {
-      this.setState({ tokenValue: input });
-      return;
-    }
+    // if (!input) {
+    //   this.setState({ tokenValue: input });
+    //   return;
+    // }
 
-    const lastInput = input.toString()[input.toString().length - 1];
-    const firstInput = input.toString()[0];
-    if (lastInput === "." || (firstInput !== "0" && lastInput === "0")) {
-      this.setState({ tokenValue: input });
-      return;
-    }
+    // const lastInput = input.toString()[input.toString().length - 1];
+    // const firstInput = input.toString()[0];
+    // if (lastInput === "." || (firstInput !== "0" && lastInput === "0")) {
+    //   this.setState({ tokenValue: input });
+    //   return;
+    // }
 
-    input = parseFloat(input);
+    // input = parseFloat(input);
 
-    this.setState({ tokenValue: input.toString() });
+    // this.setState({ tokenValue: input.toString() });
     this.props.changeValue(tokenType, input);
   };
 
   //TODO: remove all console.log from entire document;
   render() {
     // const tokenValue: string = this.props[this.props.tokenType];
-    const { tokenValue } = this.state;
+    // console.log(this.props.token2, this.props.tokenType);
+    // const { tokenValue } = this.state;
+
+    const tokenValue: any = this.props[this.props.tokenType];
 
     const { classes } = this.props;
     return (
       <TextField
         className={classes.numberInput}
-        // label="TextField"
         placeholder="0.0"
         type="number"
         fullWidth
         value={tokenValue}
         inputProps={{
+          inputMode: "numeric",
+          pattern: "[0-9.]*",
           readOnly: this.props.tokenType === "token1" ? false : true,
         }}
         variant="outlined"

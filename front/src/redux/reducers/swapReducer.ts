@@ -82,9 +82,11 @@ export const swapReducer = (state: any = initialState, action: any) => {
     case "SET_AMOUNT":
       //Tut menat cenu
 
+      // console.log(action.amount?.price, action.amount);
       return {
         ...state,
         amount: action.amount,
+        token2_value: action.amount?.price || state.token2_value,
       };
     default:
       return state;

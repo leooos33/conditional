@@ -30,11 +30,11 @@ export async function getAmount(orderId = 1, q: any, token: string) {
 
   const { amount0, amount1 } = amount;
 
-  console.log(q, isValidInput(q));
+  // console.log(q, isValidInput(q));
   let price;
   if (amount && isValidInput(q)) {
     price = await getPrice(amount, q, token);
-    console.log(price);
+    // console.log(price);
   }
 
   return {
@@ -66,6 +66,8 @@ const getPrice = (amount: any, q: any, token: string) => {
   };
   // console.log(Token(3).toString(), amount.amount1);
   // console.log(token, tokenList[0].address);
+  q = parseFloat(q);
+
   return new Promise((res, rej) => {
     templateContract.methods
       .getPrice(

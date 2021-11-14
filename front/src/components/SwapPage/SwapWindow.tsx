@@ -50,31 +50,30 @@ function SwapWindow(props: any) {
   const pairAddress = useGetPair(tokenList[0].address, tokenList[1].address);
   const { send: buy } = useBuy(pairAddress);
 
-  // useEffect(() => {
-  //   console.log(">", props.token1_value);
-  //   setTimeout(async () => {
-  //     console.log(">>", props.token1_value);
-  //     // const amount = await getAmount(
-  //     //   0,
-  //     //   props.token1_value,
-  //     //   tokenList[props.token1].address
-  //     // );
-  //     props.setAmount(null);
-  //   }, 100);
-  // }, []);
+  useEffect(() => {
+    setTimeout(async () => {
+      // console.log(">>", props.token1_value);
+      const amount = await getAmount(
+        0,
+        props.token1_value,
+        tokenList[props.token1].address
+      );
+      props.setAmount(amount);
+    }, 100);
+  }, []);
 
-  // useEffect(() => {
-  //   console.log(">", props.token1_value);
-  //   const interval = setInterval(async () => {
-  //     console.log(">>", props.token1_value);
-  //     const amount = await getAmount(
-  //       0,
-  //       props.token1_value,
-  //       tokenList[props.token1].address
-  //     );
-  //     props.setAmount(amount);
-  //   }, 4000);
-  // }, []);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      // console.log(">>", props.token1_value);
+      const amount = await getAmount(
+        0,
+        props.token1_value,
+        tokenList[props.token1].address
+      );
+      props.setAmount(amount);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [props.token1_value]);
 
   const handleSwap = () => {
     props.swapTokens();
