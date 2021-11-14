@@ -28,14 +28,14 @@ class TokenInput extends React.Component<any, any> {
     const { classes, amount } = this.props;
 
     let label: any = "";
-    // if (amount && this.props.tokenType === "token1") {
-    //   const tokenInfo = this.props.token1 === 0 ? amount.token1 : amount.token2;
-    //   label = (
-    //     <Typography className={classes.maxLabel} variant="body2">
-    //       Min: {_Token(tokenInfo.min)} Max: {_Token(tokenInfo.max)}
-    //     </Typography>
-    //   );
-    // }
+    if (amount && this.props.tokenType === "token1") {
+      const tokenInfo = this.props.token1 === 0 ? amount.token1 : amount.token2;
+      label = (
+        <Typography className={classes.maxLabel} variant="body2">
+          Max: {_Token(tokenInfo.max)}
+        </Typography>
+      );
+    }
     return (
       <Paper className={classes.tokenInput}>
         <Grid container spacing={0}>

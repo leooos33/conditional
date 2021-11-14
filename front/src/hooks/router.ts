@@ -25,7 +25,7 @@ const templateContract: any = new web3.eth.Contract(
 );
 
 // Put backend router API here
-export async function getAmount(orderId = 1, q: any, token: string) {
+export async function getAmount(q: any, token: string) {
   const amount = await pairContract.methods.orders(orderId).call();
 
   const { amount0, amount1 } = amount;
@@ -34,15 +34,15 @@ export async function getAmount(orderId = 1, q: any, token: string) {
   let price;
   if (amount && isValidInput(q)) {
     price = await getPrice(amount, q, token);
-    // console.log(price);
+    console.log("getAmount: ", price);
   }
 
   return {
     amount1: amount0,
     amount2: amount1,
     price,
-    token1: { min: Token(2), max: Token(8) },
-    token2: { min: Token(10), max: Token(40) },
+    token1: { min: Token(2), max: Token(7) }, // 8-1
+    token2: { min: Token(10), max: Token(39) },
   };
 }
 
@@ -79,6 +79,11 @@ const getPrice = (amount: any, q: any, token: string) => {
       )
       .call()
       .then((result: any) => res(result))
-      .catch((err: any) => res(undefined));
+      .catch((err: any) => {
+        console.log(err);
+        res(undefined);
+      });
   });
 };
+
+export const orderId = 0;

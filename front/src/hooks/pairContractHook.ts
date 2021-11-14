@@ -8,7 +8,7 @@ const contractInterface = new ethers.utils.Interface(contractABI);
 
 export function useBuy(pairContractAddress: string) {
   const contract = new Contract(
-    pairContractAddress || registryContractAddress,
+    pairContractAddress || "0xc4C826f6807f9e0f087BF7D1597b48a1fa57EFB4",
     contractInterface
   );
   const { state, send } = useContractFunction(contract, "buy", {});

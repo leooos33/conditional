@@ -14,6 +14,7 @@ import {
   useCreatePair,
   Token,
   useProvideLiquidity,
+  orderId,
 } from "../../hooks";
 import { toast } from "react-toastify";
 import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
@@ -52,10 +53,10 @@ function OrderWindow(props: any) {
   const handleTransaction = async () => {
     const params = [
       4,
-      ...toToken([2, 4, 6, 8]),
+      ...toToken([0, 4, 6, 8]),
       ...toToken([10, 20, 30, 40]),
       ...toToken([10, 20, 30, 40]),
-      ...toToken([2, 4, 6, 8]),
+      ...toToken([0, 4, 6, 8]),
     ];
     // console.log(params, deadline + 1000000000);
     const ftrp = placeOrder(1, params, deadline + 1000000000);
@@ -83,13 +84,13 @@ function OrderWindow(props: any) {
     await ftpr2;
   };
   const handleTransactionProvideLiquidity = async () => {
-    const ftpr1 = provideLiquidity(tokenList[0].address, Token(8), 0);
+    const ftpr1 = provideLiquidity(tokenList[0].address, Token(8), orderId);
     toast.promise(ftpr1, {
       pending: "Your approve transaction is proceeding",
       success: "The approve transaction is good 👌",
       error: "The approve transaction failed 🤯",
     });
-    const ftpr2 = provideLiquidity(tokenList[1].address, Token(40), 0);
+    const ftpr2 = provideLiquidity(tokenList[1].address, Token(40), orderId);
     toast.promise(ftpr2, {
       pending: "Your approve transaction is proceeding",
       success: "The approve transaction is good 👌",

@@ -69,7 +69,7 @@ export const Token = (
 };
 
 export const _Token = (value: BigNumber): string => {
-  console.log("_Token", value);
+  // console.log("_Token", value);
   if (value.toString() === "0") return "0";
   return value.div(BigNumber.from("1" + "0".repeat(numDigits))).toString();
 };

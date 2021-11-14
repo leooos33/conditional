@@ -22,6 +22,7 @@ import {
   useGetPair,
   getAmount,
   isValidInput,
+  orderId,
 } from "../../hooks";
 import { toast } from "react-toastify";
 
@@ -49,12 +50,12 @@ function SwapWindow(props: any) {
 
   const pairAddress = useGetPair(tokenList[0].address, tokenList[1].address);
   const { send: buy } = useBuy(pairAddress);
+  // console.log(pairAddress);
 
   useEffect(() => {
     setTimeout(async () => {
       // console.log(">>", props.token1_value);
       const amount = await getAmount(
-        0,
         props.token1_value,
         tokenList[props.token1].address
       );
@@ -66,7 +67,6 @@ function SwapWindow(props: any) {
     const interval = setInterval(async () => {
       // console.log(">>", props.token1_value);
       const amount = await getAmount(
-        0,
         props.token1_value,
         tokenList[props.token1].address
       );
@@ -81,7 +81,18 @@ function SwapWindow(props: any) {
   };
 
   const handleTransaction = () => {
-    const ftrp = buy(0, 0.2, 1000 * 10);
+    console.log(
+      orderId,
+      Token(props.token1_value).toString(),
+      tokenList[props.token1].address,
+      Token("10000000").toString()
+    );
+    const ftrp = buy(
+      orderId,
+      Token(props.token1_value),
+      tokenList[props.token1].address,
+      Token("10000000")
+    );
     toast.promise(ftrp, {
       pending: "Your buy transaction is proceeding",
       success: "The buy  transaction is good 👌",
@@ -112,7 +123,13 @@ function SwapWindow(props: any) {
         Buy
       </Button>
     ) : (
-      ""
+      <Button
+        variant="contained"
+        endIcon={<SendIcon />}
+        className={classes.swapButton}
+      >
+        Not enough liquidity
+      </Button>
     );
   } else {
     button = (
@@ -156,24 +173,20 @@ function SwapWindow(props: any) {
 function isSwapReady(props: any) {
   let { token1_value, token2_value, amount } = props;
 
+  if (!amount?.price) return false;
+
   // Input safe guard
-  if (!(isValidInput(token1_value) && isValidInput(token2_value))) return false;
-  token1_value = Token(token1_value);
-  token2_value = Token(token2_value);
+  // if (!(isValidInput(token1_value) && isValidInput(token2_value))) return false;
+  // token1_value = Token(token1_value);
 
-  if (!amount) return false;
-  // Like min
-  const upperTrechold1 = amount.token1.max.lt(amount.amount1)
-    ? amount.token1.max
-    : amount.amount1;
-  const upperTrechold2 = amount.token2.max.lt(amount.amount2)
-    ? amount.token2.max
-    : amount.amount2;
+  // if (!amount) return false;
+  // // Like min
+  // const upperTrechold1 = amount.token1.max.lt(amount.amount1)
+  //   ? amount.token1.max
+  //   : amount.amount1;
 
-  if (token1_value.lt(amount.token1.min) || token1_value.gte(upperTrechold1))
-    return false;
-  if (token2_value.lt(amount.token2.min) || token2_value.gte(upperTrechold2))
-    return false;
+  // if (token1_value.lt(amount.token1.min) || token1_value.gte(upperTrechold1))
+  //   return false;
   return true;
 }
 
