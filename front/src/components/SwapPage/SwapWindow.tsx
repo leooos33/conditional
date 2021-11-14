@@ -63,15 +63,18 @@ function SwapWindow(props: any) {
   //   }, 100);
   // }, []);
 
-  // const interval = setInterval(async () => {
-  //   console.log(">>", props.token1_value);
-  //   // const amount = await getAmount(
-  //   //   0,
-  //   //   props.token1_value,
-  //   //   tokenList[props.token1].address
-  //   // );
-  //   props.setAmount(null);
-  // }, 4000);
+  // useEffect(() => {
+  //   console.log(">", props.token1_value);
+  //   const interval = setInterval(async () => {
+  //     console.log(">>", props.token1_value);
+  //     const amount = await getAmount(
+  //       0,
+  //       props.token1_value,
+  //       tokenList[props.token1].address
+  //     );
+  //     props.setAmount(amount);
+  //   }, 4000);
+  // }, []);
 
   const handleSwap = () => {
     props.swapTokens();

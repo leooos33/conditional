@@ -25,7 +25,7 @@ const templateContract: any = new web3.eth.Contract(
 );
 
 // Put backend router API here
-export async function getAmount(orderId: number, q: any, token: string) {
+export async function getAmount(orderId = 1, q: any, token: string) {
   const amount = await pairContract.methods.orders(orderId).call();
 
   const { amount0, amount1 } = amount;

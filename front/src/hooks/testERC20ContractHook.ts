@@ -68,3 +68,7 @@ export const isValidInput = (x: any) => {
   // console.log(!err, x);
   return !err;
 };
+
+// const isValidInput = (x) => !(isNaN(x) || !parseFloat(x));
+
+// };

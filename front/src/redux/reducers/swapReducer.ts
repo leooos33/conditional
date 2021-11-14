@@ -37,6 +37,7 @@ export const swapReducer = (state: any = initialState, action: any) => {
       return swapLogic();
 
     case "SET_VALUE":
+      // TODO: change it
       // Now it's always token1
       const newAmount = action.amount && state.amount;
       newState = {
@@ -44,7 +45,6 @@ export const swapReducer = (state: any = initialState, action: any) => {
         token1_value:
           action.tokenType === "token1" ? action.value : state.token1_value,
         token2_value: newAmount?.price && state.token2_value,
-        amount: newAmount,
       };
       return {
         ...newState,
@@ -80,6 +80,8 @@ export const swapReducer = (state: any = initialState, action: any) => {
         tokenToApproveId: getMissingToken(newState),
       };
     case "SET_AMOUNT":
+      //Tut menat cenu
+
       return {
         ...state,
         amount: action.amount,

@@ -4,7 +4,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { setAmountAction, setTokenValueAction } from "../../../redux/actions";
 import { SelectChangeEvent } from "@mui/material";
-import { getAmount, Token, _Token } from "../../../hooks";
+import { getAmount, isValidInput, Token, _Token } from "../../../hooks";
 import { BigNumber } from "@ethersproject/bignumber";
 import { tokenList } from "../../../contracts";
 
@@ -25,21 +25,39 @@ const styles = (theme: any) => ({
   },
 });
 class TokenAmount extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      tokenValue: this.props[this.props.tokenType],
+    };
+  }
+
   handleChange = async (event: any) => {
-    const input: any = event.target.value;
+    let input: any = event.target.value;
     const tokenType: any = this.props.tokenType;
 
-    const amount = await getAmount(
-      0,
-      this.props.token1,
-      tokenList[this.props.token].address
-    );
-    this.props.changeValue(tokenType, input, amount);
+    if (!input) {
+      this.setState({ tokenValue: input });
+      return;
+    }
+
+    const lastInput = input.toString()[input.toString().length - 1];
+    const firstInput = input.toString()[0];
+    if (lastInput === "." || (firstInput !== "0" && lastInput === "0")) {
+      this.setState({ tokenValue: input });
+      return;
+    }
+
+    input = parseFloat(input);
+
+    this.setState({ tokenValue: input.toString() });
+    this.props.changeValue(tokenType, input);
   };
 
   //TODO: remove all console.log from entire document;
   render() {
-    const tokenValue: string = this.props[this.props.tokenType];
+    // const tokenValue: string = this.props[this.props.tokenType];
+    const { tokenValue } = this.state;
 
     const { classes } = this.props;
     return (
