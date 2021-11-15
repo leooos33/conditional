@@ -66,16 +66,17 @@ function MintWindow(props: any) {
   );
 
   useEffect(() => {
-    console.log(useContractMethods[props.tokenId].state.status);
-    if (useContractMethods[props.tokenId].state.status === "Exception") {
+    const status = useContractMethods[props.tokenId].state.status;
+    // console.log(status);
+    if (status === "Exception") {
       toast.error(
         getTransactionAlertMessage(TransactionAlertStatus.Failed, "mint")
       );
-    } else if (useContractMethods[props.tokenId].state.status === "Mining") {
+    } else if (status === "Mining") {
       toast.info(
         getTransactionAlertMessage(TransactionAlertStatus.Started, "mint")
       );
-    } else if (useContractMethods[props.tokenId].state.status === "Success") {
+    } else if (status === "Success") {
       toast.success(
         getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "mint")
       );

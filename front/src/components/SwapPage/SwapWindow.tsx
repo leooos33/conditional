@@ -15,7 +15,11 @@ import {
 } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import { useBuy } from "../../hooks/pairContractHook";
-import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
+import {
+  getTransactionAlertMessage,
+  TransactionAlertContainer,
+  TransactionAlertStatus,
+} from "../messages/TransactionAlertContainer";
 import {
   tokenContractsList,
   Token,
@@ -39,18 +43,58 @@ const styles = () =>
     swapButton: {
       marginTop: "10%",
     },
+    swapButtonDisabled: {
+      marginTop: "10%",
+      backgroundColor: "#768595",
+    },
   });
 
 function SwapWindow(props: any) {
   const [label, setLabel] = useState(true);
 
-  const useContractMethodsApprove = tokenContractsList.map(
-    (i: any) => i.useApprove().send
+  const useContractMethodsApprove = tokenContractsList.map((i: any) =>
+    i.useApprove()
   );
 
+  useEffect(() => {
+    const status =
+      useContractMethodsApprove[props.tokenToApproveId]?.state.status;
+    console.log(status);
+    if (status === "Exception") {
+      toast.error(
+        getTransactionAlertMessage(TransactionAlertStatus.Failed, "approve")
+      );
+    } else if (status === "Mining") {
+      toast.info(
+        getTransactionAlertMessage(TransactionAlertStatus.Started, "approve")
+      );
+    } else if (status === "Success") {
+      toast.success(
+        getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "approve")
+      );
+    }
+  }, [useContractMethodsApprove[props.tokenToApproveId]?.state]);
+
   const pairAddress = useGetPair(tokenList[0].address, tokenList[1].address);
-  const { send: buy } = useBuy(pairAddress);
-  // console.log(pairAddress);
+  const { state: buyState, send: buy } = useBuy(pairAddress);
+
+  useEffect(() => {
+    const status = buyState.status;
+    console.log(status);
+    if (status === "Exception") {
+      toast.error(
+        getTransactionAlertMessage(TransactionAlertStatus.Failed, "buy")
+      );
+    } else if (status === "Mining") {
+      toast.info(
+        getTransactionAlertMessage(TransactionAlertStatus.Started, "buy")
+      );
+    } else if (status === "Success") {
+      toast.success(
+        getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "buy")
+      );
+    }
+  }, [buyState]);
 
   useEffect(() => {
     setTimeout(async () => {
@@ -80,33 +124,23 @@ function SwapWindow(props: any) {
     setLabel(!label);
   };
 
-  const handleTransaction = () => {
+  const handleTransaction = async () => {
     console.log(
       orderId,
       Token(props.token1_value).toString(),
       tokenList[props.token1].address,
       Token("10000000").toString()
     );
-    const ftrp = buy(
+    await buy(
       orderId,
       Token(props.token1_value),
       tokenList[props.token1].address,
       Token("10000000")
     );
-    toast.promise(ftrp, {
-      pending: "Your buy transaction is proceeding",
-      success: "The buy  transaction is good 👌",
-      error: "The buy transaction failed 🤯",
-    });
   };
 
   const handleTransactionApprove = async () => {
-    const ftrp = useContractMethodsApprove[props.tokenToApproveId](pairAddress);
-    toast.promise(ftrp, {
-      pending: "Your approve transaction is proceeding",
-      success: "The approve transaction is good 👌",
-      error: "The approve transaction failed 🤯",
-    });
+    await useContractMethodsApprove[props.tokenToApproveId].send(pairAddress);
     props.approveToken(props.tokenToApproveId);
   };
 
@@ -124,9 +158,11 @@ function SwapWindow(props: any) {
       </Button>
     ) : (
       <Button
+        style={{
+          backgroundColor: "#768595",
+        }}
         variant="contained"
-        endIcon={<SendIcon />}
-        className={classes.swapButton}
+        className={classes.swapButtonDisabled}
       >
         Not enough liquidity
       </Button>
