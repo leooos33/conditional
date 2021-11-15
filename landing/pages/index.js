@@ -28,7 +28,7 @@ export default function Home() {
               </a>
             </div>
 
-            <a class="navbar-burger self-center mr-12 md:hidden" href="#">
+            <a class="navbar-burger self-center mr-5 sm:mr-15 md:hidden" href="#">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6 hover:text-gray-200"
@@ -49,17 +49,17 @@ export default function Home() {
       </header>
 
       <section class="bg-black1  body-font">
-        <div class="container mx-auto flex xl:px-10 lg:px-5 px-0 pr-5 md:pr-0 md:pl-10   lg:py-24 py-6 sm:flex-row flex-col items-center">
+        <div class="container mx-auto flex xl:px-10 lg:px-5 px-0 md:pr-0 md:pl-10   lg:py-24 py-6 sm:flex-row flex-col items-center">
           <div class="md:w-full lg:w-9/12 lg:pr-12 md:pr-16 flex flex-col lg:items-start lg:text-left mb-16 md:mb-0 items-center text-center">
             <h1 class="title-font sm:text-6xl lg:text-7xl text-6xl mb-1 font-medium font-sans text-white">
               Conditional liquidity protocol
             </h1>
             <div class="flex justify-center md:flex-row flex-col-reverse ">
-              <a href = "https://app-auto-deployment.d1z1rhwbnsu8xp.amplifyapp.com/swap" class="inline-flex items-center justify-center lg:px-20 md:px-12 px-20 my-10 md:my-6 xl:my-10 text-white bg-orange1 rounded-full pt-2 pb-3 font-sans font-medium text-3xl xl:text-4xl focus:outline-none">
+              <a href = "https://app-auto-deployment.d1z1rhwbnsu8xp.amplifyapp.com/swap" class="inline-flex items-center justify-center lg:px-20 md:px-12 px-20 my-10 md:my-6 xl:my-10 text-white bg-orange1 rounded-full sm:pt-2 sm:pb-3 py-2 sm:py-0  font-sans font-medium text-3xl xl:text-4xl focus:outline-none">
                 <div>Trade now </div>
               </a>
 
-              <a href = "https://conditional.gitbook.io/docs/" class="text-gray1-g75 text-3xl lg:text-4xl inline-flex items-center justify-center md:pl-12 pl-8 md:-mt-3 mt-8 font-sans font-semibold focus:outline-none">
+              <a href = "https://conditional.gitbook.io/docs/" class="text-gray1-g75 text-3xl lg:text-4xl inline-flex items-center justify-center md:pl-12 pl-5 md:-mt-3 mt-8 font-sans font-semibold focus:outline-none">
                 Start building
                 <svg
                   fill="none"
@@ -67,7 +67,7 @@ export default function Home() {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  class="w-8 h-8 mt-2"
+                  class="w-8 h-8 sm:mt-2 mt-0.5"
                   viewBox="0 0 24 24"
                 >
                   <path d="M5 12h14M12 5l7 7-7 7"></path>
@@ -75,7 +75,7 @@ export default function Home() {
               </a>
             </div>
 
-            <div class="flex justify-center md:justify-start pt-3 md:pt-0">
+            <div class="flex justify-center md:justify-start pt-3  md:pt-0">
               <button class=" rounded-full h-12 w-12 flex items-center justify-center">
               <img
               class="object-cover object-center rounded"
@@ -137,12 +137,12 @@ export default function Home() {
               Don't limit yourself to just one curve, when there is an infinite
               number of them.
             </h1>
-            <p class="leading-relaxed text-gray1-g66 text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl font-sans font-medium">
+            <p class="leading-relaxed text-gray1-g66 text-xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl font-sans font-medium">
               Set any curve that you really would like to have (even as in the
               graph).{" "}
             </p>
 
-            <div class="flex justify-center">
+            <div class="flex justify-center pl-3 sm:pl-0">
               <a href = "https://conditional.gitbook.io/docs/" class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
                 <div>Read the docs </div>
                 <img
@@ -156,7 +156,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full">
+          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-fullbg - black1">
             <img
               class="object-cover object-center rounded"
               alt="Custom Curve"
@@ -167,16 +167,16 @@ export default function Home() {
       </section>
 
       <section class="bg-black1  body-font">
-        <div class="container mx-auto flex px-5 xl:px-12 pt-10 lg:px-0 md:flex-row flex-col-reverse items-center">
+        <div class="container mx-auto flex px-5 xl:px-12 sm:pt-10 lg:px-0 md:flex-row flex-col-reverse items-center">
           <div class="lg:flex-grow md:w-1/2 lg:pr-12 md:pr-16 flex flex-col md:items-start md:text-left md:mb-0 items-s text-center">
             <h1 class="title-font sm:text-3xl md:text-xl lg:text-2xl xl:text-3xl text-2xl mt-5 font-medium text-white">
               Regulate parameters to better control your risk.
             </h1>
-            <p class="leading-relaxed text-gray1-g66 text-2xl md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-sans font-medium">
+            <p class="leading-relaxed text-gray1-g66 text-xl md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-sans font-medium">
               Accept trades only when market conditions are met.{" "}
             </p>
 
-            <div class="flex justify-center">
+            <div class="flex justify-center pl-3 sm:pl-0">
               <a href = "https://conditional.gitbook.io/docs/" class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
                 <div>View all parameters </div>
                 <img
@@ -190,7 +190,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full ">
+          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full pl-3 sm:pl-0">
             <img
               class="object-cover object-center rounded"
               alt="Point2"
@@ -201,14 +201,14 @@ export default function Home() {
       </section>
 
       <section class="bg-black1  body-font">
-        <div class="container mx-auto flex px-5 xl:px-12 lg:px-0 py-20 md:flex-row flex-col-reverse items-center">
+        <div class="container mx-auto flex px-5 xl:px-12 lg:px-0 py-10 md:flex-row flex-col-reverse items-center">
           <div class="lg:flex-grow md:w-1/2  lg:pr-12 md:pr-16 flex flex-col md:items-start md:text-left md:mb-0 items-s text-center">
             <h1 class="title-font sm:text-3xl md:text-xl lg:text-2xl xl:text-3xl text-2xl mt-5 font-medium text-white w-full ">
               Apply 2-sided orders to create a variety of liquidity provisioning
               strategies.
             </h1>
 
-            <div class="flex justify-center">
+            <div class="flex justify-center pl-3 sm:pl-0">
               <a href="https://conditional.gitbook.io/docs/" class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
                 <div>Read the docs</div>
                 <img
@@ -222,7 +222,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full md:pl-9 sm:pl-20 pl-7  ">
+          <div class="lg:max-w-lg lg:w-full md:w-1/2 w-full md:pl-9 sm:pl-20 pl-3 pr-1  ">
           <img
               class="object-cover object-center rounded"
               alt="Point3"
@@ -240,11 +240,11 @@ export default function Home() {
             <h1 class="title-font sm:text-3xl md:text-xl lg:text-2xl xl:text-3xl text-2xl mt-5 font-medium text-white">
               ...And sell them to earn royalties!
             </h1>
-            <p class="leading-relaxed text-gray1-g66 text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl font-sans font-medium">
+            <p class="leading-relaxed text-gray1-g66 text-xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl font-sans font-medium">
               Decentralized liquidity fundraising.{" "}
             </p>
 
-            <div class="flex justify-center">
+            <div class="flex justify-center pl-3 sm:pl-0">
               <a href = "https://conditional.gitbook.io/docs/core-concepts/financial-nfts" class="inline-flex text-orange1 font-sans font-medium text-2xl md:text-lg lg:text-xl xl:text-xl 2xl:text-2xl border-0 py-1  focus:outline-none">
                 <div>Financial NFT's </div>
                 <img
