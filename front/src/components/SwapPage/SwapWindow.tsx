@@ -6,7 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { Chip, createStyles, Divider } from "@mui/material";
 import { withStyles } from "@mui/styles";
-import { tokenList } from "../../contracts";
+import { tokenList, pairAddress } from "../../contracts";
 import { connect } from "react-redux";
 import {
   approveTokenAction,
@@ -23,7 +23,6 @@ import {
 import {
   tokenContractsList,
   Token,
-  useGetPair,
   updateSwapInfo,
   isValidInput,
   orderId,
@@ -77,7 +76,6 @@ function SwapWindow(props: any) {
     }
   }, [useContractMethodsApprove[props.token2]?.state]);
 
-  const pairAddress = useGetPair(tokenList[0].address, tokenList[1].address);
   const { state: buyState, send: buy } = useBuy(pairAddress);
 
   useEffect(() => {

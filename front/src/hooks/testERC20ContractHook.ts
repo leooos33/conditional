@@ -67,9 +67,26 @@ export const Token = (
 };
 
 export const _Token = (value: BigNumber): string => {
-  // console.log("_Token", value);
+  console.log("_Token", value.toString());
   if (value.toString() === "0") return "0";
-  return value.div(BigNumber.from("1" + "0".repeat(numDigits))).toString();
+  const num = value.toString();
+  const point = num.length - numDigits;
+
+  const parts = [num.slice(0, point), num.slice(point)];
+
+  let newNum;
+  if (parts[1].replace(/0/gi, "") === "") {
+    newNum = parts[0];
+  } else if (!parts[0]) {
+    newNum = "0." + parts[1];
+    while (newNum[newNum.length - 1] === "0") newNum = newNum.slice(0, -1);
+  } else {
+    newNum = parts.join(".");
+    while (newNum[newNum.length - 1] === "0") newNum = newNum.slice(0, -1);
+  }
+
+  console.log("__Token", newNum);
+  return newNum;
 };
 
 export const isValidInput = (x: any) => {
