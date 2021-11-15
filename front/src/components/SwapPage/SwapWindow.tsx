@@ -72,7 +72,17 @@ function SwapWindow(props: any) {
       toast.success(
         getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "approve")
       );
-      props.approveToken(0);
+      setTimeout(async () => {
+        const info = await updateSwapInfo(
+          props.token1_value,
+          tokenList[props.token1].address,
+          accountAddress,
+          tokenList[props.token2].address,
+          pairAddress,
+          true
+        );
+        if (info) props.setSwapInfo(info);
+      }, 100);
     }
   }, [useContractMethodsApprove[props.token2]?.state]);
 
