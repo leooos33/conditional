@@ -29,6 +29,7 @@ const snapshot: any = {};
 export const orderId = 0;
 
 //TODO: Optimize this, update only updated stuff
+//TODO: DO smth with big number
 export async function updateSwapInfo(
   q: any,
   token: string,
@@ -36,6 +37,7 @@ export async function updateSwapInfo(
   tokenToPay: string,
   pairAddress: any
 ) {
+  console.log(">", senderAddress);
   if (
     snapshot.q === q &&
     snapshot.token === token &&
@@ -61,10 +63,10 @@ export async function updateSwapInfo(
   }
 
   return {
-    amount1: amount0,
-    amount2: amount1,
-    price,
-    allowance,
+    amount1: amount0 ? BigNumber.from(amount0) : amount0,
+    amount2: amount1 ? BigNumber.from(amount1) : amount1,
+    price: price ? BigNumber.from(price) : price,
+    allowance: allowance ? BigNumber.from(allowance) : allowance,
     token1: { min: Token(2), max: Token(7) }, // 8-1
     token2: { min: Token(10), max: Token(39) },
   };
