@@ -5,8 +5,6 @@ import { useContractCall, useContractFunction } from "@usedapp/core";
 import contractABI from "../abi/TestERC20Contract.json";
 import { tokenList } from "../contracts";
 import { BigNumber } from "@ethersproject/bignumber";
-import { isValidElement } from "react";
-import { ConstructionRounded } from "@mui/icons-material";
 
 const contractInterface = new ethers.utils.Interface(contractABI);
 

@@ -6,9 +6,13 @@ import { connect } from "react-redux";
 import TestTokenSelect from "./TestTokenSelect";
 import { tokenList } from "../../contracts";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
+import {
+  getTransactionAlertMessage,
+  TransactionAlertStatus,
+  TransactionAlertContainer,
+} from "../messages/TransactionAlertContainer";
 import { tokenContractsList } from "../../hooks";
 
 const styles = () =>
@@ -57,20 +61,30 @@ function MintWindow(props: any) {
     setValueToMint(newValue);
   };
 
-  const useContractMethods = tokenContractsList.map(
-    (i: any) => i.useContractMethod("unlimitedMint").send
+  const useContractMethods = tokenContractsList.map((i: any) =>
+    i.useContractMethod("unlimitedMint")
   );
 
-  const handleTransaction = () => {
-    const functionThatReturnPromise = useContractMethods[props.tokenId](
-      account,
-      valueToMint.toString()
-    );
-    toast.promise(functionThatReturnPromise, {
-      pending: "Your mint transaction is proceeding",
-      success: "The mint transaction is good 👌",
-      error: "The mint transaction failed 🤯",
-    });
+  useEffect(() => {
+    console.log(useContractMethods[props.tokenId].state.status);
+    if (useContractMethods[props.tokenId].state.status === "Exception") {
+      toast.error(
+        getTransactionAlertMessage(TransactionAlertStatus.Failed, "mint")
+      );
+    } else if (useContractMethods[props.tokenId].state.status === "Mining") {
+      toast.info(
+        getTransactionAlertMessage(TransactionAlertStatus.Started, "mint")
+      );
+    } else if (useContractMethods[props.tokenId].state.status === "Success") {
+      toast.success(
+        getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "mint")
+      );
+    }
+  }, [useContractMethods[props.tokenId].state]);
+
+  const handleTransaction = async () => {
+    const { send } = useContractMethods[props.tokenId];
+    await send(account, valueToMint.toString());
   };
 
   return (
