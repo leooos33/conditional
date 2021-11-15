@@ -6,25 +6,29 @@ import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { Chip, createStyles, Divider } from "@mui/material";
 import { withStyles } from "@mui/styles";
-import { tokenList } from "../../contracts";
+import { tokenList, pairAddress } from "../../contracts";
 import { connect } from "react-redux";
 import {
   approveTokenAction,
   changePairAction,
-  setAmountAction,
+  setSwapInfoAction,
 } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import { useBuy } from "../../hooks/pairContractHook";
-import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
+import {
+  getTransactionAlertMessage,
+  TransactionAlertContainer,
+  TransactionAlertStatus,
+} from "../messages/TransactionAlertContainer";
 import {
   tokenContractsList,
   Token,
-  useGetPair,
-  getAmount,
+  updateSwapInfo,
   isValidInput,
   orderId,
 } from "../../hooks";
 import { toast } from "react-toastify";
+import { useEthers } from "@usedapp/core";
 
 const styles = () =>
   createStyles({
@@ -39,81 +43,148 @@ const styles = () =>
     swapButton: {
       marginTop: "10%",
     },
+    swapButtonDisabled: {
+      marginTop: "10%",
+      backgroundColor: "#768595",
+    },
   });
 
 function SwapWindow(props: any) {
   const [label, setLabel] = useState(true);
 
-  const useContractMethodsApprove = tokenContractsList.map(
-    (i: any) => i.useApprove().send
+  const { account: accountAddress } = useEthers();
+
+  const useContractMethodsApprove = tokenContractsList.map((i: any) =>
+    i.useApprove()
   );
 
-  const pairAddress = useGetPair(tokenList[0].address, tokenList[1].address);
-  const { send: buy } = useBuy(pairAddress);
-  // console.log(pairAddress);
+  useEffect(() => {
+    const status = useContractMethodsApprove[props.token2]?.state.status;
+    if (status === "Exception") {
+      toast.error(
+        getTransactionAlertMessage(TransactionAlertStatus.Failed, "approve")
+      );
+    } else if (status === "Mining") {
+      toast.info(
+        getTransactionAlertMessage(TransactionAlertStatus.Started, "approve")
+      );
+    } else if (status === "Success") {
+      toast.success(
+        getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "approve")
+      );
+      props.approveToken(0);
+    }
+  }, [useContractMethodsApprove[props.token2]?.state]);
+
+  const { state: buyState, send: buy } = useBuy(pairAddress);
+
+  useEffect(() => {
+    const status = buyState.status;
+
+    if (status === "Exception") {
+      toast.error(
+        getTransactionAlertMessage(TransactionAlertStatus.Failed, "buy")
+      );
+    } else if (status === "Mining") {
+      toast.info(
+        getTransactionAlertMessage(TransactionAlertStatus.Started, "buy")
+      );
+    } else if (status === "Success") {
+      toast.success(
+        getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "buy")
+      );
+    }
+  }, [buyState]);
 
   useEffect(() => {
     setTimeout(async () => {
-      // console.log(">>", props.token1_value);
-      const amount = await getAmount(
+      const info = await updateSwapInfo(
         props.token1_value,
-        tokenList[props.token1].address
+        tokenList[props.token1].address,
+        accountAddress,
+        tokenList[props.token2].address,
+        pairAddress
       );
-      props.setAmount(amount);
+      if (info) props.setSwapInfo(info);
     }, 100);
   }, []);
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      // console.log(">>", props.token1_value);
-      const amount = await getAmount(
+      const info = await updateSwapInfo(
         props.token1_value,
-        tokenList[props.token1].address
+        tokenList[props.token1].address,
+        accountAddress,
+        tokenList[props.token2].address,
+        pairAddress
       );
-      props.setAmount(amount);
-    }, 2000);
+      if (info) props.setSwapInfo(info);
+    }, 1000);
     return () => clearInterval(interval);
-  }, [props.token1_value]);
+  }, [props.token1_value, accountAddress]);
 
   const handleSwap = () => {
     props.swapTokens();
     setLabel(!label);
   };
 
-  const handleTransaction = () => {
-    console.log(
-      orderId,
-      Token(props.token1_value).toString(),
-      tokenList[props.token1].address,
-      Token("10000000").toString()
-    );
-    const ftrp = buy(
+  const handleTransaction = async () => {
+    // console.log(
+    //   "Buy",
+    //   orderId,
+    //   Token(props.token1_value).toString(),
+    //   tokenList[props.token1].address,
+    //   Token("10000000").toString()
+    // );
+    await buy(
       orderId,
       Token(props.token1_value),
       tokenList[props.token1].address,
       Token("10000000")
     );
-    toast.promise(ftrp, {
-      pending: "Your buy transaction is proceeding",
-      success: "The buy  transaction is good 👌",
-      error: "The buy transaction failed 🤯",
-    });
   };
 
   const handleTransactionApprove = async () => {
-    const ftrp = useContractMethodsApprove[props.tokenToApproveId](pairAddress);
-    toast.promise(ftrp, {
-      pending: "Your approve transaction is proceeding",
-      success: "The approve transaction is good 👌",
-      error: "The approve transaction failed 🤯",
-    });
-    props.approveToken(props.tokenToApproveId);
+    await useContractMethodsApprove[props.token2].send(pairAddress);
   };
 
   const { classes } = props;
   let button;
-  if (props.tokenToApproveId === -1) {
-    button = isSwapReady(props) ? (
+  // console.log(props.token1_value);
+  if (!isValidInput(props.token1_value)) {
+    button = (
+      <Button
+        style={{
+          backgroundColor: "#768595",
+        }}
+        variant="contained"
+        className={classes.swapButtonDisabled}
+      >
+        Enter the amount
+      </Button>
+    );
+  } else if (isValidInput(props.token1_value) && !props.info?.price) {
+    const text =
+      props.token1 === 1 && parseFloat(props.token1_value) <= 20000
+        ? "Amount should be greater 20000"
+        : "Not enough liquidity";
+    button = (
+      <Button
+        style={{
+          backgroundColor: "#768595",
+        }}
+        variant="contained"
+        className={classes.swapButtonDisabled}
+      >
+        {text}
+      </Button>
+    );
+  } else if (
+    props.info?.allowance &&
+    props.info?.price &&
+    props.info.allowance.gte(props.info?.price)
+  ) {
+    button = (
       <Button
         variant="contained"
         endIcon={<SendIcon />}
@@ -122,16 +193,12 @@ function SwapWindow(props: any) {
       >
         Buy
       </Button>
-    ) : (
-      <Button
-        variant="contained"
-        endIcon={<SendIcon />}
-        className={classes.swapButton}
-      >
-        Not enough liquidity
-      </Button>
     );
-  } else {
+  } else if (
+    props.info?.allowance &&
+    props.info?.price &&
+    props.info.allowance.lt(props.info?.price)
+  ) {
     button = (
       <Button
         variant="contained"
@@ -139,7 +206,7 @@ function SwapWindow(props: any) {
         className={classes.swapButton}
         onClick={() => handleTransactionApprove()}
       >
-        Approve {tokenList[props.tokenToApproveId].name}
+        Approve {tokenList[props.token2].name}
       </Button>
     );
   }
@@ -170,35 +237,13 @@ function SwapWindow(props: any) {
   );
 }
 
-function isSwapReady(props: any) {
-  let { token1_value, token2_value, amount } = props;
-
-  if (!amount?.price) return false;
-
-  // Input safe guard
-  // if (!(isValidInput(token1_value) && isValidInput(token2_value))) return false;
-  // token1_value = Token(token1_value);
-
-  // if (!amount) return false;
-  // // Like min
-  // const upperTrechold1 = amount.token1.max.lt(amount.amount1)
-  //   ? amount.token1.max
-  //   : amount.amount1;
-
-  // if (token1_value.lt(amount.token1.min) || token1_value.gte(upperTrechold1))
-  //   return false;
-  return true;
-}
-
 const mapStateToProps = (state: any) => {
   return {
     token1: state.swap.token1,
     token2: state.swap.token2,
     token1_value: state.swap.token1_value,
     token2_value: state.swap.token2_value,
-    amount: state.swap.amount,
-    approvedTokenList: state.swap.approvedTokenList,
-    tokenToApproveId: state.swap.tokenToApproveId,
+    info: state.swap.info,
   };
 };
 
@@ -210,8 +255,8 @@ const mapDispatchToProps = (dispatch: any) => {
     approveToken: (tokenId: number) => {
       dispatch(approveTokenAction(tokenId));
     },
-    setAmount: (amount: any) => {
-      dispatch(setAmountAction(amount));
+    setSwapInfo: (amount: any) => {
+      dispatch(setSwapInfoAction(amount));
     },
   };
 };

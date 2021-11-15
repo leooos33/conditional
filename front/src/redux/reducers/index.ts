@@ -7,8 +7,8 @@ import { persistReducer } from "redux-persist";
 const swapConfig = {
   key: "swap",
   storage: storage,
-  whitelist: ["token1", "token2", "approvedTokenList", "tokenToApproveId"],
-  blacklist: ["token1_value", "token2_value", "amount", "snapshot"],
+  whitelist: ["token1", "token2"],
+  blacklist: ["token1_value", "token2_value", "info"],
 };
 
 const mintConfig = {
