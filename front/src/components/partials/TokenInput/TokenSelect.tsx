@@ -32,7 +32,11 @@ class TokenSelect extends React.Component<any, any> {
             onChange={this.handleChange}
           >
             {tokenList.map((cur: any, i: number) => {
-              return <MenuItem value={i}>{cur.name}</MenuItem>;
+              return (
+                <MenuItem key={i.toString()} value={i}>
+                  {cur.name}
+                </MenuItem>
+              );
             })}
           </Select>
         </FormControl>

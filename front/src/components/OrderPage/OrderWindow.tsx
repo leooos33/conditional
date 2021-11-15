@@ -18,6 +18,7 @@ import {
 } from "../../hooks";
 import { toast } from "react-toastify";
 import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
+import { BigNumber } from "@ethersproject/bignumber";
 
 const styles = () =>
   createStyles({
@@ -53,10 +54,12 @@ function OrderWindow(props: any) {
   const handleTransaction = async () => {
     const params = [
       4,
-      ...toToken([0, 4, 6, 8]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([0, 4, 6, 8]),
+      ...toToken([0, 4000, 6000, 8000]),
+      ...toToken([10000, 20000, 30000, 40000]),
+      BigNumber.from("10000"),
+      ...toToken([20000, 30000, 40000]),
+      BigNumber.from("1"),
+      ...toToken([0, 4000, 6000, 8000]),
     ];
     // console.log(params, deadline + 1000000000);
     const ftrp = placeOrder(1, params, deadline + 1000000000);
@@ -68,13 +71,13 @@ function OrderWindow(props: any) {
   };
 
   const handleTransactionApprove = async () => {
-    const ftpr1 = useContractMethodApprove[0](pairAddress, Token(8));
+    const ftpr1 = useContractMethodApprove[0](pairAddress, Token(8000));
     toast.promise(ftpr1, {
       pending: "Your approve transaction is proceeding",
       success: "The approve transaction is good 👌",
       error: "The approve transaction failed 🤯",
     });
-    const ftpr2 = useContractMethodApprove[1](pairAddress, Token(40));
+    const ftpr2 = useContractMethodApprove[1](pairAddress, Token(40000));
     toast.promise(ftpr2, {
       pending: "Your approve transaction is proceeding",
       success: "The approve transaction is good 👌",
@@ -84,13 +87,13 @@ function OrderWindow(props: any) {
     await ftpr2;
   };
   const handleTransactionProvideLiquidity = async () => {
-    const ftpr1 = provideLiquidity(tokenList[0].address, Token(8), orderId);
+    const ftpr1 = provideLiquidity(tokenList[0].address, Token(8000), orderId);
     toast.promise(ftpr1, {
       pending: "Your approve transaction is proceeding",
       success: "The approve transaction is good 👌",
       error: "The approve transaction failed 🤯",
     });
-    const ftpr2 = provideLiquidity(tokenList[1].address, Token(40), orderId);
+    const ftpr2 = provideLiquidity(tokenList[1].address, Token(40000), orderId);
     toast.promise(ftpr2, {
       pending: "Your approve transaction is proceeding",
       success: "The approve transaction is good 👌",

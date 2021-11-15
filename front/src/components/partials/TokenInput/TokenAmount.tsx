@@ -3,7 +3,6 @@ import { withStyles } from "@mui/styles";
 import * as React from "react";
 import { connect } from "react-redux";
 import { setTokenValueAction } from "../../../redux/actions";
-import { _Token } from "../../../hooks";
 
 const styles = (theme: any) => ({
   numberInput: {

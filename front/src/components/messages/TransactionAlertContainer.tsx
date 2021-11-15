@@ -15,3 +15,21 @@ export const TransactionAlertContainer = () => {
     />
   );
 };
+
+export enum TransactionAlertStatus {
+  Failed,
+  Started,
+  Succeeded,
+}
+
+export const getTransactionAlertMessage = (
+  type: TransactionAlertStatus,
+  msg: string
+) => {
+  if (type === TransactionAlertStatus.Failed)
+    return `The ${msg} transaction failed 🤯`;
+  if (type === TransactionAlertStatus.Started)
+    return `The ${msg} transaction is executing, please wait 👌`;
+  if (type === TransactionAlertStatus.Succeeded)
+    return `The ${msg} transaction succeeded 😏`;
+};

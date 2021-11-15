@@ -29,7 +29,7 @@ export const approveTokenAction = (tokenType: any) => ({
   tokenType,
 });
 
-export const setAmountAction = (amount: any) => ({
-  type: "SET_AMOUNT",
-  amount,
+export const setSwapInfoAction = (info: any) => ({
+  type: "SET_INFO",
+  info,
 });
