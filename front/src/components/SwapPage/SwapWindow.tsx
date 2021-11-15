@@ -59,7 +59,7 @@ function SwapWindow(props: any) {
         props.token1_value,
         tokenList[props.token1].address
       );
-      props.setAmount(amount);
+      if (amount) props.setAmount(amount);
     }, 100);
   }, []);
 
@@ -70,8 +70,8 @@ function SwapWindow(props: any) {
         props.token1_value,
         tokenList[props.token1].address
       );
-      props.setAmount(amount);
-    }, 2000);
+      if (amount) props.setAmount(amount);
+    }, 1000);
     return () => clearInterval(interval);
   }, [props.token1_value]);
 
