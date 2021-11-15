@@ -66,22 +66,31 @@ export const Token = (
   } else return a;
 };
 
+//TODO: make it not look like some beginers code
 export const _Token = (value: BigNumber): string => {
   console.log("_Token", value.toString());
   if (value.toString() === "0") return "0";
   const num = value.toString();
-  const point = num.length - numDigits;
-
-  const parts = [num.slice(0, point), num.slice(point)];
-
   let newNum;
-  if (parts[1].replace(/0/gi, "") === "") {
-    newNum = parts[0];
-  } else if (!parts[0]) {
-    newNum = "0." + parts[1];
-    while (newNum[newNum.length - 1] === "0") newNum = newNum.slice(0, -1);
+
+  if (num.length > 18) {
+    const point = num.length - numDigits;
+
+    const parts = [num.slice(0, point), num.slice(point)];
+    console.log(parts);
+
+    if (parts[1].replace(/0/gi, "") === "") {
+      newNum = parts[0];
+    } else if (!parts[0]) {
+      newNum = "0." + parts[1];
+      while (newNum[newNum.length - 1] === "0") newNum = newNum.slice(0, -1);
+    } else {
+      newNum = parts.join(".");
+      while (newNum[newNum.length - 1] === "0") newNum = newNum.slice(0, -1);
+    }
   } else {
-    newNum = parts.join(".");
+    const delta = numDigits - num.length;
+    newNum = "0." + "0".repeat(delta) + num;
     while (newNum[newNum.length - 1] === "0") newNum = newNum.slice(0, -1);
   }
 

@@ -164,6 +164,10 @@ function SwapWindow(props: any) {
       </Button>
     );
   } else if (isValidInput(props.token1_value) && !props.info?.price) {
+    const text =
+      props.token1 === 1 && parseFloat(props.token1_value) <= 20000
+        ? "Amount should be greater 20000"
+        : "Not enough liquidity";
     button = (
       <Button
         style={{
@@ -172,7 +176,7 @@ function SwapWindow(props: any) {
         variant="contained"
         className={classes.swapButtonDisabled}
       >
-        Not enough liquidity
+        {text}
       </Button>
     );
   } else if (

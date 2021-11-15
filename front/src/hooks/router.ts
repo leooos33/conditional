@@ -82,7 +82,7 @@ const getAllowance = async (token: any, owner: any, spender: any) => {
       .call()
       .then((result: any) => res(result))
       .catch((err: any) => {
-        console.error(err);
+        console.error("getAllowance", err);
         res(0);
       });
   });
@@ -110,7 +110,9 @@ const getPrice = (amount: any, q: any, token: string) => {
   };
   // console.log(amount.amount0, amount.amount1);
   // console.log(token, tokenList[0].address);
+  console.log(q);
   q = parseFloat(q);
+  console.log(q, Token(q).toString());
 
   return new Promise((res, rej) => {
     templateContract.methods
@@ -124,7 +126,7 @@ const getPrice = (amount: any, q: any, token: string) => {
       .call()
       .then((result: any) => res(result))
       .catch((err: any) => {
-        console.error(err);
+        console.error("getPrice", err);
         res(undefined);
       });
   });
