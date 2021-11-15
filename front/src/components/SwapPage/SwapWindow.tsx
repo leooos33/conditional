@@ -131,13 +131,13 @@ function SwapWindow(props: any) {
   };
 
   const handleTransaction = async () => {
-    console.log(
-      "Buy",
-      orderId,
-      Token(props.token1_value).toString(),
-      tokenList[props.token1].address,
-      Token("10000000").toString()
-    );
+    // console.log(
+    //   "Buy",
+    //   orderId,
+    //   Token(props.token1_value).toString(),
+    //   tokenList[props.token1].address,
+    //   Token("10000000").toString()
+    // );
     await buy(
       orderId,
       Token(props.token1_value),
@@ -152,7 +152,7 @@ function SwapWindow(props: any) {
 
   const { classes } = props;
   let button;
-  console.log(props.token1_value);
+  // console.log(props.token1_value);
   if (!isValidInput(props.token1_value)) {
     button = (
       <Button
