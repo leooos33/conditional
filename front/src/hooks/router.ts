@@ -35,16 +35,19 @@ export async function updateSwapInfo(
   token: string,
   senderAddress: any,
   tokenToPay: string,
-  pairAddress: any
+  pairAddress: any,
+  force: boolean = false
 ) {
   console.log(">", senderAddress);
-  if (
-    snapshot.q === q &&
-    snapshot.token === token &&
-    snapshot.senderAddress === senderAddress &&
-    snapshot.tokenToPay === tokenToPay
-  )
-    return;
+  if (!force) {
+    if (
+      snapshot.q === q &&
+      snapshot.token === token &&
+      snapshot.senderAddress === senderAddress &&
+      snapshot.tokenToPay === tokenToPay
+    )
+      return;
+  }
   console.log(">>>");
   snapshot.q = q;
   snapshot.token = token;

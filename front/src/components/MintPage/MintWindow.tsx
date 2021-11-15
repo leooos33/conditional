@@ -67,7 +67,6 @@ function MintWindow(props: any) {
 
   useEffect(() => {
     const status = useContractMethods[props.tokenId].state.status;
-    // console.log(status);
     if (status === "Exception") {
       toast.error(
         getTransactionAlertMessage(TransactionAlertStatus.Failed, "mint")
