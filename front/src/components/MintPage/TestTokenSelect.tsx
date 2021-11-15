@@ -49,7 +49,7 @@ class TestTokenSelect extends React.Component<any, any> {
           >
             {tokenList.map((cur: any, i: number) => {
               return (
-                <MenuItem key={i} value={i}>
+                <MenuItem key={i.toString()} value={i}>
                   {cur.name}
                 </MenuItem>
               );

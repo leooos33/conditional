@@ -1,6 +1,6 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { tokenList } from "../../contracts";
-import { getAmount, Token, _Token } from "../../hooks";
+import { updateSwapInfo, Token, _Token } from "../../hooks";
 
 const initialState = {
   token1: 0,
@@ -9,7 +9,7 @@ const initialState = {
   token2_value: 0,
   approvedTokenList: Array(tokenList.length).fill(false),
   tokenToApproveId: 0,
-  amount: null,
+  info: null,
   snapshot: null,
 };
 
@@ -41,12 +41,12 @@ export const swapReducer = (state: any = initialState, action: any) => {
     case "SET_VALUE":
       // TODO: change it
       // Now it's always token1
-      const newAmount = action.amount && state.amount;
+      const newInfo = action.info && state.info;
       newState = {
         ...state,
         token1_value:
           action.tokenType === "token1" ? action.value : state.token1_value,
-        token2_value: newAmount?.price && state.token2_value,
+        token2_value: newInfo?.price && state.token2_value,
       };
       return {
         ...newState,
@@ -81,13 +81,13 @@ export const swapReducer = (state: any = initialState, action: any) => {
         ...newState,
         tokenToApproveId: getMissingToken(newState),
       };
-    case "SET_AMOUNT":
-      if (!action.amount) return { ...state };
+    case "SET_INFO":
+      if (!action.info) return { ...state };
       return {
         ...state,
-        amount: action.amount,
-        token2_value: action.amount?.price
-          ? _Token(BigNumber.from(action.amount.price))
+        info: action.info,
+        token2_value: action.info?.price
+          ? _Token(BigNumber.from(action.info.price))
           : state.token2_value,
       };
     default:

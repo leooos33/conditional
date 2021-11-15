@@ -6,6 +6,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import Web3 from "web3";
 import contractABI from "../abi/Pair.json";
 import templateContractABI from "../abi/Template.json";
+import tokenContractABI from "../abi/TestERC20Contract.json";
 import { AbiItem } from "web3-utils";
 
 const web3 = new Web3(
@@ -25,32 +26,66 @@ const templateContract: any = new web3.eth.Contract(
 );
 
 const snapshot: any = {};
-export async function getAmount(q: any, token: string) {
-  console.log(">", q, token);
-  if (snapshot.q === q && snapshot.token === token) return;
+export const orderId = 0;
+
+//TODO: Optimize this, update only updated stuff
+export async function updateSwapInfo(
+  q: any,
+  token: string,
+  senderAddress: any,
+  tokenToPay: string,
+  pairAddress: any
+) {
+  if (
+    snapshot.q === q &&
+    snapshot.token === token &&
+    snapshot.senderAddress === senderAddress &&
+    snapshot.tokenToPay === tokenToPay
+  )
+    return;
   console.log(">>>");
   snapshot.q = q;
   snapshot.token = token;
+  snapshot.senderAddress = senderAddress;
+  snapshot.tokenToPay = tokenToPay;
 
   const amount = await pairContract.methods.orders(orderId).call();
 
   const { amount0, amount1 } = amount;
 
-  // console.log(q, isValidInput(q));
   let price;
+  let allowance;
   if (amount && isValidInput(q)) {
     price = await getPrice(amount, q, token);
-    console.log("getAmount: ", price);
+    allowance = await getAllowance(tokenToPay, senderAddress, pairAddress);
   }
 
   return {
     amount1: amount0,
     amount2: amount1,
     price,
+    allowance,
     token1: { min: Token(2), max: Token(7) }, // 8-1
     token2: { min: Token(10), max: Token(39) },
   };
 }
+
+const getAllowance = async (token: any, owner: any, spender: any) => {
+  const tokenContract: any = new web3.eth.Contract(
+    tokenContractABI as AbiItem[],
+    token
+  );
+  return new Promise((res, rej) => {
+    tokenContract.methods
+      .allowance(owner, spender)
+      .call()
+      .then((result: any) => res(result))
+      .catch((err: any) => {
+        console.log(err);
+        res(0);
+      });
+  });
+};
 
 const options: any = [
   4,
@@ -91,5 +126,3 @@ const getPrice = (amount: any, q: any, token: string) => {
       });
   });
 };
-
-export const orderId = 0;

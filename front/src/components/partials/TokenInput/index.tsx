@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Grid, Paper, Typography } from "@mui/material";
 import TokenAmount from "./TokenAmount";
 import TokenSelect from "./TokenSelect";
-import { getAmount, _Token } from "../../../hooks";
+import { updateSwapInfo, _Token } from "../../../hooks";
 import { AnyTxtRecord } from "dns";
 
 const styles = () =>

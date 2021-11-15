@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import {
   approveTokenAction,
   changePairAction,
-  setAmountAction,
+  setSwapInfoAction,
 } from "../../redux/actions";
 import { useEffect, useState } from "react";
 import { useBuy } from "../../hooks/pairContractHook";
@@ -24,11 +24,12 @@ import {
   tokenContractsList,
   Token,
   useGetPair,
-  getAmount,
+  updateSwapInfo,
   isValidInput,
   orderId,
 } from "../../hooks";
 import { toast } from "react-toastify";
+import { useEthers } from "@usedapp/core";
 
 const styles = () =>
   createStyles({
@@ -52,6 +53,8 @@ const styles = () =>
 function SwapWindow(props: any) {
   const [label, setLabel] = useState(true);
 
+  const { account: accountAddress } = useEthers();
+
   const useContractMethodsApprove = tokenContractsList.map((i: any) =>
     i.useApprove()
   );
@@ -59,7 +62,6 @@ function SwapWindow(props: any) {
   useEffect(() => {
     const status =
       useContractMethodsApprove[props.tokenToApproveId]?.state.status;
-    console.log(status);
     if (status === "Exception") {
       toast.error(
         getTransactionAlertMessage(TransactionAlertStatus.Failed, "approve")
@@ -80,7 +82,7 @@ function SwapWindow(props: any) {
 
   useEffect(() => {
     const status = buyState.status;
-    console.log(status);
+
     if (status === "Exception") {
       toast.error(
         getTransactionAlertMessage(TransactionAlertStatus.Failed, "buy")
@@ -98,23 +100,27 @@ function SwapWindow(props: any) {
 
   useEffect(() => {
     setTimeout(async () => {
-      // console.log(">>", props.token1_value);
-      const amount = await getAmount(
+      const info = await updateSwapInfo(
         props.token1_value,
-        tokenList[props.token1].address
+        tokenList[props.token1].address,
+        accountAddress,
+        tokenList[props.token2].address,
+        pairAddress
       );
-      if (amount) props.setAmount(amount);
+      if (info) props.setSwapInfo(info);
     }, 100);
   }, []);
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      // console.log(">>", props.token1_value);
-      const amount = await getAmount(
+      const info = await updateSwapInfo(
         props.token1_value,
-        tokenList[props.token1].address
+        tokenList[props.token1].address,
+        accountAddress,
+        tokenList[props.token2].address,
+        pairAddress
       );
-      if (amount) props.setAmount(amount);
+      if (info) props.setSwapInfo(info);
     }, 1000);
     return () => clearInterval(interval);
   }, [props.token1_value]);
@@ -126,6 +132,7 @@ function SwapWindow(props: any) {
 
   const handleTransaction = async () => {
     console.log(
+      "Buy",
       orderId,
       Token(props.token1_value).toString(),
       tokenList[props.token1].address,
@@ -146,7 +153,7 @@ function SwapWindow(props: any) {
 
   const { classes } = props;
   let button;
-  if (props.tokenToApproveId === -1) {
+  if (props.price < props.allow) {
     button = isSwapReady(props) ? (
       <Button
         variant="contained"
@@ -207,22 +214,8 @@ function SwapWindow(props: any) {
 }
 
 function isSwapReady(props: any) {
-  let { token1_value, token2_value, amount } = props;
-
+  let { amount } = props;
   if (!amount?.price) return false;
-
-  // Input safe guard
-  // if (!(isValidInput(token1_value) && isValidInput(token2_value))) return false;
-  // token1_value = Token(token1_value);
-
-  // if (!amount) return false;
-  // // Like min
-  // const upperTrechold1 = amount.token1.max.lt(amount.amount1)
-  //   ? amount.token1.max
-  //   : amount.amount1;
-
-  // if (token1_value.lt(amount.token1.min) || token1_value.gte(upperTrechold1))
-  //   return false;
   return true;
 }
 
@@ -246,8 +239,8 @@ const mapDispatchToProps = (dispatch: any) => {
     approveToken: (tokenId: number) => {
       dispatch(approveTokenAction(tokenId));
     },
-    setAmount: (amount: any) => {
-      dispatch(setAmountAction(amount));
+    setSwapInfo: (amount: any) => {
+      dispatch(setSwapInfoAction(amount));
     },
   };
 };
