@@ -25,35 +25,18 @@ const templateContract: any = new web3.eth.Contract(
   templates[1].address
 );
 
-const snapshot: any = {};
 export const orderId = 5;
 
 //TODO: Optimize this, update only updated stuff
-//TODO: DO smth with big number
+//TODO: Do smth with big number
 export async function updateSwapInfo(
   q: any,
   token: string,
   senderAddress: any,
   tokenToPay: string,
-  pairAddress: any,
-  force: boolean = false
+  pairAddress: any
 ) {
-  // console.log(">", senderAddress);
-  if (!force) {
-    if (
-      snapshot.q === q &&
-      snapshot.token === token &&
-      snapshot.senderAddress === senderAddress &&
-      snapshot.tokenToPay === tokenToPay
-    )
-      return;
-  }
   console.log(">>>");
-  snapshot.q = q;
-  snapshot.token = token;
-  snapshot.senderAddress = senderAddress;
-  snapshot.tokenToPay = tokenToPay;
-
   const amount = await pairContract.methods.orders(orderId).call();
 
   const { amount0, amount1 } = amount;

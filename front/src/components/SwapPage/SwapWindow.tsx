@@ -53,8 +53,10 @@ function SwapWindow(props: any) {
   const [label, setLabel] = useState(true);
   const [notifications, setNotificationsStateValues] = useState([]);
   const [isAllowToThrowError, setAllowToThrowError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [snapshot, setSnapshot]: any = useState({});
 
-  const tokenToBuy = props.token1_value;
+  const tokenToBuyValue = props.token1_value;
 
   const { account: accountAddress } = useEthers();
 
@@ -62,35 +64,45 @@ function SwapWindow(props: any) {
     i.useApprove()
   );
 
-  // On Create Update Info
+  // Update Info
   // ---------------------------------------
-  useEffect(() => {
-    setTimeout(async () => {
-      const info = await updateSwapInfo(
-        tokenToBuy,
-        tokenList[props.token1].address,
-        accountAddress,
-        tokenList[props.token2].address,
-        pairAddress,
-        true
-      );
-      if (info) props.setSwapInfo(info);
-    }, 100);
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      const info = await updateSwapInfo(
-        tokenToBuy,
-        tokenList[props.token1].address,
-        accountAddress,
-        tokenList[props.token2].address,
-        pairAddress
-      );
-      if (info) props.setSwapInfo(info);
+      const orderInfo: any = {
+        q: tokenToBuyValue,
+        token: tokenList[props.token1].address,
+        senderAddress: accountAddress,
+        tokenToPay: tokenList[props.token2].address,
+        pairAddress,
+      };
+      const isSmthChanged = (orderInfo: any) => {
+        if (
+          snapshot.q === orderInfo.q &&
+          snapshot.token === orderInfo.token &&
+          snapshot.senderAddress === orderInfo.senderAddress &&
+          snapshot.tokenToPay === orderInfo.tokenToPay
+        )
+          return false;
+        setSnapshot(orderInfo);
+        return true;
+      };
+      const is = isSmthChanged(orderInfo);
+      console.log(is);
+      if (is) {
+        const info = await updateSwapInfo(
+          tokenToBuyValue,
+          tokenList[props.token1].address,
+          accountAddress,
+          tokenList[props.token2].address,
+          pairAddress
+        );
+        setLoading(false);
+        props.setSwapInfo(info);
+      }
     }, 1000);
     return () => clearInterval(interval);
-  }, [props, tokenToBuy, accountAddress]);
+  }, [props, tokenToBuyValue, accountAddress, snapshot]);
 
   // ---------------------------------------
 
@@ -170,19 +182,26 @@ function SwapWindow(props: any) {
           notifications.filter((i: any) => txHash !== i.txHash)
         );
         setTimeout(async () => {
+          setLoading(true);
           const info = await updateSwapInfo(
-            props.token1_value,
+            tokenToBuyValue,
             tokenList[props.token1].address,
             accountAddress,
             tokenList[props.token2].address,
-            pairAddress,
-            true
+            pairAddress
           );
+          setLoading(false);
           if (info) props.setSwapInfo(info);
         }, 100);
       }
     }
-  }, [useContractMethodsApprove, props, notifications]);
+  }, [
+    useContractMethodsApprove,
+    props,
+    notifications,
+    tokenToBuyValue,
+    accountAddress,
+  ]);
 
   useEffect(() => {
     if (!isAllowToThrowError) return;
@@ -206,7 +225,7 @@ function SwapWindow(props: any) {
   const handleTransaction = async () => {
     buy(
       orderId,
-      Token(tokenToBuy),
+      Token(tokenToBuyValue),
       tokenList[props.token1].address,
       Token("10000000")
     ).then(() => {
@@ -222,7 +241,19 @@ function SwapWindow(props: any) {
 
   const { classes } = props;
   let button;
-  if (!isValidInput(tokenToBuy)) {
+  if (loading) {
+    button = (
+      <Button
+        style={{
+          backgroundColor: "#768595",
+        }}
+        variant="contained"
+        className={classes.swapButtonDisabled}
+      >
+        Loading...
+      </Button>
+    );
+  } else if (!isValidInput(tokenToBuyValue)) {
     button = (
       <Button
         style={{
@@ -234,9 +265,9 @@ function SwapWindow(props: any) {
         Enter the amount
       </Button>
     );
-  } else if (isValidInput(tokenToBuy) && !props.info?.price) {
+  } else if (isValidInput(tokenToBuyValue) && !props.info?.price) {
     const text =
-      props.token1 === 1 && parseFloat(tokenToBuy) <= 20000
+      props.token1 === 1 && parseFloat(tokenToBuyValue) <= 20000
         ? "Amount should be greater 20000"
         : "Not enough liquidity";
     button = (
