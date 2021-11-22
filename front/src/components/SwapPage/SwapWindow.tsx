@@ -90,6 +90,7 @@ function SwapWindow(props: any) {
       const is = isSmthChanged(orderInfo);
       console.log(is);
       if (is) {
+        setLoading(true);
         const info = await updateSwapInfo(
           tokenToBuyValue,
           tokenList[props.token1].address,
@@ -100,7 +101,7 @@ function SwapWindow(props: any) {
         setLoading(false);
         props.setSwapInfo(info);
       }
-    }, 1000);
+    }, 200);
     return () => clearInterval(interval);
   }, [props, tokenToBuyValue, accountAddress, snapshot]);
 
@@ -192,7 +193,7 @@ function SwapWindow(props: any) {
           );
           setLoading(false);
           if (info) props.setSwapInfo(info);
-        }, 100);
+        }, 1000);
       }
     }
   }, [
