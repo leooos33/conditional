@@ -71,7 +71,7 @@ function MintWindow(props: any) {
     const status = useContractMethods[props.tokenId]?.state?.status;
     const txHash = useContractMethods[props.tokenId]?.state?.transaction?.hash;
     const _notif: any = notifications.find((n: any) => n.txHash === txHash);
-    console.log(">", status, txHash);
+    // console.log(">", status, txHash);
 
     if (status === "Mining") {
       if (!_notif) {
@@ -82,7 +82,7 @@ function MintWindow(props: any) {
         setNotificationsStateValues(newNot);
       }
     } else if (status === "Success") {
-      console.log(_notif, notifications);
+      // console.log(_notif, notifications);
       if (notifications && _notif) {
         toast.dismiss(_notif.alertId);
         toast.success(

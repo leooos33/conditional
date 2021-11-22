@@ -38,7 +38,7 @@ export async function updateSwapInfo(
   pairAddress: any,
   force: boolean = false
 ) {
-  console.log(">", senderAddress);
+  // console.log(">", senderAddress);
   if (!force) {
     if (
       snapshot.q === q &&
@@ -113,9 +113,9 @@ const getPrice = (amount: any, q: any, token: string) => {
   };
   // console.log(amount.amount0, amount.amount1);
   // console.log(token, tokenList[0].address);
-  console.log(q);
+  // console.log(q);
   q = parseFloat(q);
-  console.log(q, Token(q).toString());
+  // console.log(q, Token(q).toString());
 
   return new Promise((res, rej) => {
     templateContract.methods

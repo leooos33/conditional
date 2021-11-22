@@ -51,6 +51,10 @@ const styles = () =>
 
 function SwapWindow(props: any) {
   const [label, setLabel] = useState(true);
+  const [notifications, setNotificationsStateValues] = useState([]);
+  const [isAllowToThrowError, setAllowToThrowError] = useState(false);
+
+  const tokenToBuy = props.token1_value;
 
   const { account: accountAddress } = useEthers();
 
@@ -58,62 +62,17 @@ function SwapWindow(props: any) {
     i.useApprove()
   );
 
-  useEffect(() => {
-    const status = useContractMethodsApprove[props.token2]?.state.status;
-    if (status === "Exception") {
-      toast.error(
-        getTransactionAlertMessage(TransactionAlertStatus.Failed, "approve")
-      );
-    } else if (status === "Mining") {
-      toast.info(
-        getTransactionAlertMessage(TransactionAlertStatus.Started, "approve")
-      );
-    } else if (status === "Success") {
-      toast.success(
-        getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "approve")
-      );
-      setTimeout(async () => {
-        const info = await updateSwapInfo(
-          props.token1_value,
-          tokenList[props.token1].address,
-          accountAddress,
-          tokenList[props.token2].address,
-          pairAddress,
-          true
-        );
-        if (info) props.setSwapInfo(info);
-      }, 100);
-    }
-  }, [useContractMethodsApprove[props.token2]?.state]);
-
-  const { state: buyState, send: buy } = useBuy(pairAddress);
-
-  useEffect(() => {
-    const status = buyState.status;
-
-    if (status === "Exception") {
-      toast.error(
-        getTransactionAlertMessage(TransactionAlertStatus.Failed, "buy")
-      );
-    } else if (status === "Mining") {
-      toast.info(
-        getTransactionAlertMessage(TransactionAlertStatus.Started, "buy")
-      );
-    } else if (status === "Success") {
-      toast.success(
-        getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "buy")
-      );
-    }
-  }, [buyState]);
-
+  // On Create Update Info
+  // ---------------------------------------
   useEffect(() => {
     setTimeout(async () => {
       const info = await updateSwapInfo(
-        props.token1_value,
+        tokenToBuy,
         tokenList[props.token1].address,
         accountAddress,
         tokenList[props.token2].address,
-        pairAddress
+        pairAddress,
+        true
       );
       if (info) props.setSwapInfo(info);
     }, 100);
@@ -122,7 +81,7 @@ function SwapWindow(props: any) {
   useEffect(() => {
     const interval = setInterval(async () => {
       const info = await updateSwapInfo(
-        props.token1_value,
+        tokenToBuy,
         tokenList[props.token1].address,
         accountAddress,
         tokenList[props.token2].address,
@@ -131,7 +90,113 @@ function SwapWindow(props: any) {
       if (info) props.setSwapInfo(info);
     }, 1000);
     return () => clearInterval(interval);
-  }, [props.token1_value, accountAddress]);
+  }, [props, tokenToBuy, accountAddress]);
+
+  // ---------------------------------------
+
+  const { state: buyState, send: buy } = useBuy(pairAddress);
+
+  // Notifications
+  // ---------------------------------------
+
+  // ----- Buy -----
+
+  useEffect(() => {
+    const status = buyState?.status;
+    const txHash = buyState?.transaction?.hash;
+    const _notif: any = notifications.find((n: any) => n.txHash === txHash);
+
+    if (status === "Mining") {
+      if (!_notif) {
+        const alertId = toast.loading(
+          getTransactionAlertMessage(TransactionAlertStatus.Started, "buy")
+        );
+        const newNot: any = [...notifications, { alertId, txHash }];
+        setNotificationsStateValues(newNot);
+      }
+    } else if (status === "Success") {
+      // console.log(_notif, notifications);
+      if (notifications && _notif) {
+        toast.dismiss(_notif.alertId);
+        toast.success(
+          getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "buy")
+        );
+        setNotificationsStateValues(
+          notifications.filter((i: any) => txHash !== i.txHash)
+        );
+      }
+    }
+  }, [buyState, notifications]);
+
+  useEffect(() => {
+    if (!isAllowToThrowError) return;
+    const status = buyState?.status;
+
+    if (status === "Exception") {
+      toast.error(
+        getTransactionAlertMessage(TransactionAlertStatus.Failed, "buy")
+      );
+      setAllowToThrowError(false);
+    }
+  }, [buyState, isAllowToThrowError]);
+
+  // ----- Approve -----
+
+  useEffect(() => {
+    const status = useContractMethodsApprove[props.token2]?.state?.status;
+    const txHash =
+      useContractMethodsApprove[props.token2]?.state?.transaction?.hash;
+    const _notif: any = notifications.find((n: any) => n.txHash === txHash);
+
+    if (status === "Mining") {
+      if (!_notif) {
+        const alertId = toast.loading(
+          getTransactionAlertMessage(TransactionAlertStatus.Started, "approve")
+        );
+        const newNot: any = [...notifications, { alertId, txHash }];
+        setNotificationsStateValues(newNot);
+      }
+    } else if (status === "Success") {
+      // console.log(_notif, notifications);
+      if (notifications && _notif) {
+        toast.dismiss(_notif.alertId);
+        toast.success(
+          getTransactionAlertMessage(
+            TransactionAlertStatus.Succeeded,
+            "approve"
+          )
+        );
+        setNotificationsStateValues(
+          notifications.filter((i: any) => txHash !== i.txHash)
+        );
+        setTimeout(async () => {
+          const info = await updateSwapInfo(
+            props.token1_value,
+            tokenList[props.token1].address,
+            accountAddress,
+            tokenList[props.token2].address,
+            pairAddress,
+            true
+          );
+          if (info) props.setSwapInfo(info);
+        }, 100);
+      }
+    }
+  }, [useContractMethodsApprove, props, notifications]);
+
+  useEffect(() => {
+    if (!isAllowToThrowError) return;
+    const status = useContractMethodsApprove[props.token2]?.state?.status;
+
+    if (status === "Exception") {
+      toast.error(
+        getTransactionAlertMessage(TransactionAlertStatus.Failed, "approve")
+      );
+      setAllowToThrowError(false);
+    }
+  }, [useContractMethodsApprove, props, isAllowToThrowError]);
+
+  // ---------------------------------------
 
   const handleSwap = () => {
     props.swapTokens();
@@ -139,29 +204,25 @@ function SwapWindow(props: any) {
   };
 
   const handleTransaction = async () => {
-    // console.log(
-    //   "Buy",
-    //   orderId,
-    //   Token(props.token1_value).toString(),
-    //   tokenList[props.token1].address,
-    //   Token("10000000").toString()
-    // );
-    await buy(
+    buy(
       orderId,
-      Token(props.token1_value),
+      Token(tokenToBuy),
       tokenList[props.token1].address,
       Token("10000000")
-    );
+    ).then(() => {
+      setAllowToThrowError(true);
+    });
   };
 
   const handleTransactionApprove = async () => {
-    await useContractMethodsApprove[props.token2].send(pairAddress);
+    useContractMethodsApprove[props.token2].send(pairAddress).then(() => {
+      setAllowToThrowError(true);
+    });
   };
 
   const { classes } = props;
   let button;
-  // console.log(props.token1_value);
-  if (!isValidInput(props.token1_value)) {
+  if (!isValidInput(tokenToBuy)) {
     button = (
       <Button
         style={{
@@ -173,9 +234,9 @@ function SwapWindow(props: any) {
         Enter the amount
       </Button>
     );
-  } else if (isValidInput(props.token1_value) && !props.info?.price) {
+  } else if (isValidInput(tokenToBuy) && !props.info?.price) {
     const text =
-      props.token1 === 1 && parseFloat(props.token1_value) <= 20000
+      props.token1 === 1 && parseFloat(tokenToBuy) <= 20000
         ? "Amount should be greater 20000"
         : "Not enough liquidity";
     button = (
