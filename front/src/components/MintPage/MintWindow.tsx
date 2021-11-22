@@ -55,6 +55,8 @@ function MintWindow(props: any) {
   const { account } = useEthers();
 
   const [valueToMint, setValueToMint] = useState(100);
+  const [notifications, setNotificationsStateValues] = useState([]);
+  const [isAllowToThrowError, setAllowToThrowError] = useState(false);
 
   const handleChange = (event: any) => {
     const newValue: number = event.target.value as number;
@@ -66,26 +68,50 @@ function MintWindow(props: any) {
   );
 
   useEffect(() => {
-    const status = useContractMethods[props.tokenId].state.status;
-    // console.log(status);
+    const status = useContractMethods[props.tokenId]?.state?.status;
+    const txHash = useContractMethods[props.tokenId]?.state?.transaction?.hash;
+    const _notif: any = notifications.find((n: any) => n.txHash === txHash);
+    // console.log(">", status, txHash);
+
+    if (status === "Mining") {
+      if (!_notif) {
+        const alertId = toast.loading(
+          getTransactionAlertMessage(TransactionAlertStatus.Started, "mint")
+        );
+        const newNot: any = [...notifications, { alertId, txHash }];
+        setNotificationsStateValues(newNot);
+      }
+    } else if (status === "Success") {
+      // console.log(_notif, notifications);
+      if (notifications && _notif) {
+        toast.dismiss(_notif.alertId);
+        toast.success(
+          getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "mint")
+        );
+        setNotificationsStateValues(
+          notifications.filter((i: any) => txHash !== i.txHash)
+        );
+      }
+    }
+  }, [props.tokenId, useContractMethods, notifications]);
+
+  useEffect(() => {
+    if (!isAllowToThrowError) return;
+    const status = useContractMethods[props.tokenId]?.state?.status;
+
     if (status === "Exception") {
       toast.error(
         getTransactionAlertMessage(TransactionAlertStatus.Failed, "mint")
       );
-    } else if (status === "Mining") {
-      toast.info(
-        getTransactionAlertMessage(TransactionAlertStatus.Started, "mint")
-      );
-    } else if (status === "Success") {
-      toast.success(
-        getTransactionAlertMessage(TransactionAlertStatus.Succeeded, "mint")
-      );
+      setAllowToThrowError(false);
     }
-  }, [useContractMethods[props.tokenId].state]);
+  }, [props.tokenId, useContractMethods]);
 
   const handleTransaction = async () => {
     const { send } = useContractMethods[props.tokenId];
-    await send(account, valueToMint.toString());
+    send(account, valueToMint.toString()).then(() => {
+      setAllowToThrowError(true);
+    });
   };
 
   return (

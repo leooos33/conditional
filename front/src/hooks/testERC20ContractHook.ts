@@ -68,7 +68,7 @@ export const Token = (
 
 //TODO: make it not look like some beginers code
 export const _Token = (value: BigNumber): string => {
-  console.log("_Token", value.toString());
+  // console.log("_Token", value.toString());
   if (value.toString() === "0") return "0";
   const num = value.toString();
   let newNum;
@@ -77,7 +77,7 @@ export const _Token = (value: BigNumber): string => {
     const point = num.length - numDigits;
 
     const parts = [num.slice(0, point), num.slice(point)];
-    console.log(parts);
+    // console.log(parts);
 
     if (parts[1].replace(/0/gi, "") === "") {
       newNum = parts[0];
@@ -94,7 +94,7 @@ export const _Token = (value: BigNumber): string => {
     while (newNum[newNum.length - 1] === "0") newNum = newNum.slice(0, -1);
   }
 
-  console.log("__Token", newNum);
+  // console.log("__Token", newNum);
   return newNum;
 };
 
