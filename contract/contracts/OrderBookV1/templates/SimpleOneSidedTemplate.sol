@@ -9,11 +9,11 @@ contract SimpleOneSidedTemplate is IOrderTemplate {
 
     using SafeMath for uint;
     
-    // params description
+    // Params description
     // [order type (0/1); curveLength; ...curveLength x; ...curveLength p]
+    //
     function getPrice(uint q, address token, SharedTypes.Order memory order, address token0, address token1) external override pure returns (uint price) {
         require(order.params[0] == 0 && token == token0 || order.params[0] == 1 && token == token1, 'SimpleOneSidedTemplate: TOKEN is not valid');
-        require((token == token0 ? order.amount0: order.amount1) >= q, 'SimpleOneSidedTemplate: Not enogth liquidity');
 
         uint curveLength = order.params[1];
         for (int i = int(curveLength-1); i >= 0; i--) {
@@ -26,8 +26,6 @@ contract SimpleOneSidedTemplate is IOrderTemplate {
 
                 price = (p_ii-p_i)*(q-x_i)/(x_ii-x_i) + p_i;
                 // TODO: multiplier
-                // uint multiplier = order.amount/order.initial_amount;
-                // return ip*multiplier;
                 return price;
             }
         }

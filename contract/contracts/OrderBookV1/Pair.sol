@@ -32,36 +32,43 @@ contract Pair {
         token1 = _token1;
     }
 
-    function buy(uint orderId, uint q, address token, uint maxTotalCost) public {
+    function getOrderParams(uint _id) public view returns (uint[] memory) {
+        return orders[_id].params;
+    }
+
+    function swap(uint orderId, uint q, address token, uint minSellingPrice) public {
         SharedTypes.Order memory order = orders[orderId];
         require(token == token0 || token == token1, 'Pair: Invalid token pair');
         require(int(order.deadline) > int(block.timestamp), 'Pair: Deadline is not valid');
         require(order.isValid == true, 'Pair: Order is not valid');
 
+        uint256 allowance = ERC20(token).allowance(msg.sender, address(this));
+        require(allowance >= q, 'Pair: allowance is not enough');
+
         address templateAddress = Registry(registry).getTemplateAddress(order.templateId);
-        uint totalCost = IOrderTemplate(templateAddress).getPrice(q, token, order, token0, token1);
-        require(maxTotalCost >= totalCost, 'Pair: Slippage is reached');
+        uint sellingPrice = IOrderTemplate(templateAddress).getPrice(q, token, order, token0, token1);
+        require(sellingPrice > minSellingPrice, 'Pair: Slippage is reached');
         
         if(token == token0) {
-            uint256 allowance = ERC20(token1).allowance(msg.sender, address(this));
-            require(allowance >= totalCost);
-            ERC20(token1).transferFrom(msg.sender, address(this), totalCost);
-            orders[orderId].amount1 += totalCost;
+            require(sellingPrice <= orders[orderId].amount1, 'Pair: Not enogth liquidity');
 
-            ERC20(token0).transfer(msg.sender, q);
-            orders[orderId].amount0 -= q;
+            ERC20(token0).transferFrom(msg.sender, address(this), q);
+            orders[orderId].amount0 += q;
+
+            ERC20(token1).transfer(msg.sender, sellingPrice);
+            orders[orderId].amount1 -= sellingPrice;
         }
         else if(token == token1){
-            uint256 allowance = ERC20(token0).allowance(msg.sender, address(this));
-            require(allowance >= totalCost);
-            ERC20(token0).transferFrom(msg.sender, address(this), totalCost);
-            orders[orderId].amount0 += totalCost;
+            require(sellingPrice <= orders[orderId].amount0, 'Pair: Not enogth liquidity');
 
-            ERC20(token1).transfer(msg.sender, q);
-            orders[orderId].amount1 -= q;
+            ERC20(token1).transferFrom(msg.sender, address(this), q);
+            orders[orderId].amount1 += q;
+
+            ERC20(token0).transfer(msg.sender, sellingPrice);
+            orders[orderId].amount0 -= sellingPrice;
         }
 
-        lastPrice = totalCost / q; //TODO: Set clever Math here
+        lastPrice = sellingPrice / q; //TODO: Set clever Math here
     }
     
     function placeOrder(uint templateId, uint[] memory params, uint deadline) public {        
