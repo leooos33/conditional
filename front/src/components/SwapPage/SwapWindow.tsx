@@ -28,7 +28,7 @@ import {
   orderId,
 } from "../../hooks";
 import { toast } from "react-toastify";
-import { useEthers } from "@usedapp/core";
+import { useEthers, useTokenBalance } from "@usedapp/core";
 
 const styles = () =>
   createStyles({
@@ -55,6 +55,8 @@ function SwapWindow(props: any) {
   const [isAllowToThrowError, setAllowToThrowError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [snapshot, setSnapshot]: any = useState({});
+
+  const { account } = useEthers();
 
   const tokenToBuyValue = props.token1_value;
 
@@ -242,6 +244,11 @@ function SwapWindow(props: any) {
 
   const { classes } = props;
   let button;
+  const tokenBalance = useTokenBalance(
+    tokenList[props.token2].address,
+    account
+  );
+  console.log("Balance:", tokenBalance?.toString());
   if (loading) {
     button = (
       <Button
@@ -287,16 +294,30 @@ function SwapWindow(props: any) {
     props.info?.price &&
     props.info.allowance.gte(props.info?.price)
   ) {
-    button = (
-      <Button
-        variant="contained"
-        endIcon={<SendIcon />}
-        className={classes.swapButton}
-        onClick={() => handleTransaction()}
-      >
-        Buy
-      </Button>
-    );
+    if (tokenBalance?.gte(props.info.price)) {
+      button = (
+        <Button
+          variant="contained"
+          endIcon={<SendIcon />}
+          className={classes.swapButton}
+          onClick={() => handleTransaction()}
+        >
+          Buy
+        </Button>
+      );
+    } else {
+      button = (
+        <Button
+          style={{
+            backgroundColor: "#768595",
+          }}
+          variant="contained"
+          className={classes.swapButtonDisabled}
+        >
+          Balance is not enough
+        </Button>
+      );
+    }
   } else if (
     props.info?.allowance &&
     props.info?.price &&
