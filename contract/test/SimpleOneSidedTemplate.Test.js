@@ -1,138 +1,132 @@
 /* eslint-disable no-undef */
 const SimpleOneSidedTemplate = artifacts.require("SimpleOneSidedTemplate");
-const { toToken } = require("./helpers");
+const { toToken, Token, _Token } = require("./helpers");
+
+const curve = [
+  ...[Token(1, 1), Token(4000), Token(6000), Token(8000)],
+  ...[Token(10000, 1), Token(20000), Token(30000), Token(40000)],
+];
+
+const order = {
+  owner: undefined,
+  templateId: 0,
+  params: [0, 4, ...curve],
+  isValid: true,
+  deadline: 0,
+  amount0: 0,
+  amount1: 0,
+};
 
 contract("SimpleOneSidedTemplate", (accounts) => {
+  order.owner = accounts[3];
   let simpleOneSidedTemplate;
+  const token0 = accounts[1];
+  const token1 = accounts[2];
 
   it("Value Test 1", async () => {
     simpleOneSidedTemplate = await SimpleOneSidedTemplate.deployed();
 
-    const token0 = accounts[1];
-    const token1 = accounts[2];
-
-    const params = [
-      0,
-      4,
-      ...toToken([2, 4, 6, 8]),
-      ...toToken([10, 20, 30, 40]),
-    ];
-    const order = {
-      owner: accounts[0],
-      templateId: 0,
-      params,
-      amount0: toToken(8),
-      amount1: 0,
-      isValid: true,
-      deadline: 0,
-    };
+    order.params = [0, 4, ...curve];
 
     const price = await simpleOneSidedTemplate.getPrice(
-      toToken(3),
+      Token(1),
       token0,
       order,
       token0,
       token1
     );
-    assert.equal(parseInt(price), toToken(15), "This test should not fail");
+    assert.equal(
+      _Token(price),
+      "5.000000000000099925",
+      "This test should not fail"
+    );
   });
 
-  it("SimpleOneSidedTemplate: Not enogth liquidity", async () => {
-    const token0 = accounts[1];
-    const token1 = accounts[2];
-
-    const params = [
-      0,
-      4,
-      ...toToken([2, 4, 6, 8]),
-      ...toToken([10, 20, 30, 40]),
-    ];
-    const order = {
-      owner: accounts[0],
-      templateId: 0,
-      params,
-      amount0: toToken(10),
-      amount1: 0,
-      isValid: true,
-      deadline: 0,
-    };
-
+  it("Value Test 2: less then Low boundary", async () => {
     try {
       await simpleOneSidedTemplate.getPrice(
-        toToken(9),
+        Token(0),
         token0,
         order,
         token0,
         token1
       );
     } catch (err) {
-      assert.equal(
-        err.message,
-        "Returned error: VM Exception while processing transaction: revert SimpleOneSidedTemplate: Requested value is greater than curve",
+      assert(
+        err.message.indexOf("The requested value is less than the curve"),
         "This test should not fail"
       );
     }
   });
 
-  it("SimpleOneSidedTemplate: TOKEN is not valid test 1", async () => {
-    const token0 = accounts[1];
-    const token1 = accounts[2];
+  it("Value Test 3: Low boundary", async () => {
+    const price = await simpleOneSidedTemplate.getPrice(
+      Token(1, 1),
+      token0,
+      order,
+      token0,
+      token1
+    );
+    assert.equal(_Token(price), "0.0000000000001", "This test should not fail");
+  });
 
-    const params = [1];
-    const order = {
-      owner: accounts[0],
-      templateId: 0,
-      params,
-      amount0: 0,
-      amount1: 0,
-      isValid: true,
-      deadline: 0,
-    };
-
+  it("Value Test 4: greater then High boundary", async () => {
     try {
       await simpleOneSidedTemplate.getPrice(
-        toToken(60),
+        Token(8001),
         token0,
         order,
         token0,
         token1
       );
     } catch (err) {
-      assert.equal(
-        err.message,
-        "Returned error: VM Exception while processing transaction: revert SimpleOneSidedTemplate: TOKEN is not valid",
+      assert(
+        err.message.indexOf("The requested value is greater than the curve"),
+        "This test should not fail"
+      );
+    }
+  });
+
+  it("Value Test 5: High boundary", async () => {
+    const price = await simpleOneSidedTemplate.getPrice(
+      Token(8000),
+      token0,
+      order,
+      token0,
+      token1
+    );
+    assert.equal(_Token(price), "40000", "This test should not fail");
+  });
+
+  it("SimpleOneSidedTemplate: TOKEN is not valid test 1", async () => {
+    try {
+      await simpleOneSidedTemplate.getPrice(
+        Token(60),
+        token0,
+        order,
+        token0,
+        token1
+      );
+    } catch (err) {
+      assert(
+        err.message.indexOf("TOKEN is not valid"),
         "This test should not fail"
       );
     }
   });
 
   it("SimpleOneSidedTemplate: TOKEN is not valid test 2", async () => {
-    const token0 = accounts[1];
-    const token1 = accounts[2];
-
-    const params = [0];
-    const order = {
-      owner: accounts[0],
-      templateId: 0,
-      params,
-      amount0: toToken(40),
-      amount1: 0,
-      isValid: true,
-      deadline: 0,
-    };
-
     try {
       await simpleOneSidedTemplate.getPrice(
-        toToken(60),
+        Token(60),
         token1,
         order,
         token0,
         token1
       );
     } catch (err) {
-      assert.equal(
-        err.message,
-        "Returned error: VM Exception while processing transaction: revert SimpleOneSidedTemplate: TOKEN is not valid",
+      assert(
+        err.message.indexOf("TOKEN is not valid"),
         "This test should not fail"
       );
     }

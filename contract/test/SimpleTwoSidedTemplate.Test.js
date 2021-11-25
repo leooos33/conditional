@@ -1,149 +1,173 @@
-/* eslint-disable no-undef */
-const SimpleTwoSidedTemplate = artifacts.require("SimpleTwoSidedTemplate");
-const { toToken } = require("./helpers");
+// /* eslint-disable no-undef */
+// const SimpleTwoSidedTemplate = artifacts.require("SimpleTwoSidedTemplate");
+// const { toToken, Token, _Token } = require("./helpers");
 
-contract("SimpleTwoSidedTemplate", (accounts) => {
-  let simpleTwoSidedTemplate;
+// const curve = [
+//   ...[Token(1, 1), Token(4000), Token(6000), Token(8000)],
+//   ...[Token(10000, 1), Token(20000), Token(30000), Token(40000)],
+//   ...[Token(10000, 1), Token(20000), Token(30000), Token(40000)],
+//   ...[Token(10000, 1), Token(20000), Token(30000), Token(40000)],
+// ];
 
-  it("Value Test 1 TOKEN0", async () => {
-    simpleTwoSidedTemplate = await SimpleTwoSidedTemplate.deployed();
+// const order = {
+//   owner: undefined,
+//   templateId: 0,
+//   params: [4, ...curve],
+//   isValid: true,
+//   deadline: 0,
+//   amount0: 0,
+//   amount1: 0,
+// };
 
-    const token0 = accounts[1];
-    const token1 = accounts[2];
+// contract("SimpleTwoSidedTemplate", (accounts) => {
+//   order.owner = accounts[3];
+//   let simpleTwoSidedTemplate;
+//   const token0 = accounts[1];
+//   const token1 = accounts[2];
 
-    const params = [
-      4,
-      ...toToken([2, 4, 6, 8]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([2, 4, 6, 8]),
-    ];
-    const order = {
-      owner: accounts[0],
-      templateId: 0,
-      params,
-      amount0: toToken(40),
-      amount1: toToken(8),
-      isValid: true,
-      deadline: 0,
-    };
+//   it("Set up", async () => {
+//     simpleTwoSidedTemplate = await SimpleTwoSidedTemplate.deployed();
+//   });
 
-    const price = await simpleTwoSidedTemplate.getPrice(
-      toToken(5),
-      token0,
-      order,
-      token0,
-      token1
-    );
-    assert.equal(parseInt(price), toToken(25), "This test should not fail");
-  });
+//   it("Token1: Value Test 1", async () => {
+//     const price = await simpleTwoSidedTemplate.getPrice(
+//       Token(1),
+//       token0,
+//       order,
+//       token0,
+//       token1
+//     );
+//     assert.equal(_Token(price), "10002.5", "This test should not fail");
+//   });
 
-  it("SimpleTwoSidedTemplate: Not enogth liquidity TOKEN0", async () => {
-    const token0 = accounts[1];
-    const token1 = accounts[2];
+//   it("Token1: Value Test 2: Low boundary", async () => {
+//     try {
+//       await simpleTwoSidedTemplate.getPrice(
+//         Token(0),
+//         token0,
+//         order,
+//         token0,
+//         token1
+//       );
+//     } catch (err) {
+//       assert(
+//         err.message.indexOf("The requested value is less than the curve"),
+//         "This test should not fail"
+//       );
+//     }
+//   });
 
-    const params = [
-      4,
-      ...toToken([2, 4, 6, 8]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([2, 4, 6, 8]),
-    ];
-    const order = {
-      owner: accounts[0],
-      templateId: 0,
-      params,
-      amount0: toToken(40),
-      amount1: 0,
-      isValid: true,
-      deadline: 0,
-    };
+//   it("Token1: Value Test 3", async () => {
+//     const price = await simpleTwoSidedTemplate.getPrice(
+//       Token(1, 1),
+//       token0,
+//       order,
+//       token0,
+//       token1
+//     );
+//     assert.equal(
+//       _Token(price),
+//       "10000.000000000000000025",
+//       "This test should not fail"
+//     );
+//   });
 
-    try {
-      await simpleTwoSidedTemplate.getPrice(
-        toToken(60),
-        token0,
-        order,
-        token0,
-        token1
-      );
-    } catch (err) {
-      assert.equal(
-        err.message,
-        "Returned error: VM Exception while processing transaction: revert SimpleTwoSidedTemplate: Not enogth liquidity",
-        "This test should not fail"
-      );
-    }
-  });
+//   it("Token1: Value Test 4: High boundary", async () => {
+//     try {
+//       await simpleTwoSidedTemplate.getPrice(
+//         Token(8001),
+//         token0,
+//         order,
+//         token0,
+//         token1
+//       );
+//     } catch (err) {
+//       assert(
+//         err.message.indexOf("The requested value is greater than the curve"),
+//         "This test should not fail"
+//       );
+//     }
+//   });
 
-  it("Value Test 1 TOKEN1", async () => {
-    simpleTwoSidedTemplate = await SimpleTwoSidedTemplate.deployed();
+//   it("Token1: Value Test 5", async () => {
+//     const price = await simpleTwoSidedTemplate.getPrice(
+//       Token(8000),
+//       token0,
+//       order,
+//       token0,
+//       token1
+//     );
+//     assert.equal(_Token(price), "40000", "This test should not fail");
+//   });
 
-    const token0 = accounts[1];
-    const token1 = accounts[2];
+//   it("Token2: Value Test 1", async () => {
+//     const price = await simpleTwoSidedTemplate.getPrice(
+//       Token(10000, 1),
+//       token0,
+//       order,
+//       token0,
+//       token1
+//     );
+//     assert.equal(
+//       _Token(price),
+//       "10000.00000000000025",
+//       "This test should not fail"
+//     );
+//   });
 
-    const params = [
-      4,
-      ...toToken([2, 4, 6, 8]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([2, 4, 6, 8]),
-    ];
-    const order = {
-      owner: accounts[0],
-      templateId: 0,
-      params,
-      amount0: toToken(40),
-      amount1: toToken(30),
-      isValid: true,
-      deadline: 0,
-    };
+//   it("Token2: Value Test 2: Low boundary", async () => {
+//     try {
+//       await simpleTwoSidedTemplate.getPrice(
+//         Token(10000 - 1, 1),
+//         token0,
+//         order,
+//         token0,
+//         token1
+//       );
+//     } catch (err) {
+//       assert(
+//         err.message.indexOf("The requested value is less than the curve"),
+//         "This test should not fail"
+//       );
+//     }
+//   });
 
-    const price = await simpleTwoSidedTemplate.getPrice(
-      toToken(25),
-      token1,
-      order,
-      token0,
-      token1
-    );
-    assert.equal(parseInt(price), toToken(5), "This test should not fail");
-  });
+//   it("Token2: Value Test 3", async () => {
+//     const price = await simpleTwoSidedTemplate.getPrice(
+//       Token(1),
+//       token0,
+//       order,
+//       token0,
+//       token1
+//     );
+//     assert.equal(_Token(price), "10002.5", "This test should not fail");
+//   });
 
-  it("SimpleTwoSidedTemplate: Not enogth liquidity TOKEN1", async () => {
-    const token0 = accounts[1];
-    const token1 = accounts[2];
+//   it("Token2: Value Test 4: High boundary", async () => {
+//     try {
+//       await simpleTwoSidedTemplate.getPrice(
+//         Token(40001),
+//         token0,
+//         order,
+//         token0,
+//         token1
+//       );
+//     } catch (err) {
+//       assert(
+//         err.message.indexOf("The requested value is greater than the curve"),
+//         "This test should not fail"
+//       );
+//     }
+//   });
 
-    const params = [
-      4,
-      ...toToken([2, 4, 6, 8]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([2, 4, 6, 8]),
-    ];
-    const order = {
-      owner: accounts[0],
-      templateId: 0,
-      params,
-      amount0: toToken(40),
-      amount1: 0,
-      isValid: true,
-      deadline: 0,
-    };
-
-    try {
-      await simpleTwoSidedTemplate.getPrice(
-        toToken(9),
-        token1,
-        order,
-        token0,
-        token1
-      );
-    } catch (err) {
-      assert.equal(
-        err.message,
-        "Returned error: VM Exception while processing transaction: revert SimpleTwoSidedTemplate: Not enogth liquidity",
-        "This test should not fail"
-      );
-    }
-  });
-});
+//   it("Token2: Value Test 5", async () => {
+//     const price = await simpleTwoSidedTemplate.getPrice(
+//       Token(40000),
+//       token0,
+//       order,
+//       token0,
+//       token1
+//     );
+//     assert.equal(_Token(price), "40000", "This test should not fail");
+//   });
+// });

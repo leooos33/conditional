@@ -9,7 +9,7 @@ contract SimpleTwoSidedTemplate is IOrderTemplate {
 
     using SafeMath for uint;
     
-    // Always from token0 to token1
+    // Params description
     // [curveLength; ...curveLength x0; ...curveLength p0; ...curveLength x1; ...curveLength p1]
     //
     function getPrice(uint q, address token, SharedTypes.Order memory order, address token0, address token1) external override pure returns (uint price) {
@@ -20,7 +20,7 @@ contract SimpleTwoSidedTemplate is IOrderTemplate {
         for (int i = int(curveLength)-1; i>=0; i--) {
             uint x_i = order.params[start+uint(i)];
             if (q > x_i) {
-                require(uint(i) != curveLength-1, 'SimpleTwoSidedTemplate: Requested value is greater than curve');
+                require(uint(i) != curveLength-1, 'SimpleTwoSidedTemplate: The requested value is greater than the curve');
                 
                 uint x_ii = order.params[start+uint(i)+1];
                 uint p_i = order.params[start+curveLength+uint(i)];
@@ -31,6 +31,6 @@ contract SimpleTwoSidedTemplate is IOrderTemplate {
                 return price;
             }
         }
-        revert("SimpleTwoSidedTemplate: Amount is too small");
+        revert("SimpleTwoSidedTemplate: The requested value is less than the curve");
     }
 }
