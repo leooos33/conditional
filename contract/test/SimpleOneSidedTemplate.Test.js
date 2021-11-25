@@ -42,7 +42,7 @@ contract("SimpleOneSidedTemplate", (accounts) => {
     );
   });
 
-  it("Value Test 2: less then Low boundary", async () => {
+  it("Value Test 2: less than Low boundary", async () => {
     try {
       await simpleOneSidedTemplate.getPrice(
         Token(0),
@@ -70,7 +70,7 @@ contract("SimpleOneSidedTemplate", (accounts) => {
     assert.equal(_Token(price), "0.0000000000001", "This test should not fail");
   });
 
-  it("Value Test 4: greater then High boundary", async () => {
+  it("Value Test 4: greater than High boundary", async () => {
     try {
       await simpleOneSidedTemplate.getPrice(
         Token(8001),

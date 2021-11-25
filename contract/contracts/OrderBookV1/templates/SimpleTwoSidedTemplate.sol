@@ -19,6 +19,9 @@ contract SimpleTwoSidedTemplate is IOrderTemplate {
         uint start = token == token0 ? 1: curveLength * 2 + 1;
         for (int i = int(curveLength)-1; i>=0; i--) {
             uint x_i = order.params[start+uint(i)];
+
+            if(q == x_i) return order.params[start+curveLength+uint(i)];
+
             if (q > x_i) {
                 require(uint(i) != curveLength-1, 'SimpleTwoSidedTemplate: The requested value is greater than the curve');
                 
