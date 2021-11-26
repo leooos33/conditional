@@ -5,7 +5,7 @@ const defaultErrMsg = "This test should not fail";
 const numDigits = 18;
 
 const toToken = (value) => {
-  return value.map((i) => Token(i));
+  return value.map((i) => Token(i).toString());
 };
 
 const Token = (value, digits = numDigits) => {

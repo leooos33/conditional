@@ -25,7 +25,7 @@ const templateContract: any = new web3.eth.Contract(
   templates[1].address
 );
 
-export const orderId = 5;
+export const orderId = 0;
 
 //TODO: Optimize this, update only updated stuff
 //TODO: Do smth with big number
@@ -33,7 +33,6 @@ export async function updateSwapInfo(
   q: any,
   token: string,
   senderAddress: any,
-  tokenToPay: string,
   pairAddress: any
 ) {
   console.log(">>>");
@@ -46,7 +45,7 @@ export async function updateSwapInfo(
   if (amount && isValidInput(q)) {
     price = await getPrice(amount, q, token);
     console.log(price);
-    allowance = await getAllowance(tokenToPay, senderAddress, pairAddress);
+    allowance = await getAllowance(token, senderAddress, pairAddress);
   }
 
   return {
@@ -74,21 +73,19 @@ const getAllowance = async (token: any, owner: any, spender: any) => {
   });
 };
 
-const options: any = [
+export const params: any = [
   4,
-  ...toToken([0, 4000, 6000, 8000]),
-  ...toToken([10000, 20000, 30000, 40000]),
-  BigNumber.from("10000"),
-  ...toToken([20000, 30000, 40000]),
-  BigNumber.from("1"),
-  ...toToken([0, 4000, 6000, 8000]),
+  ...[Token(1, 1), Token(4000), Token(6000), Token(8000)],
+  ...[Token(10000, 1), Token(20000), Token(30000), Token(40000)],
+  ...[Token(10000, 1), Token(20000), Token(30000), Token(40000)],
+  ...[Token(1, 1), Token(4000), Token(6000), Token(8000)],
 ];
 
 const getPrice = (amount: any, q: any, token: string) => {
   const templateOrder = {
     owner: token,
     templateId: 1,
-    params: options,
+    params,
     amount0: amount.amount0,
     amount1: amount.amount1,
     isValid: true,

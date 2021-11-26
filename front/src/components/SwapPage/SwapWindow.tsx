@@ -58,7 +58,7 @@ function SwapWindow(props: any) {
 
   const { account } = useEthers();
 
-  const tokenToBuyValue = props.token1_value;
+  const tokenToSellValue = props.token1_value;
 
   const { account: accountAddress } = useEthers();
 
@@ -72,10 +72,9 @@ function SwapWindow(props: any) {
   useEffect(() => {
     const interval = setInterval(async () => {
       const orderInfo: any = {
-        q: tokenToBuyValue,
+        q: tokenToSellValue,
         token: tokenList[props.token1].address,
         senderAddress: accountAddress,
-        tokenToPay: tokenList[props.token2].address,
         pairAddress,
       };
       const isSmthChanged = (orderInfo: any) => {
@@ -83,7 +82,7 @@ function SwapWindow(props: any) {
           snapshot.q === orderInfo.q &&
           snapshot.token === orderInfo.token &&
           snapshot.senderAddress === orderInfo.senderAddress &&
-          snapshot.tokenToPay === orderInfo.tokenToPay
+          snapshot.tokenToSell === orderInfo.tokenToSell
         )
           return false;
         setSnapshot(orderInfo);
@@ -94,10 +93,9 @@ function SwapWindow(props: any) {
       if (is) {
         setLoading(true);
         const info = await updateSwapInfo(
-          tokenToBuyValue,
+          tokenToSellValue,
           tokenList[props.token1].address,
           accountAddress,
-          tokenList[props.token2].address,
           pairAddress
         );
         setLoading(false);
@@ -105,7 +103,7 @@ function SwapWindow(props: any) {
       }
     }, 200);
     return () => clearInterval(interval);
-  }, [props, tokenToBuyValue, accountAddress, snapshot]);
+  }, [props, tokenToSellValue, accountAddress, snapshot]);
 
   // ---------------------------------------
 
@@ -158,9 +156,9 @@ function SwapWindow(props: any) {
   // ----- Approve -----
 
   useEffect(() => {
-    const status = useContractMethodsApprove[props.token2]?.state?.status;
+    const status = useContractMethodsApprove[props.token1]?.state?.status;
     const txHash =
-      useContractMethodsApprove[props.token2]?.state?.transaction?.hash;
+      useContractMethodsApprove[props.token1]?.state?.transaction?.hash;
     const _notif: any = notifications.find((n: any) => n.txHash === txHash);
 
     if (status === "Mining") {
@@ -187,10 +185,9 @@ function SwapWindow(props: any) {
         setTimeout(async () => {
           setLoading(true);
           const info = await updateSwapInfo(
-            tokenToBuyValue,
+            tokenToSellValue,
             tokenList[props.token1].address,
             accountAddress,
-            tokenList[props.token2].address,
             pairAddress
           );
           setLoading(false);
@@ -202,7 +199,7 @@ function SwapWindow(props: any) {
     useContractMethodsApprove,
     props,
     notifications,
-    tokenToBuyValue,
+    tokenToSellValue,
     accountAddress,
   ]);
 
@@ -228,27 +225,27 @@ function SwapWindow(props: any) {
   const handleTransaction = async () => {
     buy(
       orderId,
-      Token(tokenToBuyValue),
+      Token(tokenToSellValue),
       tokenList[props.token1].address,
-      Token("10000000")
+      Token("10000000000")
     ).then(() => {
       setAllowToThrowError(true);
     });
   };
 
   const handleTransactionApprove = async () => {
-    useContractMethodsApprove[props.token2].send(pairAddress).then(() => {
+    useContractMethodsApprove[props.token1].send(pairAddress).then(() => {
       setAllowToThrowError(true);
     });
   };
 
   const { classes } = props;
   let button;
-  const tokenBalance = useTokenBalance(
-    tokenList[props.token2].address,
+  const tokenToSellBalance = useTokenBalance(
+    tokenList[props.token1].address,
     account
   );
-  console.log("Balance:", tokenBalance?.toString());
+  console.log("Balance:", tokenToSellBalance?.toString());
   if (loading) {
     button = (
       <Button
@@ -261,7 +258,7 @@ function SwapWindow(props: any) {
         Loading...
       </Button>
     );
-  } else if (!isValidInput(tokenToBuyValue)) {
+  } else if (!isValidInput(tokenToSellValue)) {
     button = (
       <Button
         style={{
@@ -273,11 +270,7 @@ function SwapWindow(props: any) {
         Enter the amount
       </Button>
     );
-  } else if (isValidInput(tokenToBuyValue) && !props.info?.price) {
-    const text =
-      props.token1 === 1 && parseFloat(tokenToBuyValue) <= 20000
-        ? "Amount should be greater 20000"
-        : "Not enough liquidity";
+  } else if (isValidInput(tokenToSellValue) && !props.info?.price) {
     button = (
       <Button
         style={{
@@ -286,7 +279,7 @@ function SwapWindow(props: any) {
         variant="contained"
         className={classes.swapButtonDisabled}
       >
-        {text}
+        Not enough liquidity
       </Button>
     );
   } else if (
@@ -294,7 +287,7 @@ function SwapWindow(props: any) {
     props.info?.price &&
     props.info.allowance.gte(props.info?.price)
   ) {
-    if (tokenBalance?.gte(props.info.price)) {
+    if (tokenToSellBalance?.gte(props.info.price)) {
       button = (
         <Button
           variant="contained"
@@ -330,7 +323,7 @@ function SwapWindow(props: any) {
         className={classes.swapButton}
         onClick={() => handleTransactionApprove()}
       >
-        Approve {tokenList[props.token2].name}
+        Approve {tokenList[props.token1].name}
       </Button>
     );
   }
