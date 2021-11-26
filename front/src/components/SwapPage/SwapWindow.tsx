@@ -227,7 +227,7 @@ function SwapWindow(props: any) {
       orderId,
       Token(tokenToSellValue),
       tokenList[props.token1].address,
-      Token("10000000000")
+      Token(0)
     ).then(() => {
       setAllowToThrowError(true);
     });
@@ -285,35 +285,6 @@ function SwapWindow(props: any) {
   } else if (
     props.info?.allowance &&
     props.info?.price &&
-    props.info.allowance.gte(props.info?.price)
-  ) {
-    if (tokenToSellBalance?.gte(props.info.price)) {
-      button = (
-        <Button
-          variant="contained"
-          endIcon={<SendIcon />}
-          className={classes.swapButton}
-          onClick={() => handleTransaction()}
-        >
-          Buy
-        </Button>
-      );
-    } else {
-      button = (
-        <Button
-          style={{
-            backgroundColor: "#768595",
-          }}
-          variant="contained"
-          className={classes.swapButtonDisabled}
-        >
-          Balance is not enough
-        </Button>
-      );
-    }
-  } else if (
-    props.info?.allowance &&
-    props.info?.price &&
     props.info.allowance.lt(props.info?.price)
   ) {
     button = (
@@ -324,6 +295,39 @@ function SwapWindow(props: any) {
         onClick={() => handleTransactionApprove()}
       >
         Approve {tokenList[props.token1].name}
+      </Button>
+    );
+  } else if (
+    props.info?.allowance &&
+    props.info?.price &&
+    props.info.allowance.gte(props.info?.price) &&
+    tokenToSellBalance?.lt(Token(props.token2_value))
+  ) {
+    button = (
+      <Button
+        style={{
+          backgroundColor: "#768595",
+        }}
+        variant="contained"
+        className={classes.swapButtonDisabled}
+      >
+        Balance is not enough
+      </Button>
+    );
+  } else if (
+    props.info?.allowance &&
+    props.info?.price &&
+    props.info.allowance.gte(props.info?.price) &&
+    tokenToSellBalance?.gte(Token(props.token2_value))
+  ) {
+    button = (
+      <Button
+        variant="contained"
+        endIcon={<SendIcon />}
+        className={classes.swapButton}
+        onClick={() => handleTransaction()}
+      >
+        Buy
       </Button>
     );
   }
