@@ -2,7 +2,7 @@
 const Registry = artifacts.require("Registry");
 const Pair = artifacts.require("Pair");
 const CustomERC20Token = artifacts.require("CustomERC20Token");
-const { defaultErrMsg, toToken } = require("./helpers");
+const { defaultErrMsg, toToken, Token } = require("./helpers");
 
 contract("Pair", (accounts) => {
   let registryInstance,
@@ -29,18 +29,18 @@ contract("Pair", (accounts) => {
     pairAddress = await registryInstance.allPairs(0);
     pair = await Pair.at(pairAddress);
 
-    await tokenA.unlimitedMint(marketMaker, 500);
-    await tokenB.unlimitedMint(marketMaker, 500);
-    await tokenB.unlimitedMint(bob, 500);
+    await tokenA.unlimitedMint(marketMaker, 8000);
+    await tokenB.unlimitedMint(marketMaker, 40000);
+    await tokenB.unlimitedMint(bob, 40000);
   });
 
   it("Place Order", async () => {
     const params = [
       4,
-      ...toToken([2, 4, 6, 8]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([10, 20, 30, 40]),
-      ...toToken([2, 4, 6, 8]),
+      ...[Token(1, 1), Token(4000), Token(6000), Token(8000)],
+      ...[Token(10000, 1), Token(20000), Token(30000), Token(40000)],
+      ...[Token(10000, 1), Token(20000), Token(30000), Token(40000)],
+      ...[Token(1, 1), Token(4000), Token(6000), Token(8000)],
     ];
     const deadline = parseInt(await tokenA.getBlockchainParams()) + 10000000;
 
@@ -55,19 +55,15 @@ contract("Pair", (accounts) => {
     assert.equal(parseInt(length), 1, defaultErrMsg);
 
     order = await pair.orders(0);
-    assert.equal(order.amount0, toToken(0), defaultErrMsg);
-    assert.equal(order.amount1, toToken(0), defaultErrMsg);
+    assert.equal(order.amount0, 0, defaultErrMsg);
+    assert.equal(order.amount1, 0, defaultErrMsg);
   });
 
-  it("Provide Liquidity Failes", async () => {
+  it("Provide Liquidity Failes: Is not an order owner: Allowance is not enough.", async () => {
     try {
       await pair.provideLiquidity(tokenA.address, 8, 0, { from: accounts[7] });
     } catch (err) {
-      assert.equal(
-        err.message,
-        "Returned error: VM Exception while processing transaction: revert Pair: Is not an order owner -- Reason given: Pair: Is not an order owner.",
-        defaultErrMsg
-      );
+      assert(err.message.indexOf("Is not an order owner"), defaultErrMsg);
     }
   });
 
@@ -75,11 +71,7 @@ contract("Pair", (accounts) => {
     try {
       await pair.provideLiquidity(tokenA.address, 8, 0, { from: marketMaker });
     } catch (err) {
-      assert.equal(
-        err.message,
-        "Returned error: VM Exception while processing transaction: revert Pair: Allowance is not enough -- Reason given: Pair: Allowance is not enough.",
-        defaultErrMsg
-      );
+      assert(err.message.indexOf("Allowance is not enough."), defaultErrMsg);
     }
   });
 
@@ -90,19 +82,19 @@ contract("Pair", (accounts) => {
       (await tokenA.balanceOf(pairAddress)).toString(),
       (await tokenB.balanceOf(pairAddress)).toString(),
     ];
-    assert.deepEqual(snapshot, toToken([500, 500, 0, 0]), defaultErrMsg);
+    assert.deepEqual(snapshot, toToken([8000, 40000, 0, 0]), defaultErrMsg);
 
-    await tokenA.increaseAllowance(pairAddress, toToken(8), {
+    await tokenA.increaseAllowance(pairAddress, Token(8000), {
       from: marketMaker,
     });
-    await tokenB.increaseAllowance(pairAddress, toToken(40), {
+    await tokenB.increaseAllowance(pairAddress, Token(40000), {
       from: marketMaker,
     });
 
-    await pair.provideLiquidity(tokenA.address, toToken(8), 0, {
+    await pair.provideLiquidity(tokenA.address, Token(8000), 0, {
       from: marketMaker,
     });
-    await pair.provideLiquidity(tokenB.address, toToken(40), 0, {
+    await pair.provideLiquidity(tokenB.address, Token(40000), 0, {
       from: marketMaker,
     });
 
@@ -112,11 +104,11 @@ contract("Pair", (accounts) => {
       (await tokenA.balanceOf(pairAddress)).toString(),
       (await tokenB.balanceOf(pairAddress)).toString(),
     ];
-    assert.deepEqual(snapshot, toToken([492, 460, 8, 40]), defaultErrMsg);
+    assert.deepEqual(snapshot, toToken([0, 0, 8000, 40000]), defaultErrMsg);
 
     order = await pair.orders(0);
-    assert.equal(order.amount0, toToken(8), defaultErrMsg);
-    assert.equal(order.amount1, toToken(40), defaultErrMsg);
+    assert.equal(order.amount0.toString(), Token(8000), defaultErrMsg);
+    assert.equal(order.amount1.toString(), Token(40000), defaultErrMsg);
   });
 
   it("Buy", async () => {
@@ -124,22 +116,26 @@ contract("Pair", (accounts) => {
       (await tokenA.balanceOf(bob)).toString(),
       (await tokenB.balanceOf(bob)).toString(),
     ];
-    assert.deepEqual(snapshot, toToken([0, 500]), defaultErrMsg);
+    assert.deepEqual(snapshot, toToken([0, 40000]), defaultErrMsg);
 
     assert.equal(await pair.token0.call(), tokenA.address, defaultErrMsg);
     assert.equal(await pair.token1.call(), tokenB.address, defaultErrMsg);
 
-    await tokenB.increaseAllowance(pairAddress, toToken(30), {
+    await tokenB.increaseAllowance(pairAddress, Token(10), {
       from: bob,
     });
 
-    await pair.buy(0, toToken(6), tokenA.address, toToken(32), {
+    await pair.swap(0, Token(10), tokenB.address, Token(1.9), {
       from: bob,
     });
 
     order = await pair.orders(0);
-    assert.equal(order.amount0, toToken(2), defaultErrMsg);
-    assert.equal(order.amount1, toToken(70), defaultErrMsg);
+    assert.equal(
+      order.amount0.toString(),
+      "7998000000000000019981",
+      defaultErrMsg
+    );
+    assert.equal(order.amount1.toString(), Token(40010), defaultErrMsg);
 
     snapshot = [
       (await tokenA.balanceOf(bob)).toString(),
@@ -147,23 +143,43 @@ contract("Pair", (accounts) => {
       (await tokenA.balanceOf(pairAddress)).toString(),
       (await tokenB.balanceOf(pairAddress)).toString(),
     ];
-    assert.deepEqual(snapshot, toToken([6, 470, 2, 70]), defaultErrMsg);
+    assert.deepEqual(
+      snapshot,
+      [
+        "1999999999999980019",
+        "39990000000000000000000",
+        "7998000000000000019981",
+        "40010000000000000000000",
+      ],
+      defaultErrMsg
+    );
   });
 
   it("Remove Liquidity", async () => {
-    await pair.removeLiquidity(tokenA.address, toToken(1), 0, {
+    await pair.removeLiquidity(tokenA.address, Token(1), 0, {
       from: marketMaker,
     });
 
-    await pair.removeLiquidity(tokenB.address, toToken(69), 0, {
+    await pair.removeLiquidity(tokenB.address, Token(1), 0, {
       from: marketMaker,
     });
 
     snapshot = [
       (await tokenA.balanceOf(marketMaker)).toString(),
       (await tokenB.balanceOf(marketMaker)).toString(),
+      (await tokenA.balanceOf(pairAddress)).toString(),
+      (await tokenB.balanceOf(pairAddress)).toString(),
     ];
-    assert.deepEqual(snapshot, toToken([493, 529]), defaultErrMsg);
+    assert.deepEqual(
+      snapshot,
+      [
+        "1000000000000000000",
+        "1000000000000000000",
+        "7997000000000000019981",
+        "40009000000000000000000",
+      ],
+      defaultErrMsg
+    );
   });
 
   it("Cancel Order", async () => {
@@ -175,6 +191,10 @@ contract("Pair", (accounts) => {
       (await tokenA.balanceOf(marketMaker)).toString(),
       (await tokenB.balanceOf(marketMaker)).toString(),
     ];
-    assert.deepEqual(snapshot, toToken([494, 530]), defaultErrMsg);
+    assert.deepEqual(
+      snapshot,
+      ["7998000000000000019981", "40010000000000000000000"],
+      defaultErrMsg
+    );
   });
 });

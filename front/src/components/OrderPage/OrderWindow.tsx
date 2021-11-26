@@ -7,18 +7,15 @@ import { tokenList } from "../../contracts";
 import {
   tokenContractsList,
   useBlockchainParams,
-  useGetOrder,
   usePlaceOrder,
-  toToken,
   useGetPair,
-  useCreatePair,
   Token,
   useProvideLiquidity,
   orderId,
+  params,
 } from "../../hooks";
 import { toast } from "react-toastify";
 import { TransactionAlertContainer } from "../messages/TransactionAlertContainer";
-import { BigNumber } from "@ethersproject/bignumber";
 
 const styles = () =>
   createStyles({
@@ -52,16 +49,6 @@ function OrderWindow(props: any) {
   const deadline = useBlockchainParams();
 
   const handleTransaction = async () => {
-    const params = [
-      4,
-      ...toToken([0, 4000, 6000, 8000]),
-      ...toToken([10000, 20000, 30000, 40000]),
-      BigNumber.from("10000"),
-      ...toToken([20000, 30000, 40000]),
-      BigNumber.from("1"),
-      ...toToken([0, 4000, 6000, 8000]),
-    ];
-    // console.log(params, deadline + 1000000000);
     const ftrp = placeOrder(1, params, deadline + 1000000000);
     toast.promise(ftrp, {
       pending: "Your place order transaction is proceeding",
