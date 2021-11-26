@@ -107,66 +107,94 @@ contract("Pair", (accounts) => {
     assert.deepEqual(snapshot, toToken([0, 0, 8000, 40000]), defaultErrMsg);
 
     order = await pair.orders(0);
-    assert.equal(order.amount0, Token(8000), defaultErrMsg);
-    assert.equal(order.amount1, Token(40000), defaultErrMsg);
+    assert.equal(order.amount0.toString(), Token(8000), defaultErrMsg);
+    assert.equal(order.amount1.toString(), Token(40000), defaultErrMsg);
   });
 
-  // it("Buy", async () => {
-  //   snapshot = [
-  //     (await tokenA.balanceOf(bob)).toString(),
-  //     (await tokenB.balanceOf(bob)).toString(),
-  //   ];
-  //   assert.deepEqual(snapshot, toToken([0, 500]), defaultErrMsg);
+  it("Buy", async () => {
+    snapshot = [
+      (await tokenA.balanceOf(bob)).toString(),
+      (await tokenB.balanceOf(bob)).toString(),
+    ];
+    assert.deepEqual(snapshot, toToken([0, 40000]), defaultErrMsg);
 
-  //   assert.equal(await pair.token0.call(), tokenA.address, defaultErrMsg);
-  //   assert.equal(await pair.token1.call(), tokenB.address, defaultErrMsg);
+    assert.equal(await pair.token0.call(), tokenA.address, defaultErrMsg);
+    assert.equal(await pair.token1.call(), tokenB.address, defaultErrMsg);
 
-  //   await tokenB.increaseAllowance(pairAddress, Token(30), {
-  //     from: bob,
-  //   });
+    await tokenB.increaseAllowance(pairAddress, Token(10), {
+      from: bob,
+    });
 
-  //   await pair.swap(0, Token(6), tokenA.address, Token(32), {
-  //     from: bob,
-  //   });
+    await pair.swap(0, Token(10), tokenB.address, Token(1.9), {
+      from: bob,
+    });
 
-  //   order = await pair.orders(0);
-  //   assert.equal(order.amount0, Token(2), defaultErrMsg);
-  //   assert.equal(order.amount1, Token(70), defaultErrMsg);
+    order = await pair.orders(0);
+    assert.equal(
+      order.amount0.toString(),
+      "7998000000000000019981",
+      defaultErrMsg
+    );
+    assert.equal(order.amount1.toString(), Token(40010), defaultErrMsg);
 
-  //   snapshot = [
-  //     (await tokenA.balanceOf(bob)).toString(),
-  //     (await tokenB.balanceOf(bob)).toString(),
-  //     (await tokenA.balanceOf(pairAddress)).toString(),
-  //     (await tokenB.balanceOf(pairAddress)).toString(),
-  //   ];
-  //   assert.deepEqual(snapshot, toToken([6, 470, 2, 70]), defaultErrMsg);
-  // });
+    snapshot = [
+      (await tokenA.balanceOf(bob)).toString(),
+      (await tokenB.balanceOf(bob)).toString(),
+      (await tokenA.balanceOf(pairAddress)).toString(),
+      (await tokenB.balanceOf(pairAddress)).toString(),
+    ];
+    assert.deepEqual(
+      snapshot,
+      [
+        "1999999999999980019",
+        "39990000000000000000000",
+        "7998000000000000019981",
+        "40010000000000000000000",
+      ],
+      defaultErrMsg
+    );
+  });
 
-  // it("Remove Liquidity", async () => {
-  //   await pair.removeLiquidity(tokenA.address, Token(1), 0, {
-  //     from: marketMaker,
-  //   });
+  it("Remove Liquidity", async () => {
+    await pair.removeLiquidity(tokenA.address, Token(1), 0, {
+      from: marketMaker,
+    });
 
-  //   await pair.removeLiquidity(tokenB.address, Token(69), 0, {
-  //     from: marketMaker,
-  //   });
+    await pair.removeLiquidity(tokenB.address, Token(1), 0, {
+      from: marketMaker,
+    });
 
-  //   snapshot = [
-  //     (await tokenA.balanceOf(marketMaker)).toString(),
-  //     (await tokenB.balanceOf(marketMaker)).toString(),
-  //   ];
-  //   assert.deepEqual(snapshot, toToken([493, 529]), defaultErrMsg);
-  // });
+    snapshot = [
+      (await tokenA.balanceOf(marketMaker)).toString(),
+      (await tokenB.balanceOf(marketMaker)).toString(),
+      (await tokenA.balanceOf(pairAddress)).toString(),
+      (await tokenB.balanceOf(pairAddress)).toString(),
+    ];
+    assert.deepEqual(
+      snapshot,
+      [
+        "1000000000000000000",
+        "1000000000000000000",
+        "7997000000000000019981",
+        "40009000000000000000000",
+      ],
+      defaultErrMsg
+    );
+  });
 
-  // it("Cancel Order", async () => {
-  //   await pair.cancelOrder(0, {
-  //     from: marketMaker,
-  //   });
+  it("Cancel Order", async () => {
+    await pair.cancelOrder(0, {
+      from: marketMaker,
+    });
 
-  //   snapshot = [
-  //     (await tokenA.balanceOf(marketMaker)).toString(),
-  //     (await tokenB.balanceOf(marketMaker)).toString(),
-  //   ];
-  //   assert.deepEqual(snapshot, toToken([494, 530]), defaultErrMsg);
-  // });
+    snapshot = [
+      (await tokenA.balanceOf(marketMaker)).toString(),
+      (await tokenB.balanceOf(marketMaker)).toString(),
+    ];
+    assert.deepEqual(
+      snapshot,
+      ["7998000000000000019981", "40010000000000000000000"],
+      defaultErrMsg
+    );
+  });
 });
