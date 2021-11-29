@@ -301,7 +301,7 @@ function SwapWindow(props: any) {
     props.info?.allowance &&
     props.info?.price &&
     props.info.allowance.gte(props.info?.price) &&
-    tokenToSellBalance?.lt(Token(props.token2_value))
+    tokenToSellBalance?.lt(Token(props.token1_value))
   ) {
     button = (
       <Button
@@ -318,7 +318,7 @@ function SwapWindow(props: any) {
     props.info?.allowance &&
     props.info?.price &&
     props.info.allowance.gte(props.info?.price) &&
-    tokenToSellBalance?.gte(Token(props.token2_value))
+    tokenToSellBalance?.gte(Token(props.token1_value))
   ) {
     button = (
       <Button
