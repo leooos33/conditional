@@ -91,7 +91,7 @@ export default function AccountModal({ isOpen, onClose }: Props) {
                                 }}
                                 onClick={handleDeactivateAccount}
                             >
-                                Change
+                                Disconnect
                             </Button>
                         </Flex>
                         <Flex alignItems="center" mt={2} mb={4} lineHeight={1}>
@@ -155,16 +155,7 @@ export default function AccountModal({ isOpen, onClose }: Props) {
                     borderBottomLeftRadius="3xl"
                     borderBottomRightRadius="3xl"
                     p={6}
-                >
-                    <Text
-                        color="white"
-                        textAlign="center"
-                        fontWeight="medium"
-                        fontSize="md"
-                    >
-                        Your transactions willl appear here...
-                    </Text>
-                </ModalFooter>
+                ></ModalFooter>
             </ModalContent>
         </Modal>
     )

@@ -1,7 +1,6 @@
-import { useEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { useEthers } from "@usedapp/core"
 import styled from "@emotion/styled"
-import React from "react"
 
 const Jazzicon = require("jazzicon")
 

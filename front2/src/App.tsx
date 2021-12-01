@@ -14,6 +14,7 @@ import {
 } from "react-router-dom"
 import MintPage from "@components/mintPage"
 import OrderPage from "@components/orderPage"
+import "react-toastify/dist/ReactToastify.css"
 
 function App() {
     return (
