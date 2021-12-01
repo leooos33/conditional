@@ -58,62 +58,7 @@ const MintPage = () => {
                             />
                         </div>
                     </form>
-                    {/*Direction Button*/}
-                    <button>
-                        <img
-                            className="object-cover items-center object-center rounded justify-center mt-2 mb-1 flex mx-auto"
-                            src={direction}
-                            alt={"direction"}
-                            width="20px"
-                            height="20px"
-                        />
-                    </button>
-                    {/*InputForm*/}
-                    <form className="w-full ">
-                        <div className="flex items-center border-b border-t border-gray1-g66 py-1">
-                            <button
-                                className="flex-shrink-0 inline-flex text-xl font-semibold text-white pl-2 pr-0 rounded"
-                                type="button"
-                            >
-                                <img
-                                    className="object-cover object-center mx-3"
-                                    src={USDC}
-                                    width="30x"
-                                    height="30px"
-                                />
-                                ABC
-                                <img
-                                    className="object-cover object-center rounded"
-                                    src={expand_more}
-                                    alt={"expand_more"}
-                                    width="30px"
-                                    height="30px"
-                                />
-                            </button>
-                            <input
-                                className="text-right appearance-none bg-transparent border-none w-full text-white text-2xl font-semibold text-white mr-3 my-1 pr-3 leading-tight focus:outline-none"
-                                type="number"
-                                min="0"
-                                placeholder="0.0"
-                                autoComplete="off"
-                            />
-                        </div>
-                    </form>
                 </div>
-                {/*AdvSettingsButton*/}
-                <button
-                    className="items-end ml-auto inline-flex text-md lg:w-2/5 mr-5 font-semibold text-gray1-g66 pt-2"
-                    type="button"
-                >
-                    Advanced settings
-                    <img
-                        className="object-cover object-center"
-                        src={expand_more_a}
-                        alt={"expand_more_a"}
-                        width="20px"
-                        height="20px"
-                    />
-                </button>
                 {/*SwapButton */}
                 <div className="container mx-auto flex py-32 items-center justify-center flex-col">
                     <div className="text-center w-2/5">

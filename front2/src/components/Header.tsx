@@ -1,8 +1,10 @@
 import React from "react"
+import { NavLink, useLocation } from "react-router-dom"
 
 import logo from "@assets/logo.svg"
 
 const Header = () => {
+    const routeName = useLocation().pathname.slice(1)
     return (
         <header className="flex flex-wrap place-items-center">
             <section className="relative mx-auto">
@@ -23,10 +25,40 @@ const Header = () => {
                                     id="tabs"
                                     className="inline-flex w-full font-semibold text-gray1-g75"
                                 >
-                                    <li className="px-4 py-2 -mb-px  text-white border-b-2 border-white ">
-                                        Trade
-                                    </li>
-                                    <li className="px-4 py-2">Portfolio</li>
+                                    <NavLink
+                                        to="/swap"
+                                        style={{
+                                            textDecoration: "none",
+                                            color: "unset"
+                                        }}
+                                    >
+                                        <li
+                                            className={`px-4 py-2 ${
+                                                routeName === "swap"
+                                                    ? " -mb-px text-white border-b-2 border-white"
+                                                    : ""
+                                            }`}
+                                        >
+                                            Trade
+                                        </li>
+                                    </NavLink>
+                                    <NavLink
+                                        to="/mint"
+                                        style={{
+                                            textDecoration: "none",
+                                            color: "unset"
+                                        }}
+                                    >
+                                        <li
+                                            className={`px-4 py-2 ${
+                                                routeName === "mint"
+                                                    ? " -mb-px text-white border-b-2 border-white"
+                                                    : ""
+                                            }`}
+                                        >
+                                            Mint
+                                        </li>
+                                    </NavLink>
                                     <li className="px-4 py-2">Charts</li>
                                     <li className="px-4 py-2">Docs</li>
                                 </ul>
