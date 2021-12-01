@@ -1,10 +1,15 @@
 import React from "react"
 import { NavLink, useLocation } from "react-router-dom"
+import { ChakraProvider, useDisclosure } from "@chakra-ui/react"
 
 import logo from "@assets/logo.svg"
+import AccountModal from "./AccountModal"
+import ConnectButton from "./ConnectButton"
 
 const Header = () => {
     const routeName = useLocation().pathname.slice(1)
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     return (
         <header className="flex flex-wrap place-items-center">
             <section className="relative mx-auto">
@@ -64,12 +69,16 @@ const Header = () => {
                                 </ul>
                             </div>
                         </nav>
-                        <button
+                        <ChakraProvider>
+                            <ConnectButton handleOpenModal={onOpen} />
+                            <AccountModal isOpen={isOpen} onClose={onClose} />
+                        </ChakraProvider>
+                        {/* <button
                             className="flex-shrink-0 inline-flex bg-transparent text-white font-sans font-medium text-xl py-1.5 px-10 ml-3 border-orange1 border-2 hover:border-transparent rounded-full "
                             onClick={() => true}
                         >
                             account here
-                        </button>
+                        </button> */}
                     </div>
                 </nav>
             </section>
