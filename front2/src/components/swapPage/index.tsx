@@ -15,13 +15,13 @@ const SwapPage = (props: any) => {
 
     const { account } = useEthers()
 
-    const tokenToSellValue = props.token1_value
+    const tokenToSellValue = props.token0_value
 
     useEffect(() => {
         const interval = setInterval(async () => {
             const orderInfo: any = {
                 q: tokenToSellValue,
-                token: tokenList[props.token1].address,
+                token: tokenList[props.token0].address,
                 senderAddress: account,
                 pairAddress
             }
@@ -42,7 +42,7 @@ const SwapPage = (props: any) => {
                 setLoading(true)
                 const info = await updateSwapInfo(
                     tokenToSellValue,
-                    tokenList[props.token1].address,
+                    tokenList[props.token0].address,
                     account,
                     pairAddress
                 )
@@ -62,8 +62,8 @@ const SwapPage = (props: any) => {
 }
 const mapStateToProps = (state: any) => {
     return {
-        token1: state.swap.token1,
-        token1_value: state.swap.token1_value
+        token0: state.swap.token0,
+        token0_value: state.swap.token0_value
     }
 }
 

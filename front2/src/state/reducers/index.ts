@@ -8,8 +8,8 @@ import { sharedReducer } from "./sharedReducer"
 const swapConfig = {
     key: "swap",
     storage: storage,
-    whitelist: ["token1", "token2"],
-    blacklist: ["token1_value", "token2_value", "info"]
+    whitelist: ["token0", "token1"],
+    blacklist: ["token0_value", "token1_value", "info"]
 }
 
 const sharedConfig = {

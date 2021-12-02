@@ -56,10 +56,10 @@ function SwapTokenInput(props: any) {
 
 const mapStateToProps = (state: any) => {
     return {
+        token0: state.swap.token0,
         token1: state.swap.token1,
-        token2: state.swap.token2,
-        token1_value: state.swap.token1_value,
-        token2_value: state.swap.token2_value
+        token0_value: state.swap.token0_value,
+        token1_value: state.swap.token1_value
     }
 }
 

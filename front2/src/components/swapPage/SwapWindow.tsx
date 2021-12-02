@@ -29,7 +29,7 @@ function SwapWindow(props: any) {
     const { account } = useEthers()
     const setLoading = props.setLoading
 
-    const tokenToSellValue = props.token1_value
+    const tokenToSellValue = props.token0_value
 
     const { account: accountAddress } = useEthers()
 
@@ -92,9 +92,9 @@ function SwapWindow(props: any) {
     // ----- Approve -----
 
     useEffect(() => {
-        const status = useContractMethodsApprove[props.token1]?.state?.status
+        const status = useContractMethodsApprove[props.token0]?.state?.status
         const txHash =
-            useContractMethodsApprove[props.token1]?.state?.transaction?.hash
+            useContractMethodsApprove[props.token0]?.state?.transaction?.hash
         const _notif: any = notifications.find((n: any) => n.txHash === txHash)
 
         if (status === "Mining") {
@@ -125,7 +125,7 @@ function SwapWindow(props: any) {
                     setLoading(true)
                     const info = await updateSwapInfo(
                         tokenToSellValue,
-                        tokenList[props.token1].address,
+                        tokenList[props.token0].address,
                         accountAddress,
                         pairAddress
                     )
@@ -145,7 +145,7 @@ function SwapWindow(props: any) {
 
     useEffect(() => {
         if (!isAllowToThrowError) return
-        const status = useContractMethodsApprove[props.token2]?.state?.status
+        const status = useContractMethodsApprove[props.token1]?.state?.status
 
         if (status === "Exception") {
             toast.error(
@@ -169,7 +169,7 @@ function SwapWindow(props: any) {
         buy(
             orderId,
             Token(tokenToSellValue),
-            tokenList[props.token1].address,
+            tokenList[props.token0].address,
             Token(0)
         ).then(() => {
             setAllowToThrowError(true)
@@ -177,13 +177,13 @@ function SwapWindow(props: any) {
     }
 
     const handleTransactionApprove = async () => {
-        useContractMethodsApprove[props.token1].send(pairAddress).then(() => {
+        useContractMethodsApprove[props.token0].send(pairAddress).then(() => {
             setAllowToThrowError(true)
         })
     }
 
     const tokenToSellBalance = useTokenBalance(
-        tokenList[props.token1].address,
+        tokenList[props.token0].address,
         account
     )
 
@@ -192,9 +192,9 @@ function SwapWindow(props: any) {
         loading,
         tokenToSellValue,
         info: props.info,
-        token1_name: props.token1_name,
+        token0_name: props.token0_name,
         tokenToSellBalance,
-        token1_value: props.token1_value,
+        token0_value: props.token0_value,
         handleTransactionApprove,
         handleTransaction
     })
@@ -212,7 +212,7 @@ function SwapWindow(props: any) {
                             Balance:
                         </span>
                     </div>
-                    <SwapTokenInput tokenType="token1" />
+                    <SwapTokenInput tokenType="token0" />
                     {/*Direction Button*/}
                     <button>
                         <img
@@ -223,7 +223,7 @@ function SwapWindow(props: any) {
                             height="20px"
                         />
                     </button>
-                    <SwapTokenInput tokenType="token2" />
+                    <SwapTokenInput tokenType="token1" />
                 </div>
                 {/*AdvSettingsButton*/}
                 <button
@@ -259,10 +259,10 @@ function SwapWindow(props: any) {
 
 const mapStateToProps = (state: any) => {
     return {
+        token0: state.swap.token0,
         token1: state.swap.token1,
-        token2: state.swap.token2,
+        token0_value: state.swap.token0_value,
         token1_value: state.swap.token1_value,
-        token2_value: state.swap.token2_value,
         info: state.swap.info
     }
 }

@@ -1,10 +1,10 @@
 import { maxApproval, _Token } from "@hooks"
 
 const initialState = {
-    token1: 0,
-    token2: 1,
+    token0: 0,
+    token1: 1,
+    token0_value: 0,
     token1_value: 0,
-    token2_value: 0,
     info: null
 }
 
@@ -13,14 +13,14 @@ export const swapReducer = (state: any = initialState, action: any) => {
 
     // CHANGE_PAIR
     const swapLogic = () => {
-        const tmp = state.token1
-        const tmp_value = state.token1_value
+        const tmp = state.token0
+        const tmp_value = state.token0_value
         return {
             ...state,
-            token1: state.token2,
-            token2: tmp,
-            token1_value: state.token2_value,
-            token2_value: tmp_value
+            token0: state.token1,
+            token1: tmp,
+            token0_value: state.token1_value,
+            token1_value: tmp_value
         }
     }
 
@@ -29,32 +29,32 @@ export const swapReducer = (state: any = initialState, action: any) => {
             return swapLogic()
 
         case "SET_VALUE":
-            // Now it's always token1
+            // Now it's always token0
             const newInfo = action.info && state.info
             return {
                 ...state,
-                token1_value:
-                    action.tokenType === "token1"
+                token0_value:
+                    action.tokenType === "token0"
                         ? action.value
-                        : state.token1_value,
-                token2_value: newInfo?.price
+                        : state.token0_value,
+                token1_value: newInfo?.price
                     ? _Token(newInfo?.price)
-                    : state.token2_value
+                    : state.token1_value
             }
 
         case "SET_TOKEN":
             if (
                 action.token ===
-                (action.tokenType === "token1" ? state.token2 : state.token1)
+                (action.tokenType === "token0" ? state.token1 : state.token0)
             ) {
                 return swapLogic()
             }
             return {
                 ...state,
+                token0:
+                    action.tokenType === "token0" ? action.token : state.token0,
                 token1:
-                    action.tokenType === "token1" ? action.token : state.token1,
-                token2:
-                    action.tokenType === "token2" ? action.token : state.token2
+                    action.tokenType === "token1" ? action.token : state.token1
             }
 
         case "SET_APPROVED":
@@ -68,9 +68,9 @@ export const swapReducer = (state: any = initialState, action: any) => {
             return {
                 ...state,
                 info: action.info,
-                token2_value: action.info?.price
+                token1_value: action.info?.price
                     ? _Token(action.info.price)
-                    : state.token2_value
+                    : state.token1_value
             }
         default:
             return state

@@ -5,9 +5,9 @@ export const getSwapButtonLogic = (state: any) => {
         loading,
         tokenToSellValue,
         info,
-        token1_name,
+        token0_name,
         tokenToSellBalance,
-        token1_value,
+        token0_value,
         handleTransactionApprove,
         handleTransaction
     } = state
@@ -25,20 +25,20 @@ export const getSwapButtonLogic = (state: any) => {
         info?.price &&
         info.allowance.lt(info?.price)
     ) {
-        buttonText = `Approve ${token1_name}`
+        buttonText = `Approve ${token0_name}`
         handleClick = handleTransactionApprove
     } else if (
         info?.allowance &&
         info?.price &&
         info.allowance.gte(info?.price) &&
-        tokenToSellBalance?.lt(Token(token1_value))
+        tokenToSellBalance?.lt(Token(token0_value))
     ) {
         buttonText = "Balance is not enough"
     } else if (
         info?.allowance &&
         info?.price &&
         info.allowance.gte(info?.price) &&
-        tokenToSellBalance?.gte(Token(token1_value))
+        tokenToSellBalance?.gte(Token(token0_value))
     ) {
         buttonText = "buy"
         handleClick = handleTransaction
