@@ -1,131 +1,78 @@
-import React from "react"
+/* eslint-disable react-hooks/rules-of-hooks */
+import { tokenList, pairAddress } from "@web3"
+import { connect } from "react-redux"
+import { setSwapInfoAction } from "@state/actions"
+import { useEffect, useState } from "react"
+import { updateSwapInfo } from "../../hooks"
+import { useEthers } from "@usedapp/core"
 
-import USDC from "@assets/USDC.svg"
-import expand_more from "@assets/expand_more.svg"
-import expand_more_a from "@assets/expand_more_a.svg"
-import direction from "@assets/direction.svg"
+import SwapWindow from "./SwapWindow"
+import { TransactionAlertContainer } from "../popups/TransactionAlertContainer"
 
-const SwapPage = () => {
+const SwapPage = (props: any) => {
+    const [loading, setLoading] = useState(false)
+    const [snapshot, setSnapshot]: any = useState({})
+
+    const { account } = useEthers()
+
+    const tokenToSellValue = props.token1_value
+
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            const orderInfo: any = {
+                q: tokenToSellValue,
+                token: tokenList[props.token1].address,
+                senderAddress: account,
+                pairAddress
+            }
+            const isSmthChanged = (orderInfo: any) => {
+                if (
+                    snapshot.q === orderInfo.q &&
+                    snapshot.token === orderInfo.token &&
+                    snapshot.senderAddress === orderInfo.senderAddress &&
+                    snapshot.tokenToSell === orderInfo.tokenToSell
+                )
+                    return false
+                setSnapshot(orderInfo)
+                return true
+            }
+            const is = isSmthChanged(orderInfo)
+            console.log(is)
+            if (is) {
+                setLoading(true)
+                const info = await updateSwapInfo(
+                    tokenToSellValue,
+                    tokenList[props.token1].address,
+                    account,
+                    pairAddress
+                )
+                setLoading(false)
+                props.setSwapInfo(info)
+            }
+        }, 200)
+        return () => clearInterval(interval)
+    }, [props, tokenToSellValue, account, snapshot])
+
     return (
-        <div className="body-font font-sans text-md font-semibold text-gray1 text-center ">
-            <div className="container mx-auto flex px-5 pt-20 items-center justify-center flex-col">
-                <div className="lg:w-2/5 w-full">
-                    {/*Swap Header */}
-                    <div className="flex items-center flex-wrap pb-2 pl-3 mt-auto w-full">
-                        <span className="inline-flex items-center">
-                            Swap from:
-                        </span>
-                        <span className="mr-3 inline-flex items-center ml-auto leading-none pr-3 py-1 ">
-                            Balance:
-                        </span>
-                    </div>
-                    {/*InputForm*/}
-                    <form className="w-full ">
-                        <div className="flex items-center border-b border-t border-gray1-g66 py-1">
-                            <button
-                                className="flex-shrink-0 inline-flex text-xl font-semibold text-white pl-2 pr-0 rounded"
-                                type="button"
-                            >
-                                <img
-                                    className="object-cover object-center mx-3"
-                                    src={USDC}
-                                    width="30x"
-                                    height="30px"
-                                />
-                                ABC
-                                <img
-                                    className="object-cover object-center rounded"
-                                    src={expand_more}
-                                    alt={"expand_more"}
-                                    width="30px"
-                                    height="30px"
-                                />
-                            </button>
-                            <div>
-                                <button
-                                    className="flex-shrink-0 inline-flex text-sm font-bold font-mono text-gray1-g66 py-0.5 border px-2.5 border-gray1-g66 rounded"
-                                    type="button"
-                                >
-                                    MAX
-                                </button>
-                            </div>
-                            <input
-                                className="text-right appearance-none bg-transparent border-none w-full text-white text-2xl font-semibold text-white mr-3 my-1 pr-3 leading-tight focus:outline-none"
-                                type="number"
-                                min="0"
-                                placeholder="0.0"
-                                autoComplete="off"
-                            />
-                        </div>
-                    </form>
-                    {/*Direction Button*/}
-                    <button>
-                        <img
-                            className="object-cover items-center object-center rounded justify-center mt-2 mb-1 flex mx-auto"
-                            src={direction}
-                            alt={"direction"}
-                            width="20px"
-                            height="20px"
-                        />
-                    </button>
-                    {/*InputForm*/}
-                    <form className="w-full ">
-                        <div className="flex items-center border-b border-t border-gray1-g66 py-1">
-                            <button
-                                className="flex-shrink-0 inline-flex text-xl font-semibold text-white pl-2 pr-0 rounded"
-                                type="button"
-                            >
-                                <img
-                                    className="object-cover object-center mx-3"
-                                    src={USDC}
-                                    width="30x"
-                                    height="30px"
-                                />
-                                ABC
-                                <img
-                                    className="object-cover object-center rounded"
-                                    src={expand_more}
-                                    alt={"expand_more"}
-                                    width="30px"
-                                    height="30px"
-                                />
-                            </button>
-                            <input
-                                className="text-right appearance-none bg-transparent border-none w-full text-white text-2xl font-semibold text-white mr-3 my-1 pr-3 leading-tight focus:outline-none"
-                                type="number"
-                                min="0"
-                                placeholder="0.0"
-                                autoComplete="off"
-                            />
-                        </div>
-                    </form>
-                </div>
-                {/*AdvSettingsButton*/}
-                <button
-                    className="items-end ml-auto inline-flex text-md lg:w-2/5 mr-5 font-semibold text-gray1-g66 pt-2"
-                    type="button"
-                >
-                    Advanced settings
-                    <img
-                        className="object-cover object-center"
-                        src={expand_more_a}
-                        alt={"expand_more_a"}
-                        width="20px"
-                        height="20px"
-                    />
-                </button>
-                {/*SwapButton */}
-                <div className="container mx-auto flex py-32 items-center justify-center flex-col">
-                    <div className="text-center w-2/5">
-                        <div className="flex justify-center text-center">
-                            <button className="bg-transparent w-full border-gray1-g66 border text-orange1 font-sans font-medium text-xl pt-2 pb-3 rounded-lg">
-                                TEXT
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <>
+            <TransactionAlertContainer />
+            <SwapWindow loading={loading} />
+        </>
     )
 }
-export default SwapPage
+const mapStateToProps = (state: any) => {
+    return {
+        token1: state.swap.token1,
+        token1_value: state.swap.token1_value
+    }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        setSwapInfo: (amount: any) => {
+            dispatch(setSwapInfoAction(amount))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SwapPage)
