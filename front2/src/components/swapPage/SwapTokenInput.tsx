@@ -7,6 +7,7 @@ import TokenButton from "../shared/TokenButton"
 
 function SwapTokenInput(props: any) {
     const tokenType: any = props.tokenType
+    const tokenId = props[`${tokenType}`]
     const tokenValue: any = props[`${tokenType}_value`]
 
     const selectedChanged = (i: number) => {
@@ -29,7 +30,7 @@ function SwapTokenInput(props: any) {
         >
             <div className="flex items-center border-b border-t border-gray1-g66 py-1">
                 <TokenButton
-                    selectedToken={tokenList[props.tokenId]}
+                    selectedToken={tokenList[tokenId]}
                     selectedChanged={selectedChanged}
                 />
                 <div>

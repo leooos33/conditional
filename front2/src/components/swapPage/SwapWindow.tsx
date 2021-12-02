@@ -21,7 +21,7 @@ import SwapTokenInput from "./SwapTokenInput"
 import { getSwapButtonLogic } from "./SwapButtonLogic"
 
 function SwapWindow(props: any) {
-    // const [label, setLabel] = useState(true)
+    const [label, setLabel] = useState(true)
     const [notifications, setNotificationsStateValues] = useState([])
     const [isAllowToThrowError, setAllowToThrowError] = useState(false)
     const loading = props.loading
@@ -160,10 +160,10 @@ function SwapWindow(props: any) {
 
     // ---------------------------------------
 
-    // const handleSwap = () => {
-    //     props.swapTokens()
-    //     setLabel(!label)
-    // }
+    const handleSwap = () => {
+        props.swapTokens()
+        setLabel(!label)
+    }
 
     const handleTransaction = async () => {
         buy(
@@ -192,7 +192,7 @@ function SwapWindow(props: any) {
         loading,
         tokenToSellValue,
         info: props.info,
-        token0_name: props.token0_name,
+        token0_name: tokenList[props.token0].name,
         tokenToSellBalance,
         token0_value: props.token0_value,
         handleTransactionApprove,
@@ -214,7 +214,7 @@ function SwapWindow(props: any) {
                     </div>
                     <SwapTokenInput tokenType="token0" />
                     {/*Direction Button*/}
-                    <button>
+                    <button onClick={() => handleSwap()}>
                         <img
                             className="object-cover items-center object-center rounded justify-center mt-2 mb-1 flex mx-auto"
                             src={direction}

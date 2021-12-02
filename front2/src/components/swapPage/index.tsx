@@ -56,7 +56,7 @@ const SwapPage = (props: any) => {
     return (
         <>
             <TransactionAlertContainer />
-            <SwapWindow loading={loading} />
+            <SwapWindow loading={loading} setLoading={setLoading} />
         </>
     )
 }

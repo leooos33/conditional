@@ -15,7 +15,7 @@ const swapConfig = {
 const sharedConfig = {
     key: "shared",
     storage: storage,
-    whitelist: ["accountTokenList"],
+    whitelist: [],
     blacklist: []
 }
 
