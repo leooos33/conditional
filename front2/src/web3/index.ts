@@ -1,12 +1,17 @@
+import DAI from "@assets/DAI.svg"
+import USDC from "@assets/USDC.svg"
+
 export const registryContractAddress =
     "0x62726B3398569664e518De3c9DCcfd0ba60d0A94"
 
 export const tokenList = [
     {
+        src: USDC,
         name: "TokenA",
         address: "0x177Bc802F383185e1b037B2fC18a6fcbB3f9F1B5"
     },
     {
+        src: DAI,
         name: "TokenB",
         address: "0x21C7ceB046971b38e3E98b08b0ACAD0Baf1450E6"
     }

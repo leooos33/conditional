@@ -15,11 +15,12 @@ import { tokenContractsList } from "@hooks"
 
 import USDC from "@assets/USDC.svg"
 import expand_more from "@assets/expand_more.svg"
+import TokenButton from "../shared/TokenButton"
+import { setMintTokenAction } from "../../state/actions"
 
 const styles = () => createStyles({})
 
 function MintWindow(props: any) {
-    const tokenName = tokenList[props.tokenId].name
     const { account } = useEthers()
 
     const [amountToMint, setAmountToMint] = useState(100)
@@ -92,6 +93,10 @@ function MintWindow(props: any) {
         })
     }
 
+    const selectedChanged = (i: number) => {
+        props.changeToken(i)
+    }
+
     return (
         <>
             <div className="body-font font-sans text-md font-semibold text-gray1 text-center ">
@@ -109,25 +114,10 @@ function MintWindow(props: any) {
                         {/*InputForm*/}
                         <form className="w-full ">
                             <div className="flex items-center border-b border-t border-gray1-g66 py-1">
-                                <button
-                                    className="flex-shrink-0 inline-flex text-xl font-semibold text-white pl-2 pr-0 rounded"
-                                    type="button"
-                                >
-                                    <img
-                                        className="object-cover object-center mx-3"
-                                        src={USDC}
-                                        width="30x"
-                                        height="30px"
-                                    />
-                                    ABC
-                                    <img
-                                        className="object-cover object-center rounded"
-                                        src={expand_more}
-                                        alt={"expand_more"}
-                                        width="30px"
-                                        height="30px"
-                                    />
-                                </button>
+                                <TokenButton
+                                    selectedToken={tokenList[props.tokenId]}
+                                    selectedChanged={selectedChanged}
+                                />
                                 <input
                                     className="text-right appearance-none bg-transparent border-none w-full text-white text-2xl font-semibold text-white mr-3 my-1 pr-3 leading-tight focus:outline-none"
                                     type="number"
@@ -148,7 +138,8 @@ function MintWindow(props: any) {
                                     className="bg-transparent w-full border-gray1-g66 border text-orange1 font-sans font-medium text-xl pt-2 pb-3 rounded-lg"
                                     onClick={() => handleTransaction()}
                                 >
-                                    Mint {amountToMint} of {tokenName}
+                                    Mint {amountToMint} of{" "}
+                                    {tokenList[props.tokenId].name}
                                 </button>
                             </div>
                         </div>
@@ -167,7 +158,11 @@ const mapStateToProps = (state: any) => {
 }
 
 const mapDispatchToProps = (dispatch: any) => {
-    return {}
+    return {
+        changeToken: (token: any) => {
+            dispatch(setMintTokenAction(token))
+        }
+    }
 }
 
 export default connect(
