@@ -14,7 +14,7 @@ const Header = () => {
         <header className="flex flex-wrap place-items-center">
             <section className="relative mx-auto">
                 <nav className="flex container justify-between text-white w-screen">
-                    <div className=" py-6 flex w-full items-center">
+                    <div className=" py-6 flex w-full items-center ">
                         <button className="flex title-font font-sans items-center text-white md:mb-0">
                             <img
                                 className="object-cover object-center rounded"
@@ -24,8 +24,8 @@ const Header = () => {
                                 height="33px"
                             />
                         </button>
-                        <nav className="hidden lg:flex mx-auto text-2xl  space-x-6 font-sans font-medium">
-                            <div className="w-1/2 mx-auto">
+                        <nav className="hidden lg:flex mx-auto text-2xl space-x-6 font-sans font-medium">
+                            <div className="w-4/6 mx-auto">
                                 <ul
                                     id="tabs"
                                     className="inline-flex w-full font-semibold text-gray1-g75"
@@ -61,7 +61,7 @@ const Header = () => {
                                                     : ""
                                             }`}
                                         >
-                                            Mint
+                                            Portfolio
                                         </li>
                                     </NavLink>
                                     <li className="px-4 py-2">Charts</li>

@@ -41,13 +41,13 @@ const TokenModal = (props: any) => {
 
     return (
         <>
-            <div className="justify-center items-center flex fixed inset-0 pb-24 z-50 outline-none focus:outline-none font-sans">
+            <div className="justify-center items-center flex fixed inset-0 z-50 pb-16 outline-none focus:outline-none font-sans">
                 <div
                     className="absolute w-screen h-screen"
                     onClick={() => setShowModal(false)}
                 ></div>
 
-                <div className="absolute w-1/4 px-5 mx-auto">
+                <div className="absolute 2xl:w-1/4 w-1/3 px-5 mx-auto">
                     {/*content*/}
                     <div className="border-gray1 border rounded-lg shadow-xl relative flex flex-col w-full bg-black1 outline-none focus:outline-none items-center ">
                         {/*Modal header*/}
@@ -113,7 +113,7 @@ const TokenModal = (props: any) => {
                                         {cur.name}
                                         <span className="inline-flex ml-auto ">
                                             {cur.balance
-                                                ? _Token(cur.balance)
+                                                ? _Token(cur.balance).substring(0,5)
                                                 : ""}
                                         </span>
                                     </div>

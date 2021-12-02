@@ -23,11 +23,6 @@ export default function ConnectButton({ handleOpenModal }: Props) {
       borderRadius="xl"
       py="0"
     >
-      <Box px="3">
-        <Text color="white" fontSize="md">
-          {etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)} ETH
-        </Text>
-      </Box>
       <Button
         onClick={handleOpenModal}
         bg="gray.800"
@@ -58,7 +53,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
       onClick={handleConnectWallet}
       bg="blue.800"
       color="blue.300"
-      fontSize="lg"
+      fontSize="md"
       fontWeight="medium"
       borderRadius="xl"
       border="1px solid transparent"
