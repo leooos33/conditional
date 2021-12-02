@@ -72,7 +72,12 @@ const TokenModal = (props: any) => {
                         </div>
 
                         {/*Modal body*/}
-                        <form className="w-full ">
+                        <form
+                            className="w-full "
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                            }}
+                        >
                             <div className="flex items-center border-b border-t border-gray1-g66 mx-5 py-3">
                                 <img
                                     className="object-cover object-center "

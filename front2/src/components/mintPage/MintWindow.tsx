@@ -13,10 +13,8 @@ import {
 } from "../popups/TransactionAlertContainer"
 import { tokenContractsList } from "@hooks"
 
-import USDC from "@assets/USDC.svg"
-import expand_more from "@assets/expand_more.svg"
-import TokenButton from "../shared/TokenButton"
-import { setMintTokenAction } from "../../state/actions"
+import TokenButton from "@components/shared/TokenButton"
+import { setMintTokenAction } from "@state/actions"
 
 const styles = () => createStyles({})
 
@@ -112,7 +110,12 @@ function MintWindow(props: any) {
                             </span>
                         </div>
                         {/*InputForm*/}
-                        <form className="w-full ">
+                        <form
+                            className="w-full "
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                            }}
+                        >
                             <div className="flex items-center border-b border-t border-gray1-g66 py-1">
                                 <TokenButton
                                     selectedToken={tokenList[props.tokenId]}
