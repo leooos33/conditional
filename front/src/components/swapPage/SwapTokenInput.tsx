@@ -20,7 +20,7 @@ function SwapTokenInput(props: any) {
         newValue = newValue.replace(/-/gi, "")
         props.changeValue(tokenType, parseFloat(newValue))
     }
-
+    const fromAmount = tokenValue.toString().substring(0,3)
     return (
         <form
             className="w-full "
@@ -52,7 +52,7 @@ function SwapTokenInput(props: any) {
                     placeholder="0.0"
                     autoComplete="off"
                     onChange={(e) => handleAmountChange(e)}
-                    value={tokenValue !== 0 ? (tokenValue) : ('')}
+                    value={tokenValue !== 0 ? (fromAmount) : ('')}
                 />
             </div>
         </form>
