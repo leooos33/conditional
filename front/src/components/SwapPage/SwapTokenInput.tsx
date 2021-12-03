@@ -18,9 +18,9 @@ function SwapTokenInput(props: any) {
         let newValue: string = event.target.value as string
         //TODO: validation
         newValue = newValue.replace(/-/gi, "")
-        props.changeValue(tokenType, parseInt(newValue))
+        props.changeValue(tokenType, parseFloat(newValue))
     }
-
+    const fromAmount = tokenValue.toString().substring(0,3)
     return (
         <form
             className="w-full "
@@ -34,12 +34,16 @@ function SwapTokenInput(props: any) {
                     selectedChanged={selectedChanged}
                 />
                 <div>
+                    {tokenType !== 'token1' ? 
+                    (
                     <button
                         className="flex-shrink-0 inline-flex text-sm font-bold font-mono text-gray1-g66 py-0.5 border px-2.5 border-gray1-g66 rounded"
                         type="button"
-                    >
+                        >
                         MAX
                     </button>
+                    ) : 
+                    (null)}
                 </div>
                 <input
                     className="text-right appearance-none bg-transparent border-none w-full text-white text-2xl font-semibold text-white mr-3 my-1 pr-3 leading-tight focus:outline-none"
@@ -47,8 +51,8 @@ function SwapTokenInput(props: any) {
                     min="0"
                     placeholder="0.0"
                     autoComplete="off"
-                    onChange={(e: any) => handleAmountChange(e)}
-                    value={tokenValue}
+                    onChange={(e) => handleAmountChange(e)}
+                    value={tokenValue !== 0 ? (fromAmount) : ('')}
                 />
             </div>
         </form>
