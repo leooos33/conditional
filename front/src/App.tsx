@@ -5,15 +5,15 @@ import { store } from "@state/store"
 import { Provider } from "react-redux"
 
 import Header from "@components/Header"
-import SwapPage from "@components/swapPage"
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Redirect
 } from "react-router-dom"
+import SwapPage from "@components/swapPage"
 import MintPage from "@components/mintPage"
-import OrderPage from "@components/orderPage"
+import OrderPage from "@components/orderPage/"
 import "react-toastify/dist/ReactToastify.css"
 
 function App() {
