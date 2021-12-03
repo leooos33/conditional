@@ -1,27 +1,34 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { ChainId, DAppProvider } from "@usedapp/core";
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
+import * as serviceWorker from "./serviceWorker"
+
+import "./index.css"
+import "react-grid-layout/css/styles.css"
+import "react-resizable/css/styles.css"
+import ReactModal from "react-modal"
+import { ChainId, DAppProvider } from "@usedapp/core"
+import { infuraRopsten } from "./config"
+
+ReactModal.setAppElement("#root")
 
 const config = {
-  readOnlyChainId: ChainId.Ropsten,
-  readOnlyUrls: {
-    [ChainId.Ropsten]:
-      "https://ropsten.infura.io/v3/02dc1b201ea0402eb4d789fb23b5ce6a",
-  },
-};
+    readOnlyChainId: ChainId.Ropsten,
+    readOnlyUrls: {
+        [ChainId.Ropsten]: infuraRopsten
+    }
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <DAppProvider config={config}>
-      <App />
-    </DAppProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+    <React.StrictMode>
+        <DAppProvider config={config}>
+            <App />
+        </DAppProvider>
+    </React.StrictMode>,
+    document.getElementById("root")
+)
 
-// If you want to start measuring performance in your app, pass a function
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister()

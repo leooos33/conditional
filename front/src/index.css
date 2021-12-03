@@ -1,8 +1,18 @@
-.menu-link {
-  text-decoration: "none";
-  box-shadow: "none";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
 }
 
-body {
-  margin: 0;
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: none;
+    margin: 0; 
 }
