@@ -14,11 +14,12 @@ import {
     getTransactionAlertMessage,
     TransactionAlertStatus
 } from "@components/popups/TransactionAlertContainer"
-import { tokenContractsList, Token, updateSwapInfo, orderId } from "@hooks"
+import { tokenContractsList, updateSwapInfo, orderId } from "@hooks"
 import { toast } from "react-toastify"
 import { useEthers, useTokenBalance } from "@usedapp/core"
 import SwapTokenInput from "./SwapTokenInput"
 import { getSwapButtonLogic } from "./SwapButtonLogic"
+import { Token } from "@token"
 
 function SwapWindow(props: any) {
     const [label, setLabel] = useState(true)
@@ -187,7 +188,7 @@ function SwapWindow(props: any) {
         account
     )
 
-    console.log("Balance:", tokenToSellBalance?.toString())
+    // console.log("Balance:", tokenToSellBalance?.toString())
     const { buttonText, handleClick } = getSwapButtonLogic({
         loading,
         tokenToSellValue,

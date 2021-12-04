@@ -7,7 +7,7 @@ import search from "@assets/search.svg"
 import { tokenList } from "@web3"
 import { useEthers } from "@usedapp/core"
 import { getAllTokenBallances } from "@hooks/router/getBalance"
-import { _Token } from "@hooks"
+import { _Token } from "@token"
 
 const TokenModal = (props: any) => {
     const setShowModal = props.setShowModal
@@ -113,7 +113,7 @@ const TokenModal = (props: any) => {
                                         {cur.name}
                                         <span className="inline-flex ml-auto ">
                                             {cur.balance
-                                                ? _Token(cur.balance).substring(0,5)
+                                                ? _Token(cur.balance)
                                                 : ""}
                                         </span>
                                     </div>

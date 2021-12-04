@@ -29,37 +29,51 @@ export const Token = (
     } else return a
 }
 
-//TODO: make it NOT look like some beginers code
-export const _Token = (value: BigNumber): string => {
-    if (value.toString() === "0") return "0"
-    const num = value.toString()
-    let newNum
+const numDigits = 18
 
-    if (num.length > 18) {
-        const point = num.length - defaultNumDigits
+export const _Token = (_value: BigNumber, roundDigits: number = 3): string => {
+    const value = _value.toString()
+    if (value === "0") return "0"
 
-        const parts = [num.slice(0, point), num.slice(point)]
+    if (value.length > numDigits) {
+        const decimalPoint = value.length - numDigits
 
-        if (parts[1].replace(/0/gi, "") === "") {
-            newNum = parts[0]
-        } else if (!parts[0]) {
-            newNum = "0." + parts[1]
-            while (newNum[newNum.length - 1] === "0")
-                newNum = newNum.slice(0, -1)
-        } else {
-            newNum = parts.join(".")
-            while (newNum[newNum.length - 1] === "0")
-                newNum = newNum.slice(0, -1)
-        }
+        const [beforeDp, afterDp] = [
+            value.slice(0, decimalPoint),
+            value.slice(decimalPoint)
+        ]
+
+        const afterDpRounded = Math.round(
+            parseFloat(afterDp.slice(0, roundDigits + 1)) / 10
+        )
+        if (afterDpRounded === 0) return `${beforeDp}`
+
+        console.log(
+            "_Token",
+            `${beforeDp}.${removeZerosFromBehind(afterDpRounded)}`
+        )
+        return `${beforeDp}.${removeZerosFromBehind(afterDpRounded)}`
     } else {
-        const delta = defaultNumDigits - num.length
-        newNum = "0." + "0".repeat(delta) + num
-        while (newNum[newNum.length - 1] === "0") newNum = newNum.slice(0, -1)
+        const zerosAfterDecimal = numDigits - value.length
+        if (zerosAfterDecimal >= roundDigits) return "0"
+
+        const afterDpRounded = Math.round(
+            parseFloat(value.slice(0, roundDigits - zerosAfterDecimal + 1)) / 10
+        )
+
+        return `0.${"0".repeat(zerosAfterDecimal)}${removeZerosFromBehind(
+            afterDpRounded
+        )}`
     }
-    return newNum
 }
 
-export const isValidInput = (x: any) => {
+const removeZerosFromBehind = (value: any): string => {
+    value = value.toString()
+    while (value[value.length - 1] === "0") value = value.slice(0, -1)
+    return value
+}
+
+export const isValidTokenAmount = (x: any) => {
     const err = isNaN(x) || !parseFloat(x)
     return !err
 }

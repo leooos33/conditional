@@ -1,4 +1,5 @@
-import { isValidInput, Token } from "../../hooks"
+import { Token } from "@token"
+import { isValidTokenAmount } from "@token"
 
 export const getSwapButtonLogic = (state: any) => {
     const {
@@ -16,9 +17,9 @@ export const getSwapButtonLogic = (state: any) => {
     let handleClick = () => {}
     if (loading) {
         buttonText = "Loading..."
-    } else if (!isValidInput(tokenToSellValue)) {
+    } else if (!isValidTokenAmount(tokenToSellValue)) {
         buttonText = "Enter the amount"
-    } else if (isValidInput(tokenToSellValue) && !info?.price) {
+    } else if (isValidTokenAmount(tokenToSellValue) && !info?.price) {
         buttonText = "Not enough liquidity"
     } else if (
         info?.allowance &&

@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { isValidInput } from "../testERC20ContractHook"
 import { pairAddress } from "@web3/index"
 import { BigNumber } from "@ethersproject/bignumber"
 import contractABI from "@web3/abi/Pair.json"
@@ -9,6 +8,7 @@ import { AbiItem } from "web3-utils"
 import { web3Connect } from "./connector"
 import { getSwapPrice } from "./getSwapPrice"
 import { getAllowance } from "./getAllowance"
+import { isValidTokenAmount } from "../../classes/token"
 
 const pairContract: any = new web3Connect.eth.Contract(
     contractABI as AbiItem[],
@@ -25,16 +25,16 @@ export async function updateSwapInfo(
     senderAddress: any,
     pairAddress: any
 ) {
-    console.log(">>>")
+    console.log(">>> Router query started")
     const amount = await pairContract.methods.orders(orderId).call()
 
     const { amount0, amount1 } = amount
 
     let price
     let allowance
-    if (amount && isValidInput(q)) {
+    if (amount && isValidTokenAmount(q)) {
         price = await getSwapPrice(amount, q, token)
-        console.log(price)
+        console.log("Price:", price)
         allowance = await getAllowance(token, senderAddress, pairAddress)
     }
 

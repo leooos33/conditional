@@ -1,4 +1,5 @@
-import { maxApproval, _Token } from "@hooks"
+import { maxApproval } from "@hooks"
+import { _Token } from "@token"
 
 const initialState = {
     token0: 0,

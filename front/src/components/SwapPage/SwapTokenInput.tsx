@@ -4,21 +4,19 @@ import { setTokenAction, setTokenValueAction } from "@state/actions"
 import { tokenList } from "@web3"
 import { connect } from "react-redux"
 import TokenButton from "../shared/TokenButton"
+import { tokenAmountValidator } from "../shared/validation"
 
 function SwapTokenInput(props: any) {
     const tokenType: any = props.tokenType
-    const tokenId = props[`${tokenType}`]
-    const tokenValue: any = props[`${tokenType}_value`]
+    const tokenValue = props[`${tokenType}_value`]
 
     const selectedChanged = (i: number) => {
         props.changeToken(tokenType, i)
     }
 
     const handleAmountChange = (event: any) => {
-        let newValue: string = event.target.value as string
-        //TODO: validation
-        newValue = newValue.replace(/-/gi, "")
-        props.changeValue(tokenType, parseInt(newValue))
+        let newValue: any = tokenAmountValidator(event.target.value)
+        props.changeValue(tokenType, newValue)
     }
 
     return (
@@ -30,7 +28,7 @@ function SwapTokenInput(props: any) {
         >
             <div className="flex items-center border-b border-t border-gray1-g66 py-1">
                 <TokenButton
-                    selectedToken={tokenList[tokenId]}
+                    selectedToken={tokenList[props[tokenType]]}
                     selectedChanged={selectedChanged}
                 />
                 <div>
@@ -43,8 +41,7 @@ function SwapTokenInput(props: any) {
                 </div>
                 <input
                     className="text-right appearance-none bg-transparent border-none w-full text-white text-2xl font-semibold text-white mr-3 my-1 pr-3 leading-tight focus:outline-none"
-                    type="number"
-                    min="0"
+                    type="string"
                     placeholder="0.0"
                     autoComplete="off"
                     onChange={(e: any) => handleAmountChange(e)}
