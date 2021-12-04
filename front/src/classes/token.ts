@@ -48,10 +48,6 @@ export const _Token = (_value: BigNumber, roundDigits: number = 3): string => {
         )
         if (afterDpRounded === 0) return `${beforeDp}`
 
-        console.log(
-            "_Token",
-            `${beforeDp}.${removeZerosFromBehind(afterDpRounded)}`
-        )
         return `${beforeDp}.${removeZerosFromBehind(afterDpRounded)}`
     } else {
         const zerosAfterDecimal = numDigits - value.length

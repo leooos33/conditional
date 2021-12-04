@@ -1,14 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { setTokenAction, setTokenValueAction } from "@state/actions"
+import { useEthers } from "@usedapp/core"
 import { tokenList } from "@web3"
 import { connect } from "react-redux"
+import { _Token } from "@token"
+import { getTokenBallance } from "@hooks/router/getBalance"
 import TokenButton from "../shared/TokenButton"
 import { tokenAmountValidator } from "../shared/validation"
 
 function SwapTokenInput(props: any) {
     const tokenType: any = props.tokenType
     const tokenValue = props[`${tokenType}_value`]
+    const tokenId = props[tokenType]
+    const { account } = useEthers()
 
     const selectedChanged = (i: number) => {
         props.changeToken(tokenType, i)
@@ -17,6 +22,15 @@ function SwapTokenInput(props: any) {
     const handleAmountChange = (event: any) => {
         let newValue: any = tokenAmountValidator(event.target.value)
         props.changeValue(tokenType, newValue)
+    }
+
+    const setMaxAmount = async () => {
+        const maxTokenValue = await getTokenBallance(
+            account as string,
+            tokenList[tokenId].address
+        )
+
+        props.changeValue(tokenType, _Token(maxTokenValue))
     }
 
     return (
@@ -28,17 +42,20 @@ function SwapTokenInput(props: any) {
         >
             <div className="flex items-center border-b border-t border-gray1-g66 py-1">
                 <TokenButton
-                    selectedToken={tokenList[props[tokenType]]}
+                    selectedToken={tokenList[tokenId]}
                     selectedChanged={selectedChanged}
                 />
-                <div>
-                    <button
-                        className="flex-shrink-0 inline-flex text-sm font-bold font-mono text-gray1-g66 py-0.5 border px-2.5 border-gray1-g66 rounded"
-                        type="button"
-                    >
-                        MAX
-                    </button>
-                </div>
+                {tokenType === "token0" ? (
+                    <div>
+                        <button
+                            className="flex-shrink-0 inline-flex text-sm font-bold font-mono text-gray1-g66 py-0.5 border px-2.5 border-gray1-g66 rounded"
+                            type="button"
+                            onClick={setMaxAmount}
+                        >
+                            MAX
+                        </button>
+                    </div>
+                ) : null}
                 <input
                     className="text-right appearance-none bg-transparent border-none w-full text-white text-2xl font-semibold text-white mr-3 my-1 pr-3 leading-tight focus:outline-none"
                     type="string"

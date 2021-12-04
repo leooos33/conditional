@@ -15,13 +15,12 @@ export const swapReducer = (state: any = initialState, action: any) => {
     // CHANGE_PAIR
     const swapLogic = () => {
         const tmp = state.token0
-        const tmp_value = state.token0_value
         return {
             ...state,
             token0: state.token1,
             token1: tmp,
             token0_value: state.token1_value,
-            token1_value: tmp_value
+            token1_value: "0"
         }
     }
 

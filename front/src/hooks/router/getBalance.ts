@@ -28,7 +28,7 @@ export const getTokenBallance = (
             .call()
             .then((result: any) => res(result))
             .catch((err: any) => {
-                console.error("getAllowance", err)
+                console.error("getBallance", err)
                 res(0)
             })
     })
