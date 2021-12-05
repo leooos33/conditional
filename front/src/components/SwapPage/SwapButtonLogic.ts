@@ -13,6 +13,7 @@ export const getSwapButtonLogic = (state: any) => {
         handleTransaction
     } = state
 
+    // console.log("getSwapButtonLogic:", tokenToSellBalance)
     let buttonText = ""
     let handleClick = () => {}
     if (loading) {

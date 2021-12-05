@@ -1,5 +1,5 @@
 export const tokenAmountValidator = (value: string) => {
-    console.log(value)
+    // console.log(value)
 
     // Only numbers
     let newValue = value.toString().replace(/[^0-9.]/gi, "")

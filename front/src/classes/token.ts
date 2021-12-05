@@ -32,6 +32,7 @@ export const Token = (
 const numDigits = 18
 
 export const _Token = (_value: BigNumber, roundDigits: number = 3): string => {
+    if (!_value) return "0"
     const value = _value.toString()
     if (value === "0") return "0"
 

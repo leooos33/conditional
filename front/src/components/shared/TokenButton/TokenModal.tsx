@@ -1,43 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect } from "react"
+import React from "react"
 
 import highlight_off from "@assets/highlight_off.svg"
 import search from "@assets/search.svg"
-import { tokenList } from "@web3"
-import { useEthers } from "@usedapp/core"
-import { getAllTokenBallances } from "@hooks/router/getBalance"
 import { _Token } from "@token"
+import { connect } from "react-redux"
 
 const TokenModal = (props: any) => {
     const setShowModal = props.setShowModal
     const selectedChanged = props.selectedChanged
-    const [accountTokenList, setAccountTokenList] = React.useState(tokenList)
-    const { account } = useEthers()
-
-    useEffect(() => {
-        const timeout = setTimeout(async () => {
-            if (account) {
-                const accountTokenList = await getAllTokenBallances(
-                    account as string
-                )
-                setAccountTokenList(accountTokenList)
-            }
-        }, 100)
-        return () => clearTimeout(timeout)
-    }, [account])
-
-    useEffect(() => {
-        const interval = setInterval(async () => {
-            if (account) {
-                const accountTokenList = await getAllTokenBallances(
-                    account as string
-                )
-                setAccountTokenList(accountTokenList)
-            }
-        }, 4000)
-        return () => clearInterval(interval)
-    }, [account])
 
     return (
         <>
@@ -95,30 +67,32 @@ const TokenModal = (props: any) => {
                         </form>
 
                         <div className=" w-full px-5 ml-1 h-96 overflow-y-auto">
-                            {accountTokenList?.map((cur: any, i: number) => {
-                                return (
-                                    <div
-                                        className="flex my-1 py-2 text-lg text-white"
-                                        onClick={() => {
-                                            setShowModal(false)
-                                            selectedChanged(i)
-                                        }}
-                                    >
-                                        <img
-                                            className="object-center mr-2"
-                                            src={cur.src}
-                                            width="30x"
-                                            height="30px"
-                                        />
-                                        {cur.name}
-                                        <span className="inline-flex ml-auto ">
-                                            {cur.balance
-                                                ? _Token(cur.balance)
-                                                : ""}
-                                        </span>
-                                    </div>
-                                )
-                            })}
+                            {props.accountTokenList?.map(
+                                (cur: any, i: number) => {
+                                    return (
+                                        <div
+                                            className="flex my-1 py-2 text-lg text-white"
+                                            onClick={() => {
+                                                setShowModal(false)
+                                                selectedChanged(i)
+                                            }}
+                                        >
+                                            <img
+                                                className="object-center mr-2"
+                                                src={cur.src}
+                                                width="30x"
+                                                height="30px"
+                                            />
+                                            {cur.name}
+                                            <span className="inline-flex ml-auto ">
+                                                {cur.balance
+                                                    ? _Token(cur.balance)
+                                                    : ""}
+                                            </span>
+                                        </div>
+                                    )
+                                }
+                            )}
                         </div>
                     </div>
                 </div>
@@ -128,7 +102,10 @@ const TokenModal = (props: any) => {
     )
 }
 
-export default TokenModal
-function useForm(): { register: any; handleSubmit: any } {
-    throw new Error("Function not implemented.")
+const mapStateToProps = (state: any) => {
+    return {
+        accountTokenList: state.swap.balances
+    }
 }
+
+export default connect(mapStateToProps)(TokenModal)

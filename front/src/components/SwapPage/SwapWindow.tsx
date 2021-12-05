@@ -19,7 +19,8 @@ import { toast } from "react-toastify"
 import { useEthers, useTokenBalance } from "@usedapp/core"
 import SwapTokenInput from "./SwapTokenInput"
 import { getSwapButtonLogic } from "./SwapButtonLogic"
-import { Token } from "@token"
+import { Token, _Token } from "@token"
+import { BigNumber } from "ethers"
 
 function SwapWindow(props: any) {
     const [label, setLabel] = useState(true)
@@ -183,12 +184,9 @@ function SwapWindow(props: any) {
         })
     }
 
-    const tokenToSellBalance = useTokenBalance(
-        tokenList[props.token0].address,
-        account
-    )
+    // console.log("Balance:", props.balances[props.token0], props.balances)
+    const tokenToSellBalance = props.balances[props.token0].balance || Token(0)
 
-    // console.log("Balance:", tokenToSellBalance?.toString())
     const { buttonText, handleClick } = getSwapButtonLogic({
         loading,
         tokenToSellValue,
@@ -210,7 +208,7 @@ function SwapWindow(props: any) {
                             Swap from:
                         </span>
                         <span className="mr-3 inline-flex items-center ml-auto leading-none pr-3 py-1 ">
-                            Balance:
+                            Balance: {_Token(tokenToSellBalance)}
                         </span>
                     </div>
                     <SwapTokenInput tokenType="token0" />
@@ -264,6 +262,7 @@ const mapStateToProps = (state: any) => {
         token1: state.swap.token1,
         token0_value: state.swap.token0_value,
         token1_value: state.swap.token1_value,
+        balances: state.swap.balances,
         info: state.swap.info
     }
 }

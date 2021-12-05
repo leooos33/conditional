@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { tokenList, pairAddress } from "@web3"
 import { connect } from "react-redux"
-import { setSwapInfoAction } from "@state/actions"
+import { setSwapInfoAction, setUserBalanceAction } from "@state/actions"
 import { useEffect, useState } from "react"
 import { updateSwapInfo } from "../../hooks"
 import { useEthers } from "@usedapp/core"
 
 import SwapWindow from "./SwapWindow"
 import { TransactionAlertContainer } from "../popups/TransactionAlertContainer"
+import { getAllTokenBalances } from "../../hooks/router/getBalance"
 
 const SwapPage = (props: any) => {
     const [loading, setLoading] = useState(false)
@@ -53,6 +54,31 @@ const SwapPage = (props: any) => {
         return () => clearInterval(interval)
     }, [props, tokenToSellValue, account, snapshot])
 
+    const { setUserBalances } = props
+    useEffect(() => {
+        const timeout = setTimeout(async () => {
+            if (account) {
+                const accountTokenList = await getAllTokenBalances(
+                    account as string
+                )
+                setUserBalances(accountTokenList)
+            }
+        }, 100)
+        return () => clearTimeout(timeout)
+    }, [account, setUserBalances])
+
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            if (account) {
+                const accountTokenList = await getAllTokenBalances(
+                    account as string
+                )
+                setUserBalances(accountTokenList)
+            }
+        }, 4000)
+        return () => clearInterval(interval)
+    }, [account, setUserBalances])
+
     return (
         <>
             <TransactionAlertContainer />
@@ -71,6 +97,9 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         setSwapInfo: (amount: any) => {
             dispatch(setSwapInfoAction(amount))
+        },
+        setUserBalances: (balances: any) => {
+            dispatch(setUserBalanceAction(balances))
         }
     }
 }

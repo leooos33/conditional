@@ -5,7 +5,7 @@ import { useEthers } from "@usedapp/core"
 import { tokenList } from "@web3"
 import { connect } from "react-redux"
 import { _Token } from "@token"
-import { getTokenBallance } from "@hooks/router/getBalance"
+import { getTokenBalance } from "@hooks/router/getBalance"
 import TokenButton from "../shared/TokenButton"
 import { tokenAmountValidator } from "../shared/validation"
 
@@ -25,7 +25,7 @@ function SwapTokenInput(props: any) {
     }
 
     const setMaxAmount = async () => {
-        const maxTokenValue = await getTokenBallance(
+        const maxTokenValue = await getTokenBalance(
             account as string,
             tokenList[tokenId].address
         )
