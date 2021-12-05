@@ -9,7 +9,7 @@ const swapConfig = {
     key: "swap",
     storage: storage,
     whitelist: ["token0", "token1"],
-    blacklist: ["token0_value", "token1_value", "info"]
+    blacklist: ["token0_value", "token1_value", "info", "balances"]
 }
 
 const sharedConfig = {

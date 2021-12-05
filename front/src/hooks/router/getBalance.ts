@@ -4,17 +4,18 @@ import tokenContractABI from "@web3/abi/TestERC20Contract.json"
 import { AbiItem } from "web3-utils"
 import { tokenList } from "@web3"
 import { web3Connect } from "./connector"
+import { BigNumber } from "@ethersproject/bignumber"
 
-export const getAllTokenBallances = async (account: string) => {
+export const getAllTokenBalances = async (account: string) => {
     if (!account) return []
     const accountTokenList: any = [...tokenList]
     for (const i of accountTokenList) {
-        const ballance = await getTokenBallance(account, i.address)
-        i.balance = ballance
+        const balance = await getTokenBalance(account, i.address)
+        i.balance = BigNumber.from(balance)
     }
     return accountTokenList
 }
-export const getTokenBallance = (
+export const getTokenBalance = (
     account: string,
     tokenAddress: string
 ): Promise<any> => {
@@ -28,7 +29,7 @@ export const getTokenBallance = (
             .call()
             .then((result: any) => res(result))
             .catch((err: any) => {
-                console.error("getAllowance", err)
+                console.error("getBalance", err)
                 res(0)
             })
     })

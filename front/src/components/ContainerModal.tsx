@@ -1,17 +1,19 @@
-import classnames from 'classnames'
-import React, { FunctionComponent } from 'react'
+import classnames from "classnames"
+import React, { FunctionComponent } from "react"
 import { FiX } from "react-icons/fi"
-import Modal, { Props } from 'react-modal'
+import Modal, { Props } from "react-modal"
 
-import { jumboClass } from '../classes'
-import Container from './Container'
+import { jumboClass } from "@classes"
+import Container from "./Container"
 
-const ContainerModal: FunctionComponent<Props & {
-    title?: string
-    padding?: boolean
-}> = ({ onRequestClose, title, padding = true, children, ...props }) => (
+const ContainerModal: FunctionComponent<
+    Props & {
+        title?: string
+        padding?: boolean
+    }
+> = ({ onRequestClose, title, padding = true, children, ...props }) => (
     <Modal
-        { ...props }
+        {...props}
         overlayClassName={classnames(
             "fixed inset-0",
             "flex items-center justify-center",
@@ -22,24 +24,26 @@ const ContainerModal: FunctionComponent<Props & {
         shouldFocusAfterRender={false}
         shouldCloseOnEsc={true}
         shouldCloseOnOverlayClick={true}
-        onRequestClose={onRequestClose}>
+        onRequestClose={onRequestClose}
+    >
         <Container padding={false} full={true}>
-            <div className={classnames(
-                "flex flex-row w-full",
-                "items-center",
-                "px-4", title ? "py-4" : "pt-4 -mb-4",
-                title && "bg-gray-200",
-                "rounded-xl",
-                "z-50"
-            )}>
-                {title ? <h2>{ title }</h2> : null}
-                <button className="ml-auto" onClick={onRequestClose}><FiX /></button>
+            <div
+                className={classnames(
+                    "flex flex-row w-full",
+                    "items-center",
+                    "px-4",
+                    title ? "py-4" : "pt-4 -mb-4",
+                    title && "bg-gray-200",
+                    "rounded-xl",
+                    "z-50"
+                )}
+            >
+                {title ? <h2>{title}</h2> : null}
+                <button className="ml-auto" onClick={onRequestClose}>
+                    <FiX />
+                </button>
             </div>
-            <div className={classnames(
-                padding && "p-8"
-            )}>
-                { children }
-            </div>
+            <div className={classnames(padding && "p-8")}>{children}</div>
         </Container>
     </Modal>
 )

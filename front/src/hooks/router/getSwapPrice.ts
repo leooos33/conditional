@@ -4,7 +4,7 @@ import { templates, tokenList } from "@web3/index"
 import templateContractABI from "@web3/abi/Template.json"
 import tokenContractABI from "@web3/abi/TestERC20Contract.json"
 import { AbiItem } from "web3-utils"
-import { Token } from "../../classes/token"
+import { Token } from "@token"
 import { web3Connect } from "./connector"
 
 const templateContract: any = new web3Connect.eth.Contract(

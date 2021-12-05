@@ -1,26 +1,38 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { setTokenAction, setTokenValueAction } from "@state/actions"
+import { useEthers } from "@usedapp/core"
 import { tokenList } from "@web3"
 import { connect } from "react-redux"
-import TokenButton from "../shared/TokenButton"
+import { _Token } from "@token"
+import { getTokenBalance } from "@hooks/router/getBalance"
+import TokenButton from "@components/shared/TokenButton"
+import { tokenAmountValidator } from "@components/shared/validation"
 
 function SwapTokenInput(props: any) {
     const tokenType: any = props.tokenType
-    const tokenId = props[`${tokenType}`]
-    const tokenValue: any = props[`${tokenType}_value`]
+    const tokenValue = props[`${tokenType}_value`]
+    const tokenId = props[tokenType]
+    const { account } = useEthers()
 
     const selectedChanged = (i: number) => {
         props.changeToken(tokenType, i)
     }
 
     const handleAmountChange = (event: any) => {
-        let newValue: string = event.target.value as string
-        //TODO: validation
-        newValue = newValue.replace(/-/gi, "")
-        props.changeValue(tokenType, parseFloat(newValue))
+        let newValue: any = tokenAmountValidator(event.target.value)
+        props.changeValue(tokenType, newValue)
     }
-    const fromAmount = tokenValue.toString().substring(0,3)
+
+    const setMaxAmount = async () => {
+        const maxTokenValue = await getTokenBalance(
+            account as string,
+            tokenList[tokenId].address
+        )
+
+        props.changeValue(tokenType, _Token(maxTokenValue))
+    }
+
     return (
         <form
             className="w-full "
@@ -33,26 +45,24 @@ function SwapTokenInput(props: any) {
                     selectedToken={tokenList[tokenId]}
                     selectedChanged={selectedChanged}
                 />
-                <div>
-                    {tokenType !== 'token1' ? 
-                    (
-                    <button
-                        className="flex-shrink-0 inline-flex text-sm font-bold font-mono text-gray1-g66 py-0.5 border px-2.5 border-gray1-g66 rounded"
-                        type="button"
+                {tokenType === "token0" ? (
+                    <div>
+                        <button
+                            className="flex-shrink-0 inline-flex text-sm font-bold font-mono text-gray1-g66 py-0.5 border px-2.5 border-gray1-g66 rounded"
+                            type="button"
+                            onClick={setMaxAmount}
                         >
-                        MAX
-                    </button>
-                    ) : 
-                    (null)}
-                </div>
+                            MAX
+                        </button>
+                    </div>
+                ) : null}
                 <input
                     className="text-right appearance-none bg-transparent border-none w-full text-white text-2xl font-semibold text-white mr-3 my-1 pr-3 leading-tight focus:outline-none"
-                    type="number"
-                    min="0"
+                    type="string"
                     placeholder="0.0"
                     autoComplete="off"
-                    onChange={(e) => handleAmountChange(e)}
-                    value={tokenValue !== 0 ? (fromAmount) : ('')}
+                    onChange={(e: any) => handleAmountChange(e)}
+                    value={tokenValue}
                 />
             </div>
         </form>

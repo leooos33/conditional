@@ -1,10 +1,13 @@
-import { maxApproval, _Token } from "@hooks"
+import { maxApproval } from "@hooks"
+import { _Token } from "@token"
+import { tokenList } from "@web3"
 
 const initialState = {
     token0: 0,
     token1: 1,
     token0_value: 0,
     token1_value: 0,
+    balances: tokenList,
     info: null
 }
 
@@ -14,13 +17,12 @@ export const swapReducer = (state: any = initialState, action: any) => {
     // CHANGE_PAIR
     const swapLogic = () => {
         const tmp = state.token0
-        const tmp_value = state.token0_value
         return {
             ...state,
             token0: state.token1,
             token1: tmp,
             token0_value: state.token1_value,
-            token1_value: tmp_value
+            token1_value: "0"
         }
     }
 
@@ -37,9 +39,7 @@ export const swapReducer = (state: any = initialState, action: any) => {
                     action.tokenType === "token0"
                         ? action.value
                         : state.token0_value,
-                token1_value: newInfo?.price
-                    ? _Token(newInfo?.price)
-                    : state.token1_value
+                token1_value: newInfo?.price ? _Token(newInfo?.price) : 0
             }
 
         case "SET_TOKEN":
@@ -71,6 +71,12 @@ export const swapReducer = (state: any = initialState, action: any) => {
                 token1_value: action.info?.price
                     ? _Token(action.info.price)
                     : state.token1_value
+            }
+
+        case "SET_BALLANCE":
+            return {
+                ...state,
+                balances: action.balances
             }
         default:
             return state

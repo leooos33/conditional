@@ -33,3 +33,8 @@ export const setSwapInfoAction = (info: any) => ({
     type: "SET_INFO",
     info
 })
+
+export const setUserBalanceAction = (balances: any) => ({
+    type: "SET_BALLANCE",
+    balances
+})
