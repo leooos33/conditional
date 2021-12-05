@@ -9,18 +9,17 @@ import {
     setSwapInfoAction
 } from "@state/actions"
 import { useEffect, useState } from "react"
-import { useBuy } from "../../hooks/pairContractHook"
+import { useBuy } from "@hooks/pairContractHook"
 import {
     getTransactionAlertMessage,
     TransactionAlertStatus
 } from "@components/popups/TransactionAlertContainer"
 import { tokenContractsList, updateSwapInfo, orderId } from "@hooks"
 import { toast } from "react-toastify"
-import { useEthers, useTokenBalance } from "@usedapp/core"
+import { useEthers } from "@usedapp/core"
 import SwapTokenInput from "./SwapTokenInput"
 import { getSwapButtonLogic } from "./SwapButtonLogic"
 import { Token, _Token } from "@token"
-import { BigNumber } from "ethers"
 
 function SwapWindow(props: any) {
     const [label, setLabel] = useState(true)

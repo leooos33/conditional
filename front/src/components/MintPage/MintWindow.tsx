@@ -10,7 +10,7 @@ import {
     getTransactionAlertMessage,
     TransactionAlertStatus,
     TransactionAlertContainer
-} from "../popups/TransactionAlertContainer"
+} from "@components/popups/TransactionAlertContainer"
 import { tokenContractsList } from "@hooks"
 
 import TokenButton from "@components/shared/TokenButton"

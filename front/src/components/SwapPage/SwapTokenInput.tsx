@@ -6,8 +6,8 @@ import { tokenList } from "@web3"
 import { connect } from "react-redux"
 import { _Token } from "@token"
 import { getTokenBalance } from "@hooks/router/getBalance"
-import TokenButton from "../shared/TokenButton"
-import { tokenAmountValidator } from "../shared/validation"
+import TokenButton from "@components/shared/TokenButton"
+import { tokenAmountValidator } from "@components/shared/validation"
 
 function SwapTokenInput(props: any) {
     const tokenType: any = props.tokenType

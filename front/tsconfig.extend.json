@@ -4,6 +4,8 @@
         "paths": {
             "@token": ["./src/classes/token.ts"],
             "@config": ["./src/config/index.ts"],
+            "@classes": ["./src/classes"],
+            "@classes/*": ["./src/classes/*"],
             "@assets": ["./src/assets"],
             "@assets/*": ["./src/assets/*"],
             "@hooks": ["./src/hooks"],

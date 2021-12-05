@@ -3,12 +3,12 @@ import { tokenList, pairAddress } from "@web3"
 import { connect } from "react-redux"
 import { setSwapInfoAction, setUserBalanceAction } from "@state/actions"
 import { useEffect, useState } from "react"
-import { updateSwapInfo } from "../../hooks"
+import { updateSwapInfo } from "@hooks"
 import { useEthers } from "@usedapp/core"
 
 import SwapWindow from "./SwapWindow"
-import { TransactionAlertContainer } from "../popups/TransactionAlertContainer"
-import { getAllTokenBalances } from "../../hooks/router/getBalance"
+import { TransactionAlertContainer } from "@components/popups/TransactionAlertContainer"
+import { getAllTokenBalances } from "@hooks/router/getBalance"
 
 const SwapPage = (props: any) => {
     const [loading, setLoading] = useState(false)

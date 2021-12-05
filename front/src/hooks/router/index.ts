@@ -8,7 +8,7 @@ import { AbiItem } from "web3-utils"
 import { web3Connect } from "./connector"
 import { getSwapPrice } from "./getSwapPrice"
 import { getAllowance } from "./getAllowance"
-import { isValidTokenAmount } from "../../classes/token"
+import { isValidTokenAmount } from "@token"
 
 const pairContract: any = new web3Connect.eth.Contract(
     contractABI as AbiItem[],
